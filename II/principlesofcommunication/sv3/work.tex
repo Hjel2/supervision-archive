@@ -1,0 +1,113 @@
+\input{./infofile}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\usepackage[nocrest]{../../template/supervision}
+
+\newtheorem{property}{Property}
+
+\newcommand{\wcs}{\textit{work-conserving}\xspace}
+\newcommand{\mm}{\textit{max-min}\xspace}
+\newcommand{\td}{\textit{Tail-Drop}\xspace}
+\newcommand{\hd}{\textit{Head-Drop}\xspace}
+
+\begin{document}
+
+\begin{enumerate}
+
+    \item How does the equation for being a \wcs scheduler capture the idea that you shouldn't sit idle when there is work to be done. (This is best answered by explaining the terms $p$, $q$, $\rho$, $\lambda$; and by considering what a change in each parameter might correspond to in terms of a change to the way a packet scheduling algorithm chooses which packet to send next)
+
+    The equation for a \wcs scheduler is:
+    \[
+        \sum_i \rho_i \cdot q_i = C
+    \]
+    where:
+    \begin{align*}
+        C &= \text{some constant} \\
+        q_i &= \text{mean delay due to scheduler for link $i$} \\
+        \lambda_i &= \text{mean incoming packet rate for flow $i$} \\
+        \mu_i &= \text{mean-per-packet service rate for flow $i$} \\
+        \rho_i &= \lambda_i \cdot \mu_i \\
+        \rho_i &= \text{mean link utilisation by flow $i$}
+    \end{align*}
+
+    This can be interpreted to mean that for a work-conserving scheduler (whose queue is not overflowing), to mean that `if the link is never idle, then the total amount of work done by the router to push data onto it is constant'.
+
+    Consider changing:
+    \begin{itemize}
+
+        \item increasing $C$ -- this is equivalent to increasing the capacity of a link
+
+        \item increasing $q_i$ is equivalent to upgrading the router
+
+        \item increasing $\mu_i$ is equivalent to
+
+    \end{itemize}
+
+    \todo{You can do this now!}
+
+    \item What does the \mm fair share criterion attempt to recognise as desirable behaviour? Why is the formula for this so much more complex than saying that each of $N$ flows gets $\frac{1}{N}$ of the bandwidth each?
+
+    The \mm fair share criterion attempts interprets fairness as `every flow either gets everything it wants -- or no flow got more than it did'. This means that flow is shared equally between all flows, with the caveat that if some flows don't \textit{want} all that capacity, their unwanted capacity is split between the flows which \textit{do} want it.
+
+    The formula is more complicated saying that each of $N$ flows should get $\frac1N$ of the bandwidth because such an allocation would waste bandwidth if flows did not want as much as $\frac1N$ of the capacity.
+
+    \item For each of the FCFS, GPS, WRR, DeficitRR and WFQ, state whether the algorithm is \wcs and/or \mm fair.
+
+    \begin{property}[FCFS]
+
+        \wcs but not \mm fair
+
+    \end{property}
+
+    \begin{property}[GPS]
+
+        \wcs and \mm fair.
+
+    \end{property}
+
+    \begin{property}[WRR]
+
+        \wcs but not \mm fair -- weights are \textit{intrinsically unfair}.
+
+    \end{property}
+
+    \begin{property}[DeficitRR]
+
+        \wcs but not \mm fair. Only \mm fair if all flows have the same packet size all flows have constant packet sizes and the weight of a flow is the inverse of the packet size.
+
+    \end{property}
+
+    \begin{property}[WFQ]
+
+        \wcs but not \mm fair -- since weights are \textit{intrinsically unfair}.
+
+    \end{property}
+
+    \item
+
+    \begin{enumerate}
+
+        \item \td is a common way to handle buffer overflow at a router. Why?
+
+        \td is the simplest algorithm to handle buffer overflow -- and it usually works quite well.
+
+        It can penalise bursty flows -- or flows which are synchronised.
+
+        \item What advantage does \hd offer?
+
+        \hd offers two advantages over \td, both revolving around dropping the oldest packet. Firstly, if the packet at the head of the list is dropped, then TCP connections will observe dup-ACSs earlier and so decrease the window size earlier. Secondly, on a real-time system, the packet at the head of the queue is the most likely to be ``expired'' \ie information about a video frame which has already been played and interpolated.
+
+        However, \hd is empirically awful. This is because the router is dropping the packet it's put the most time into. This doesn't decrease the total amonut of work it has to do -- it just decreases the amount of work that it's done! This is analagous to being overworked and dropping the courses you're closeset to completing! It leads to a positive feedback loop where the amount of useful work that rounters do is minimised.
+
+        \item Why might RED perform better than either \td or \hd? Why might this not work out in practice?
+
+        Both \td and \hd are protocols which work `on the cliff' \ie they wait for the network to become congested and then recover. Whereas RED operates in the neck. It attempts to ensure that the router never becomes overwhelmed. This means that the queue is kept short and so the latency of the network is lower.
+
+        However, since RED uses packet loss as a notification (rather than marking packets like DECbit or ECN), it forces packet loss. Consider a bursty flow which \textit{does not} overflow the buffer. Under \hd or \td, it would fill the buffer and then the buffer would slowly empty without any packet loss. However, RED would induce packet loss -- reducing the congestion window and \textit{increasing} the latency\ldots
+
+    \end{enumerate}
+
+\end{enumerate}
+
+\end{document}

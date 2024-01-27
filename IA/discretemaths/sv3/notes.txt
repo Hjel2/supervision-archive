@@ -1,0 +1,10 @@
+Go through the lectures again
+
+With congruences you should give the generalisation rather than an individual answer.
+
+Inverses modulo a prime number are unique.
+
+Bezout's Lemma shows that the gcd(a, b) can be expressed as a linear combination of a and b
+
+Use more words to say what you mean by things.
+Assume m|n instead of just starting with m|n

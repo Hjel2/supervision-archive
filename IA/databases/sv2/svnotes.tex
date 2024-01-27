@@ -1,0 +1,63 @@
+\input{../prefs/jkf21.tex}
+\input{../prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./infofile.tex}
+
+\input{../template/template.tex}
+
+\begin{document}
+
+The strategy for supervisions and exam questions is just to dump as much raw knowledge 
+in the question as you possibly can. Throw anything that is every slightly related to 
+the question that is being asked into it. This is how you demonstrate not just that you 
+know the topic well but that you \textbf{know everything} about a topic.
+
+Document oriented databases:
+\begin{itemize}
+\item Are keyed.
+\item The keys are used to look for the address of the document in a hash table.
+\item The keys must be stored in a separate data structure.
+\item There can be multiple keys each of which point to the lookup in the hash table. 
+IE in a ``Elastic Search'' you could search with any of 4 or 5 keys.
+\item The document itself contains attributes. Each document may not contain every 
+attribute and attributes can be multivalued. 
+\item This is in some ways like a Java Object -- if you have the name of it then you 
+can access it in O(1) time. It has attributes, it has links to other classes -- but 
+any one instance of an object does not have to have every possible attribute initialised.
+\item Are \textbf{awful} when appending documents. \\ Because you have to search 
+through every other document to add the data in.
+\item Use two-way keys (ie if a movies document references an actor, then both the 
+actor and the movie will have the key to the other).
+\item Document oriented databases are \textbf{very} fast to access for most common 
+queries. This is because all you do is look up an address in a hash table.
+\item Document oriented databases are usually okay (not as bad as relational databases) 
+for transitive queries. This is because nodes point to other nodes so you have the same 
+sort of graph-relations that graph oriented databases have. However, if you don't have 
+the key then you have to look through the entire document oriented database - which is 
+just unfeasible (since NoSQL databases and especially document oriented databases just 
+store huge amounts of data).
+\end{itemize}
+
+OLAP:
+\begin{itemize}
+\item \textbf{THIS IS ABOUT A USE NOT A SPECIFIC IMPLEMENTATION.}
+\item These are what you think of as normal relational databases.
+They, however are not ``normalised''. They are databases which are optimised for large 
+amounts of quick queries, concurrency and ACID transactions.
+\item They do \textbf{almost no} reads which require multiple records.
+\item etc. This is AN APPLICATION NOT AN IMPLEMENTATION
+\end{itemize}
+
+OLTP:
+\begin{itemize}
+\item These databases are just huge -- so large that you cannot do any foreign keys etc. 
+When you perform a query on them all you can do is just parse through the database and 
+touch each record once and only once.
+\item You essentially merge a ton of records together, remove all foreign keys and merge 
+the tables in. This mega-record is known as a fact and OLTP databases are known as ``fact 
+tables''.
+\item This is basically used for business analytics.
+\end{itemize}
+\end{document}

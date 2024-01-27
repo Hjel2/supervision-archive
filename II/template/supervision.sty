@@ -1,0 +1,226 @@
+\ProvidesPackage{supervision}
+
+% This takes an optional argument "final". If "final" is present then all \todo's are hidden.
+
+%  ____       _   _
+% |  _ \ __ _| |_| |__
+% | |_) / _` | __| '_ \
+% |  __/ (_| | |_| | | |
+% |_|   \__,_|\__|_| |_|
+
+\newcommand{\thepath}{/home/hjel/Documents/supervisions/template}
+
+%   ___        _   _
+%  / _ \ _ __ | |_(_) ___  _ __  ___
+% | | | | '_ \| __| |/ _ \| '_ \/ __|
+% | |_| | |_) | |_| | (_) | | | \__ \
+%  \___/| .__/ \__|_|\___/|_| |_|___/
+%       |_|
+
+\RequirePackage{etoolbox}   % required to pass the option to todonotes
+
+\newtoggle{final}
+\togglefalse{final}
+\newtoggle{nocrest}
+\togglefalse{nocrest}
+\DeclareOption{final}{\toggletrue{final}}
+\DeclareOption{nocrest}{\toggletrue{nocrest}}
+\ProcessOptions\relax
+
+%  _                            _
+% | |    __ _ _   _  ___  _   _| |_
+% | |   / _` | | | |/ _ \| | | | __|
+% | |__| (_| | |_| | (_) | |_| | |_
+% |_____\__,_|\__, |\___/ \__,_|\__|
+%             |___/
+
+\usepackage{lscape}         % Makes landscape easier
+\usepackage{siunitx}        % Correct spacing of units
+\usepackage[
+    top=3cm,
+    bottom=3cm,
+    inner=2cm,
+    outer=5cm
+]{geometry}
+
+\usepackage[implicit=true]{hyperref}
+\usepackage{ifthen}         % Conditional processing in tex
+
+\ifthenelse{\equal{\jkfside}{oneside}}{
+
+ \ifthenelse{\equal{\jkfhanded}{left}}{
+  % 1. Left-handed marker, one-sided printing or e-marking, use oneside and...
+  \evensidemargin=\oddsidemargin
+  \oddsidemargin=73pt
+  \setlength{\marginparwidth}{111pt}
+  \setlength{\marginparsep}{-\marginparsep}
+  \addtolength{\marginparsep}{-\textwidth}
+  \addtolength{\marginparsep}{-\marginparwidth}
+ }{
+  % 2. Right-handed marker, one-sided printing or e-marking, use oneside.
+  \setlength{\marginparwidth}{111pt}
+ }
+
+}{
+ % 3. Alternating margins, two-sided printing, use twoside.
+}
+\RequirePackage[parfill]{parskip} 
+% \setlength{\parindent}{0em}
+% \addtolength{\parskip}{1ex}
+
+%     _    __  __ ____
+%    / \  |  \/  / ___|
+%   / _ \ | |\/| \___ \
+%  / ___ \| |  | |___) |
+% /_/   \_\_|  |_|____/
+
+\usepackage{amsmath}        % American Mathematical Society
+\usepackage{amssymb}        % Maths symbols
+\usepackage{amsthm}         % Theorems
+
+%   ____      _
+%  / ___|___ | | ___  _   _ _ __ ___
+% | |   / _ \| |/ _ \| | | | '__/ __|
+% | |__| (_) | | (_) | |_| | |  \__ \
+%  \____\___/|_|\___/ \__,_|_|  |___/
+
+\RequirePackage{xcolor}     % colours
+\hypersetup{
+    pdfauthor={\studentname},
+    pdftitle={\svcourse, SV \svnumber},
+    pdfsubject={},
+    pdfkeywords={9d2547b00aba40b58fa0378774f72ee6},
+    pdfproducer={},
+    pdfcreator={},
+    hidelinks=true,
+    colorlinks=true,
+    linkcolor=blue,
+}                           % PDF metadata + link formatting
+
+%  ____       __                          _
+% |  _ \ ___ / _| ___ _ __ ___ _ __   ___(_)_ __   __ _
+% | |_) / _ \ |_ / _ \ '__/ _ \ '_ \ / __| | '_ \ / _` |
+% |  _ <  __/  _|  __/ | |  __/ | | | (__| | | | | (_| |
+% |_| \_\___|_|  \___|_|  \___|_| |_|\___|_|_| |_|\__, |
+%                                                 |___/
+
+\RequirePackage[
+    capitalise,
+    nameinlink,
+    noabbrev
+    ]{cleveref}             % "clever" referencing with \cref / \Cref
+
+%  _____            _                                      _
+% | ____|_ ____   _(_)_ __ ___  _ __  _ __ ___   ___ _ __ | |_ ___
+% |  _| | '_ \ \ / / | '__/ _ \| '_ \| '_ ` _ \ / _ \ '_ \| __/ __|
+% | |___| | | \ V /| | | | (_) | | | | | | | | |  __/ | | | |_\__ \
+% |_____|_| |_|\_/ |_|_|  \___/|_| |_|_| |_| |_|\___|_| |_|\__|___/
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}
+\RequirePackage{array}
+
+\usepackage{enumitem}       % Required by Tom Johnson's exam question header
+
+% Exam question headings, labels and sensible layout (courtesy of Tom Johnson)
+\setlist{parsep=\parskip, listparindent=\parindent}
+\newcommand{\examhead}[3]{\section{#1 Paper #2 Question #3}}
+\newenvironment{examquestion}[3]{
+    \examhead{#1}{#2}{#3}\setlist[enumerate, 1]{label=(\alph*)}\setlist[enumerate, 2]{label=(\roman*)}
+    \marginpar{\qrcode{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y#1p#2q#3.pdf}}
+    \marginpar{\footnotesize \url{https://www.cl.cam.ac.uk/teaching/exams/pastpapers/y#1p#2q#3.pdf}}
+}{}
+
+% TODO add some fancy environments for questions / answers i.e. light grey text in a slightly different font for questions? Maybe smaller font size
+
+%   ____          _
+%  / ___|___   __| | ___
+% | |   / _ \ / _` |/ _ \
+% | |__| (_) | (_| |  __/
+%  \____\___/ \__,_|\___|
+
+\RequirePackage{algorithmicx}
+\RequirePackage{listings}
+\usepackage[T1]{fontenc}
+\lstset{upquote=true}
+\usepackage{verbatim}
+
+% TODO add listings styles for various languages! i.e. python / prolog / java etc
+
+%   ___  _   _
+%  / _ \| |_| |__   ___ _ __
+% | | | | __| '_ \ / _ \ '__|
+% | |_| | |_| | | |  __/ |
+%  \___/ \__|_| |_|\___|_|
+
+\usepackage[protrusion=true]{microtype}
+\RequirePackage{booktabs}
+\usepackage{hhline}
+\RequirePackage[UKenglish]{babel}
+\RequirePackage[UKenglish]{isodate}
+
+%  ____  _
+% |  _ \(_) __ _  __ _ _ __ __ _ _ __ ___  ___
+% | | | | |/ _` |/ _` | '__/ _` | '_ ` _ \/ __|
+% | |_| | | (_| | (_| | | | (_| | | | | | \__ \
+% |____/|_|\__,_|\__, |_|  \__,_|_| |_| |_|___/
+%                |___/
+
+\RequirePackage{adjustbox}
+\RequirePackage{graphicx}
+\RequirePackage{float}
+
+%  _   _                _
+% | | | | ___  __ _  __| | ___ _ __
+% | |_| |/ _ \/ _` |/ _` |/ _ \ '__|
+% |  _  |  __/ (_| | (_| |  __/ |
+% |_| |_|\___|\__,_|\__,_|\___|_|
+
+\RequirePackage{fancyhdr}
+\RequirePackage{lastpage}       % ``n of m'' page numbering
+\RequirePackage[nolinks]{qrcode}% QR codes
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyheadoffset[LO,LE,RO,RE]{0pt}
+\fancyfootoffset[LO,LE,RO,RE]{0pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LO,RE]{{\bfseries \studentname}\\\studentemail}
+\fancyhead[C]{\iftoggle{nocrest}{}{\includegraphics[height=0.8cm]{\thepath/crest}}} % I'm fancy like that -- feel free to remove!
+\fancyhead[RO,LE]{{\bfseries \svcourse, SV~\svnumber}\\\svdate\ \svtime, \svvenue}
+\fancyfoot{}
+\fancyfoot[LO,RE]{For: \svrname}
+\fancyfoot[RO,LE]{\today\hspace{1cm}\thepage\ / \pageref{LastPage}}
+\fancyfoot[C]{\ifthenelse{\value{page}=1}{\qrcode[height=0.8cm]{\svuploadkey}}{}}
+\setlength{\headheight}{22.55pt}
+
+%  _            _                   _
+% | |_ ___   __| | ___  _ __   ___ | |_ ___  ___
+% | __/ _ \ / _` |/ _ \| '_ \ / _ \| __/ _ \/ __|
+% | || (_) | (_| | (_) | | | | (_) | ||  __/\__ \
+%  \__\___/ \__,_|\___/|_| |_|\___/ \__\___||___/
+
+\iftoggle{final}{
+  \RequirePackage[final]{todonotes}
+  \renewcommand{\todo}[1]{}
+}{
+  \RequirePackage{todonotes}
+  \let\oldtodo\todo
+  \renewcommand{\todo}[1]{\oldtodo[inline]{#1}}
+}
+
+%   ____          _
+%  / ___|   _ ___| |_ ___  _ __ ___
+% | |  | | | / __| __/ _ \| '_ ` _ \
+% | |__| |_| \__ \ || (_) | | | | | |
+%  \____\__,_|___/\__\___/|_| |_| |_|
+
+% This is for you to edit! I would recommend filling customcommands with things you use a lot!
+\RequirePackage{\thepath/customcommands}
+
+% If you use overleaf or a compiler with --shell-escape, I'd suggest using minted instead of lstlistings, and also pass more arguments to microtype.
+% There's an option in supervision which loads crest.pdf.
+% If you want to be 𝓯𝓪𝓷𝓬𝔂, save your college crest (or any image you want on the top of your supo work... :eyes:) into "crest.pdf" in the template folder

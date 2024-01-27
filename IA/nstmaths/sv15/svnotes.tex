@@ -1,0 +1,34 @@
+\documentclass[10pt, a4paper]{article}
+
+\input{./template/template.tex}
+
+\begin{document}
+
+\section*{NST Maths Supervision 15}
+
+View a column matrix as an $n \times 1$ matrix.
+
+When you use index notation, you should include the 1. IE $x_i = x_{i,1}$.
+
+Ambiguity can arise and you have to be careful.
+
+You can rearrange elements in index notation since all you have are integer multiplication.
+
+\begin{gather*}
+x_{j} b_{ij} = b_{ij}x_j \longrightarrow \mathbf{Bx}
+x_{j} b_{ij} = x^T_{1j}B^T_{ji} \longrightarrow \mathbf{Bx}^T
+\end{gather*}
+Note that this does not mean $\mathbf{Bx} = \mathbf{Bx}^T$. It means that the $i$th element of the column vector
+$\mathbf{Bx}$ is equal to the $i$th element in the row vector $\mathbf{Bx}^T$.
+
+If every element below or above the leading diagonal is zero, then the determinant is the product of the leading
+diagonal.
+
+Never try to expand the determinant if it's a large matrix. You should only rearrange the columns or rows.
+
+10. The matrix you're given is antisymmetric. It works for any antisymmetric matrix $\mathbf{M}$ such that there is a
+ single non-zero minor diagonal.
+ 
+The matrix is an antisymmetric matrix with a single non-zero minor diagonal.
+
+\end{document}

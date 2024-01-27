@@ -1,0 +1,52 @@
+\input{./template/prefs/jkf21.tex}
+\input{./template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./template/includes.tex}
+\input{./template/template.tex}
+
+\begin{document}
+
+\section*{Rule Induction:}
+
+Rule induction is like mathematical induction -- except rather than inducting over the 
+natural numbers, you induct over the strings in S.
+
+There are two uses of rule induction:
+
+\begin{itemize}
+
+\item Showing that all strings in an inductively defined set satisfy a property
+
+\item Showing that a set $S$ is a superset of an inductively defined set $I$
+
+\end{itemize}
+
+\subsection*{Showing a property is satisfied:}
+
+Lets say that we wish to prove all strings in an inductively defined set $I$ 
+satisfy a property $P$.
+
+To do this we show that every axiom of $I$ satisfies the property $P$.
+
+We then show that if all strings in the hypothesis satisfy $P$ then all strings which 
+can be derived by any rule of $I$ also satisfy $P$.
+
+IE if $\frac{u}{aub}$ is a rule then we would show that $P(u) \Longrightarrow P(aub)$
+
+We must do this for every rule. 
+
+This proves that a property is satisfied for every string $I$ in an inductively defined set 
+using Rule Induction.
+
+\subsection*{Showing $I \subseteq S$:}
+
+To show that a set $S$ is a superset of an inductively defined set $I$, we show that the 
+axioms of $I$ are in $S$ and all conclusions that can be drawn from those axioms are also in 
+$S$.
+
+IE if $I$ has axiom $\frac{\hspace{0.5cm}}{a}$ and rule $\frac{u}{aub}$, showing that 
+$a \in S$ and $\forall u \in I. u \in S \Longrightarrow aub \in S$ would show that $I \subseteq S$.
+
+\end{document}

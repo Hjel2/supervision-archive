@@ -1,0 +1,83 @@
+\input{./template/prefs/jkf21.tex}
+\input{./template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./template/includes.tex}
+\input{./template/template.tex}
+
+\usepackage{physics}
+
+\begin{document}
+
+Using operators to solve second order ODE's:
+consider
+\begin{equation}
+\dv[2]{y}{x} - 5\dv{y}{x} + 6y = e^{2x}\\
+\end{equation}
+
+You can convert this into an operator.
+
+This means this is of the form:
+\begin{equation}
+\left(\dv[2]{x} - 5\dv{x} + 6\right)y = e^{2x}\\
+\end{equation}
+Factorise this:
+\begin{equation}
+\left(\dv{x} - 3\right)\left(\dv{x} - 2\right)y = e^{2x}\\
+\end{equation}
+If you expand this, you do not operate the operator on the constants -- you multiply it.
+So when you expand this for example you do not ie you do not write $\dv{x} \times x = 2\dv{x} \neq 0$.
+
+You now set part of this expression to be equal to $f(x)$ -- say $z$. Now you have reduced the order of the 
+differential equation. You solve this as a first order differential equation. Then you get an expression for $z$ 
+which you can solve for $z$. Then you solve the remaining system as another linear differential equation.
+
+Let $z = \left(\dv{x} - 2\right)y$.
+\begin{equation}
+\begin{split}
+\left(\dv{x} - 3\right)z &= e^{2x}\\
+\dv{z}{x} - 3z &= e^{2x} \\
+e^{-3x}\dv{z}{x} - 3ze^{-3x} &= e^{-x} \\
+ze^{-3x} &= -e^{-x} + c\\
+z &= ce^{3x} - e^{2x} \\
+\left(\dv{x} - 2\right)y &= ce^{3x} - e^{2x} \\
+\dv{y}{x} - 2y &= ce^{3x} - e^{2x} \\
+e^{-2x}\dv{y}{x} - 2ye^{-2x} &= ce^{x} - 1 \\
+ye^{-2x} &= ce^{x} - x + d \\
+y &= ce^{3x} + de^{2x} - xe^{2x} \\
+\end{split}
+\end{equation}
+
+This method allows you to solve equations without ever having to make a particular integral -- and allows you to 
+solve potentially far more difficult operators. For example one of the differentila operators can 
+be a function of $x$ and be near-impossible to be solvable via normal methods.
+
+The definition of $\nabla$ is:
+\begin{equation}
+\underline{\nabla} =: \underline{i}\pdv{x} + \underline{j}\pdv{y} + \underline{k}\pdv{y} \\
+\end{equation}
+If this acts on a scalar function $f$, then it is the gradient -- this is why it is called grad.
+This represents the normal to any given surface. $\nabla f$ is the normal to any part of that surface.
+
+%Because $\nabla$ is a vector differential operator, it can also operate on other vectors too -- say $\underline{v} = (v_1, v_2, v_3)$.
+%This is denoted $\underline{\nabla} \dot \underline{v}$ this is called solenoidial if it is equal to zero.
+
+If $\underline{\nabla}\times \underline{v}$ is equal to zero then it is conserative.
+\begin{equation}
+\underline{\nabla}\cdot \underline{v} = \pdv{v_1}{x} + \pdv{v_2}{y} + \pdv{v_3}{z} \\
+\end{equation}
+This is a scalar.
+
+the cross product is equal to the cross product of the nabla operator as a vector and the vector v. 
+This gives a vector quantity. 
+\begin{equation}
+\underline{\nabla}\times\underline{v} = \left(\pdv{v_3}{y} - \pdv{v_2}{z}\right)\underline{i} + \left(\pdv{v_1}{z} - \pdv{v_3}{x}\right)\underline{j} + \left(\pdv{v_1}{y} - \pdv{v_2}{x}\right)\underline{k} \\
+\end{equation}
+
+\begin{equation}
+\nabla^2 f = \nabla(\nabla f) = \pdv[2]{f}{x} + \pdv[2]{f}{y} + \pdv[2]{f}{z} \\
+\end{equation}
+This is known as the laplacian and is used in laplaces equation.
+
+\end{document}

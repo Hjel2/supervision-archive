@@ -1,0 +1,10 @@
+Use P(m) to indicate what the free variable is. 
+IE Prove P(m) and (P(m) => P(m + 1))
+
+If you do multivariate induction then \forall n \in \mathbb{Z}: P(m) etc
+
+Use more words.
+
+Chains of equals is fine provided that they are equal. IE you're only manipulating one side.
+
+Practice working under TIME PRESSURE.

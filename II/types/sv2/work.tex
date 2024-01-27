@@ -1,0 +1,757 @@
+\input{./infofile}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+\usepackage{mathtools}
+\usepackage{ebproof}
+\usepackage{stmaryrd}
+
+\input{../../template/template}
+
+\newcommand{\pack}{\ensuremath{\mathit{pack}}}
+\newcommand{\letpack}{\ensuremath{\text{let}\ \mathit{pack}}}
+\newcommand{\type}[1]{\ensuremath{#1\ \text{type}}}
+\newcommand{\ctx}[1]{\ensuremath{#1\ \text{ctx}}}
+\newcommand{\abr}[2]{\ensuremath{\langle #1, #2 \rangle}}
+\newcommand{\brk}[1]{\ensuremath{\llbracket #1 \rrbracket}}
+\newcommand{\sub}{\ensuremath{\mathsf{sub}}}
+
+\begin{document}
+
+\section{Warmup Questions}
+
+\begin{enumerate}
+
+    \item Write down the rules for introduction and elimination of abstract data types in System F (i.e.\@ \pack\ and let \pack). Explicitly specify the ``client code'' that doesn't get to see the abstracted type.
+
+    \begin{gather*}
+        \dfrac{
+            \Theta \vdash \type{A} \qquad \Theta \vdash \ctx{\Gamma} \qquad \Theta; \Gamma, x: \alpha \vdash e: B
+        }{
+            \Theta; \Gamma \vdash \pack_{\alpha.B}(A, e): \exists \alpha\ldotp B
+        }(\pack) \\\\
+        \dfrac{
+            \Theta; \Gamma \vdash \pack_{\alpha.B}(A, e): \exists \alpha\ldotp B \qquad \Theta; \Gamma, x: B \vdash e': C
+        }{
+            \Theta; \Gamma \vdash \letpack(\alpha, x) = \pack_{\alpha.B}(A, e)\ \text{in}\ e': C
+        }(\mathit{letpack})
+    \end{gather*}
+
+    \item What do $\sigma$ and $\Sigma$ represent?
+
+    $\sigma$ represents the store. While $\Sigma$ represents the store type.
+
+    \item Write down the typing rules and operational semantics for the imperative additions to STLC\@.
+
+    \textbf{Typing Rules:}
+
+    We add specific rules for interacting with the store. We then add typing rules for typing the store. We then add a rule for using both of these to type a context. Note that we must also modify all existing
+    typing rules to use a store typing context as well.
+
+    Interacting with the store:
+
+    \begin{gather*}
+        \dfrac{
+            \Gamma; \Sigma \vdash e: \mathrm{ref}\ T
+        }{
+            \Gamma; \Sigma \vdash !e: T
+        }
+        \qquad
+        \dfrac{
+            \Gamma; \Sigma \vdash e: T
+        }{
+            \Gamma; \Sigma \vdash \mathrm{new}\ e: \mathrm{ref}\ T
+        }
+        \\\\
+        \dfrac{
+            \Gamma; \Sigma \vdash e: T \qquad \Gamma; \Sigma \vdash \ell: \mathrm{ref}\ T
+        }{
+            \Gamma; \Sigma \vdash \ell \coloneqq e: \mathrm{unit}
+        }
+        \qquad
+        \dfrac{
+            \ell: T \in \Sigma
+        }{
+            \Gamma; \Sigma \vdash \ell: \mathrm{ref}\ T
+        }
+    \end{gather*}
+
+    Modifying existing typing rules:
+    \begin{gather*}
+        \dfrac{
+        \Gamma, x: A; \Sigma \vdash e: B
+        }{
+        \Gamma; \Sigma \vdash \lambda x: A\ldotp e: A \to B
+        }
+        \qquad
+        \dfrac{
+        \Gamma; \Sigma \vdash e: A \to B
+        \qquad
+        \Gamma; \Sigma \vdash e': A
+        }{
+        \Gamma; \Sigma \vdash e\ e': B
+        }
+        \\\\
+        \ldots
+    \end{gather*}
+
+    Typing the Store:
+
+    \begin{gather*}
+        \dfrac{
+        }{
+            \cdot \vdash \cdot: \cdot
+        }
+        \qquad
+        \dfrac{
+            \Sigma \vdash \sigma: \Sigma' \qquad \Sigma \vdash v: T
+        }{
+            \Sigma \vdash (\sigma, \ell: v): (\Sigma', \ell: T)
+        }
+    \end{gather*}
+
+    Typing Configurations:
+
+    \begin{gather*}
+        \dfrac{
+            \Sigma \vdash \sigma: \Sigma \qquad \cdot; \Sigma \vdash e: T
+        }{
+            \abr{\sigma}{e}: (\Sigma, T)
+        }
+    \end{gather*}
+
+    \textbf{Reduction Rules:}
+
+    We start by making all reduction rules operate on configurations of the form $\abr{\sigma}{e}$. This requires modifying all existing rules to make them carry a $\sigma$ in all premises and
+    conclusions. Next, we add specific rules for interacting with the store.
+
+    Interacting with the Store:
+
+    \begin{gather*}
+        \dfrac{
+            (\ell, v) \in \sigma
+        }{
+            \abr{\sigma}{!\ell} \rightsquigarrow \abr{\sigma}{v}
+        }
+        \qquad
+        \dfrac{
+            \abr{\sigma}{e} \rightsquigarrow \abr{\sigma}{e'}
+        }{
+            \abr{\sigma}{!e} \rightsquigarrow \abr{\sigma}{!e'}
+        }
+        \qquad
+        \\\\
+        \dfrac{
+        }{
+            \abr{\sigma}{\ell \coloneqq v} \rightsquigarrow \abr{(\sigma, \ell: v)}{()}
+        }
+        \qquad
+        \dfrac{
+            \abr{\sigma}{e_1} \rightsquigarrow \abr{\sigma}{e_1'}
+        }{
+            \abr{\sigma}{e_1 \coloneqq e_2} \rightsquigarrow \abr{\sigma}{e_1' \coloneqq e_2}
+        }
+        \qquad
+        \dfrac{
+            \abr{\sigma}{e_2} \rightsquigarrow \abr{\sigma}{e_2'}
+        }{
+            \abr{\sigma}{\ell \coloneqq e_2} \rightsquigarrow \abr{\sigma}{\ell \coloneqq e_2'}
+        }
+        \\\\
+        \dfrac{
+            \ell \notin \sigma
+        }{
+            \abr{\sigma}{\mathrm{new}\ v} \rightsquigarrow \abr{(\sigma, \ell: v)}{()}
+        }
+        \qquad
+        \dfrac{
+            \abr{\sigma}{e} \rightsquigarrow \abr{\sigma}{e'}
+        }{
+            \abr{\sigma}{\mathrm{new}\ e} \rightsquigarrow \abr{\sigma}{\mathrm{new}\ e'}
+        }
+    \end{gather*}
+
+    Threading $\sigma$ through all other reduction rules:
+    \[
+        \dfrac{
+        \abr{\sigma}{e_1} \rightsquigarrow \abr{\sigma}{e_1'}
+        }{
+        \abr{\sigma}{e_1\ e_2} \rightsquigarrow \abr{\sigma}{e_1'\ e_2}
+        }
+        \qquad
+        \dfrac{
+        }{
+        \abr{\sigma}{(\lambda x\ldotp e)\ v} \rightsquigarrow \abr{\sigma}{[v/x]e}
+        }
+        \\\\
+        \ldots
+    \]
+
+    \item Explain the reason to separate typing logic for pure and impure terms when using monads to track effects and explain how they are linked together.
+
+    We separate terms based on whether they have side-effects or not. Those terms which do have side effects (impure) have monadic types. Those terms which don't (pure); do not have monadic types. This allows
+    the type system to determine whether evaluating a particular expression will have any side effects. This is useful when considering compiler optimisations as we can determine what can be done in parallel or
+    lazily; and what has to be done in-order.
+
+\end{enumerate}
+
+\section{Regular Questions}
+
+\begin{enumerate}
+
+    \item For each of the following PLC (System F) typing judgements, is there a PLC type $A_i$ that makes the judgement provable? In each case, give a type $A_i$ and a typing derivation for, or explain why a
+    typing derivation cannot exist.
+
+    \begin{enumerate}
+
+        \item $\cdot; \cdot \vdash \lambda x: (\forall \alpha\ldotp \alpha)\ldotp (\Lambda \beta\ldotp x\ \beta): A_1$
+
+        \label{enm:question1a}
+
+        $A_1 = (\forall \alpha\ldotp \alpha) \to \forall \beta \ldotp \beta$ makes the judgement provable.
+
+        \begin{figure}[H]
+
+            \centering
+
+            \begin{prooftree}
+                \infer0{\beta; x: \forall \alpha\ldotp \alpha \ldotp x: \forall \alpha\ldotp \alpha}
+                \infer0{\beta; x: \forall \alpha\ldotp \alpha \ldotp \beta: \beta}
+                \infer2{\beta; x: \forall \alpha\ldotp \alpha \ldotp x\ \beta: \beta}
+                \infer1{\cdot; x: \forall \alpha\ldotp \alpha \vdash \Lambda \beta\ldotp x\ \beta: \forall \beta\ldotp \beta}
+                \infer1{\cdot; \cdot \vdash \lambda x: (\forall \alpha\ldotp \alpha)\ldotp (\Lambda \beta\ldotp x\ \beta): (\forall \alpha\ldotp \alpha) \to \forall \beta \ldotp \beta}
+            \end{prooftree}
+
+            \caption{Typing derivation for \ref{enm:question1a}}
+
+        \end{figure}
+
+        \item $\cdot; \cdot \vdash \Lambda \alpha\ldotp \lambda x: \alpha\ldotp \Lambda \beta \ldotp x\ \beta: A_2$
+
+        There is no $A_2$ such that the typing derivation is provable. The reason for this is that we are applying $\beta$ to a term of type $\alpha$. But $\alpha$ does not have to take any type argument. So if
+        this has any type then we allow the application of types to terms which do not take types (such as values).
+
+        \item $\cdot; \cdot \vdash \lambda x: A_3\ldotp \Lambda \alpha\ldotp (x\ (\alpha \to \alpha)\ (x\ \alpha)): A_3 \to \forall \beta\ldotp \beta$
+
+        There is no $A_3$ such that the the typing derivation is provable.
+
+        By repeated inversion on the LHS of the function application, we can see that $A_3 = \forall \alpha\ldotp X \to \alpha$ and $\forall \alpha\ldotp X$ for some $X$. However, notice that $A_3$ is bound
+        before $\alpha$. So $\alpha$ is \textit{not visible} to $A_3$ when it is bound -- and it is only passed $\alpha \to \alpha$. Therefore such a type is impossible!
+
+        \item $\cdot; \cdot \vdash \lambda x: A_4\ldotp \Lambda \alpha\ldotp (x\ (\alpha \to \alpha)\ (x\ \alpha)): A_4 \to \forall \alpha\ldotp (\alpha \to \alpha)$
+
+        $A_4 = \forall \beta \ldotp \beta \to \beta$ makes the judgement provable.
+
+        \label{enm:question1d}
+
+        \begin{figure}[H]
+
+            \begin{prooftree}
+                \infer0{\alpha; x: \forall \beta \ldotp \beta \to \beta \vdash x: \forall \beta\ldotp \beta \to \beta}
+                \infer0{\alpha \vdash \type{\alpha \to \alpha}}
+                \infer2{\alpha; x: \forall \beta \ldotp \beta \to \beta \vdash x\ (\alpha \to \alpha): (\alpha \to \alpha) \to (\alpha \to \alpha)}
+                \infer0{\alpha; x: \forall \beta \ldotp \beta \to \beta \vdash x: \forall \beta\ldotp \beta \to \beta}
+                \infer0{\alpha \vdash \type{\alpha}}
+                \infer2{\alpha; x: \forall \beta \ldotp \beta \to \beta \vdash (x\ \alpha): \alpha \to \alpha}
+                \infer2{\alpha; x: \forall \beta \ldotp \beta \to \beta \vdash x\ (\alpha \to \alpha)\ (x\ \alpha): \alpha \to \alpha}
+                \infer1{\cdot; x: \forall \beta \ldotp \beta \to \beta\vdash \lambda \alpha\ldotp (x\ (\alpha \to \alpha)\ (x\ \alpha)): \forall \alpha\ldotp (\alpha \to \alpha)}
+                \infer1{\cdot; \cdot \vdash \lambda x: \forall \beta \ldotp \beta \to \beta\ldotp \lambda \alpha\ldotp (x\ (\alpha \to \alpha)\ (x\ \alpha)): (\forall \beta \ldotp \beta \to \beta) \to \forall \alpha\ldotp (\alpha \to \alpha)}
+            \end{prooftree}
+
+            \caption{Typing derivation for \ref{enm:question1d}}
+
+        \end{figure}
+
+        \item $\cdot; \cdot \vdash \Lambda \alpha\ldotp \lambda x: A_5\ldotp (x\ (\alpha \to \alpha)\ (x\ \alpha)): \forall \alpha\ldotp (\alpha \to \alpha)$
+
+        There is no type $A_5$ which makes the judgement provable. Consider the type $\forall \alpha\ldotp \alpha \to \alpha$. Since the term first take $x: A_5$ as an argument, we are constrained that
+        if there is a type $A_5$ then we must have $A_5 = \alpha$. But we then pass the types $(\alpha \to \alpha)$ to $x$. This places additional constraints on its type meaning that we have $A_5$ cannot
+        possibly be the type $\alpha$! So we have a contradiction and therefore there is no type $A_5$ which makes the judgment provable
+
+    \end{enumerate}
+
+    \item Complete Exercises 2, 3 and 4 from Lecture 5:
+
+    \textbf{Exercises 2 and 3 confused me!}
+
+    \begin{enumerate}[label=(\arabic*)]
+
+        \setcounter{enumii}{1}
+
+        \item Define a Church encoding for the unit type.
+
+        \[
+            \mathsf{unit} = 1
+        \]
+
+        \item Define a church encoding for the empty type.
+
+        \[
+            \mathsf{empty} = 0
+        \]
+
+        \item Define a Church encoding for binary trees, corresponding to the ML datatype
+
+        \texttt{type tree = Leaf | Node of tree * X * tree}
+
+        Let $T$ be the type of a tree, $N$ be the type of a node and $L$ be the type of a leaf:
+
+        $L$ is the unit type:
+        \[
+            L = 1
+        \]
+
+        $N$ is a triple:
+        \[
+            N = \forall \alpha\ldotp (X \to Y \to Z \to \alpha) \to \alpha
+        \]
+
+        $T$ is a sum of $L$ or $N$:
+        \[
+            T = L + N
+        \]
+        Where $L + N$ can be defined using the definition of sum types given in the notes.
+
+    \end{enumerate}
+
+    \item The \textit{Church numerals} are defined as follows:
+    \begin{align*}
+        c_0 &= \Lambda \alpha\ldotp \lambda z: \alpha \ldotp \lambda s: \alpha \to \alpha\ldotp z \\
+        c_1 &= \Lambda \alpha\ldotp \lambda z: \alpha \ldotp \lambda s: \alpha \to \alpha\ldotp s\ z \\
+        c_2 &= \Lambda \alpha\ldotp \lambda z: \alpha \ldotp \lambda s: \alpha \to \alpha\ldotp s(s\ z) \\
+        c_3 &= \Lambda \alpha\ldotp \lambda z: \alpha \ldotp \lambda s: \alpha \to \alpha\ldotp s(s(s\ z))
+    \end{align*}
+
+    The successor function that takes $c_n$ to $c_{n + 1}$ is defined in the lectures as
+    \[
+        \mathit{suc}(n) \stackrel{\mathit{def}}{=} \Lambda \alpha\ldotp \lambda z: \alpha\ldotp \lambda s: \alpha \to \alpha\ldotp s(n\ \alpha\ z\ s)
+    \]
+    Using just the variables $\alpha$, $n$, $s$ and $z$, find another way to define the successor function, $\mathit{suc}$ on Church numerals.
+    \[
+        \mathit{suc}_2(n) \stackrel{\mathit{def}}{=} \Lambda \alpha\ldotp \lambda z: \alpha\ldotp \lambda s: \alpha \to \alpha\ldotp n\ \alpha\ (s\ z)\ s
+    \]
+
+    \item Complete Exercises 1, 2 and 3 from Lecture 6.
+
+    \begin{enumerate}[label=(\arabic*)]
+
+        \item Prove the other direction of the closure property for the $\Theta \vdash \forall \alpha\ldotp A$ type case.
+
+        \textbf{Closure (for $\forall \alpha\ldotp A$):} if $\theta$ is an interpretation of $\Theta$ then $\brk{\Theta \vdash \type{\forall \alpha\ldotp A}}\theta$ is a semantic type.
+
+        To prove this, we have to prove that $\brk{\Theta \vdash \type{\forall \alpha\ldotp A}}\theta$ is closed and all terms in it halt. The closure property of a Semantic Type $X$ is
+        $e \rightsquigarrow e' \implies e' \in X \iff e \in X$. We have to prove the direction $\impliedby$.
+        \begin{align}
+            & e \rightsquigarrow e' && \text{Assumption} \label{closure:1} \\
+            & e \in \brk{\Theta \vdash \type{\forall \alpha \ldotp A}}\theta && \text{Assumption} \label{closure:2} \\
+            & \forall (C, X)\ldotp e\ C \in \brk{\Theta, \alpha \vdash \type{A}}(\theta, X/\alpha) && \text{Definition of \ref{closure:2}} \label{closure:3}\\
+            \intertext{Fix $(C, X)$ for arbitrary $(C, X)$}
+            & \qquad e\ C \in \brk{\Theta, \alpha \vdash \type{A}}(\theta, X/\alpha) && \text{by \ref{closure:3}} \label{closure:4} \\
+            & \qquad e\ C \rightsquigarrow e'\ C && \text{\textsc{CongForall} on \ref{closure:1}} \label{closure:5} \\
+            & \qquad e'\ C \rightsquigarrow e'\ C && \text{Induction on \ref{closure:4} and \ref{closure:5}} \label{closure:6} \\
+            & \forall (C, X)\ldotp e'\ C \in \brk{\Theta, \alpha \vdash \type{A}}(\theta, X/\alpha) && \text{by \ref{closure:6} since $(C, X)$ was arbitrary} \label{closure:7} \\
+            & e' \in \brk{\Theta \vdash \type{A}}\theta && \text{by \ref{closure:7}}
+        \end{align}
+
+        \item Prove the other direction of the substitution property for the $\Theta \vdash \forall \alpha\ldotp A$ type case.
+
+        \textbf{Substitution (for $\forall \alpha\ldotp A$):}
+        $\brk{\Theta, \alpha \vdash \type{\forall \beta\ldotp B}}(\theta, \brk{\Theta \vdash \type{A}}) = \brk{\Theta \vdash \type{[A/\alpha](\forall \beta\ldotp B)}}\theta$.
+        \begin{align}
+            & e \in \brk{\Theta \vdash \type{[A/\alpha](\forall \beta\ldotp B)}}\theta && \text{Assumption} \\
+            & e \in \brk{\Theta \vdash \type{\forall \beta\ldotp [A/\alpha]B}}\theta && \text{Definition of substitution} \\
+            & \forall (C, X)\ldotp e'\ C \in \brk{\Theta, \beta \vdash \type{[A/\alpha]B}}(\theta, X/\beta) && \text{Definition} \label{sub:3}\\
+            \intertext{Fix $(C, X)$ for arbitrary $(C, X)$}
+            & \qquad e\ C \in \brk{\Theta, \beta \vdash \type{[A/\alpha]B}}(\theta, X/\beta) && \text{by \ref{sub:3}} \\
+            & \qquad e\ C \in \brk{\Theta, \alpha, \beta \vdash \type{B}}(\theta, \brk{\Theta \vdash \type{A}}\theta, X/\beta) && \text{Induction} \label{sub:5} \\
+            & \forall (C, X)\ldotp e\ C \in \brk{\Theta, \alpha, \beta \vdash \type{B}}(\theta, \brk{\Theta \vdash \type{A}}\theta, X/\beta) && \text{by \ref{sub:5}} \\
+            & e \in \brk{\Theta, \alpha \vdash \forall \beta\ldotp \type{B}}(\theta, \brk{\Theta \vdash \type{A}}\theta) && \text{by definition}
+        \end{align}
+
+        \item Prove the fundamental lemma for the forall-introduction case $\Theta; \Gamma \vdash \Lambda \alpha\ldotp e: \forall \alpha\ldotp A$.
+
+        The Fundamental Lemma states that $\Theta = \alpha_1, \ldots, \alpha_n$, $\Gamma = x_1: A_1, \ldots, x_n: A_n$ and $\Theta; \Gamma \vdash e: B$, $\Theta \vdash \ctx{\Gamma}$, $\theta$ interprets $\Theta$ and
+        for each $x_i: A_i \in \Gamma$, we have $e_1 \in \brk{\Theta \vdash \type{A_i}}\theta$ then we have $[C_1/\alpha_1, \ldots C_k / \alpha_k][e_1/x_1\ldots e_n/x_n]e \in \brk{\Theta \vdash \type{B}}\theta$.
+
+        We must prove this for the forall-introduction case $\Theta; \Gamma \vdash \Lambda \alpha\ldotp e: \forall \alpha\ldotp A$:
+        \begin{align}
+            & \Theta; \Gamma \vdash \Lambda \alpha\ldotp e: \forall \alpha\ldotp A && \text{Assumption} \\
+            & \Theta \vdash \ctx{\Gamma} && \text{Assumption} \\
+            & \theta \text{ interprets } \Theta && \text{Assumption} \label{fun:3} \\
+            & \forall x_i: A_i \in \Gamma\ldotp e_1 \in \brk{\Theta \vdash \type{A_i}}\theta && \text{Assumption} \\
+            & \Theta; \Gamma \vdash \Lambda \alpha\ldotp e: \forall \alpha\ldotp A && \text{Assumption} \\
+            & \Theta, \alpha; \Gamma \vdash e: A && \text{Definition} \\
+            \intertext{Consider arbitrary $(C, X)$}
+            & \qquad (\theta, X/\alpha) \text{ interprets } (\Theta, \alpha) && \text{Definition on \ref{fun:3}} \\
+            & \qquad [C_1/\alpha_1, \ldots, C_k/\alpha_k, C/\alpha][e_1/x_1, \ldots, e_n/x_n]e \in \brk{\Theta, \alpha \vdash \type{B}}(\theta, X/\alpha) && \text{Induction} \\
+            & \qquad [C_1/\alpha_1, \ldots, C_k/\alpha_k][e_1/x_1, \ldots, e_n/x_n](\Lambda \alpha\ldotp e)\ C \in \brk{\Theta, \alpha \vdash \type{B}}(\theta, X/\alpha) && \text{Inversion} \label{fun:9} \\
+            & \forall (C, X)\ldotp [C_1/\alpha_1, \ldots, C_k/\alpha_k][e_1/x_1, \ldots, e_n/x_n](\Lambda \alpha\ldotp e)\ C \in \brk{\Theta, \alpha \vdash \type{B}}(\theta, X/\alpha) && \text{by \ref{fun:9}} \\
+            & [C_1/\alpha_1, \ldots, C_k/\alpha_k][e_1/x_1, \ldots, e_n/x_n](\Lambda \alpha\ldotp e) \in \brk{\Theta \vdash \type{\forall \alpha\ldotp B}}\theta && \text{Definition of $\brk{-}$}
+        \end{align}
+
+        \textbf{I found this diffucult and lack intuition for which operations are permitted i.e.\@ \ref{fun:9}}
+
+    \end{enumerate}
+
+    \item Complete Exercise 1 from Lecture 7. Show how Landin's knot works by unrolling $\mathrm{fib}(3)$.
+
+    \begin{lstlisting}[language=Caml]
+let fib = knot (fun f n -> if n <= 1 then 1 else n * f (n - 1))
+    \end{lstlisting}
+
+    Landin's knot is defined as
+    \begin{lstlisting}[language=Caml]
+let knot =
+    fun f ->
+        let r = ref (fun n -> 0) in
+        let recur = fun n -> !r n in
+        let () = r := fun n -> f recur n in
+        recur
+    \end{lstlisting}
+
+    By substituting the definition of \texttt{fib}, we have:
+    \begin{lstlisting}[language=Caml]
+let fib =
+    let r = ref (fun n -> 0) in
+    let recur = fun n -> !r n in
+    let () = r := fun n -> (fun f n -> if n<=1 then 1 else n * f (n-1)) recur n in
+    recur
+    \end{lstlisting}
+
+    By substituting the definition of \texttt{fib(3)}, we have:
+    \begin{lstlisting}[language=Caml]
+let r = ref (fun n -> 0) in
+let recur = fun n -> !r n in
+let () = r := fun n -> if n <= 1 then 1 else n * recur (n - 1) in
+recur 3
+    \end{lstlisting}
+
+    By expanding the definitions a few more levels, we have
+    \begin{lstlisting}[language=Caml]
+let r = ref (fun n -> 0) in
+let recur = fun n -> !r n in
+let () = r := fun n -> if n <= 1 then 1 else n * recur (n - 1) in
+3 * recur 2
+    \end{lstlisting}
+
+    Expanding the definitions a few more levels, we have
+    \begin{lstlisting}[language=Caml]
+let r = ref (fun n -> 0) in
+let recur = fun n -> !r n in
+let () = r := fun n -> if n <= 1 then 1 else n * recur (n - 1) in
+3 * 2 * 1 * recur 0
+    \end{lstlisting}
+
+    We see that \texttt{recur} is the recursive call. By making a cycle of references using \texttt{r}, we get \texttt{recur} to indirectly call itself.
+
+    \item This question concerns the monadic language given in Lecture 8.
+
+    \begin{enumerate}
+
+        \item Given types $X$ and $Y$ define a term:
+        \[
+            \cdot; \cdot \vdash \mathrm{fmap}: (X \to Y) \to (T\ X \to T\ Y)
+        \]
+        such that for all terms $f: X \to Y$ and values $v: X$ and $v': Y$ where $f v \rightsquigarrow^* v'$ we have
+        \[
+            \abr{\sigma}{\mathrm{let}\ y = \mathrm{fmap}\ f\ \{\mathrm{return}\ v\}; \mathrm{return}\ y} \rightsquigarrow^* \abr{\sigma}{\mathrm{return}\ v'}
+        \]
+
+        Define $\mathrm{fmap}$ as follows:
+        \[
+            \mathrm{fmap} = \lambda f: X \to Y\ldotp \lambda x: X\ldotp \mathrm{let}\ z = x; \mathrm{return}\ (f\ z)
+        \]
+
+        \item For every type $X$, define terms:
+        \begin{align*}
+            \cdot; \cdot &\vdash \eta_X: X \to T\ X \\
+            \cdot; \cdot &\vdash \mu_X: T\ (T\ X) \to T\ X \\
+        \end{align*}
+
+        such that for all values $v: T\ X$ and $v': X$, where $\abr{\sigma}{\mathrm{let}\ x = v; \mathrm{return}\ x} \rightsquigarrow^* \abr{\sigma'}{\mathrm{return}\ \sigma'}$ we have
+        \[
+            \abr{\sigma}{\mathrm{let}\ y = \mu_X(\eta_{(TX)}\ v); \mathrm{return}\ y} \rightsquigarrow^* \abr{\sigma'}{\mathrm{return}\ v'}
+        \]
+        \begin{align*}
+            \eta_X &= \lambda x: X\ldotp \mathrm{return}\ x \\
+            \mu_X &= \lambda x: T\ (T\ X)\ldotp \mathrm{let}\ z = x; z \\
+        \end{align*}
+
+    \end{enumerate}
+
+    \item
+
+    \begin{examquestion}{2019}{9}{14}
+
+        \newcommand{\nat}{\ensuremath{\mathsf{Nat}}}
+        \newcommand{\zero}{\ensuremath{\mathsf{Zero}}}
+        \newcommand{\suc}{\ensuremath{\mathsf{Succ}}}
+        \newcommand{\iter}{\ensuremath{\mathsf{Iter}}}
+        \newcommand{\option}{\ensuremath{\mathsf{Option}_A}}
+        \newcommand{\none}{\ensuremath{\mathsf{None}}}
+        \newcommand{\some}{\ensuremath{\mathsf{Some}}}
+        \newcommand{\case}{\ensuremath{\mathsf{Case}}}
+        \newcommand{\pred}{\ensuremath{\mathsf{Pred}}}
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \setcounter{enumii}{1}
+
+            \item In System F, given (i) a Church encoding \nat\ for the natural numbers, (ii) a Church encoding for the $\zero: \nat$ and $\suc: \nat \to \nat$ constructors, and (iii) a type and definition for
+            the iteration operator \iter\ for natural numbers.
+            \begin{align*}
+                \nat &= \forall \alpha \ldotp \alpha \to (\alpha \to \alpha) \to \alpha \\
+                \zero &= \Lambda \alpha \ldotp \lambda z\ldotp \lambda s\ldotp z \\
+                \suc &= \Lambda \alpha \ldotp \lambda z\ldotp \lambda s\ldotp f\ z \\
+                \mathrm{typeof}(\iter) &= \forall \alpha\ldotp \nat \to \alpha \to (\alpha \to \alpha) \to \alpha \\
+                \iter &= \Lambda \alpha\ldotp \lambda n: \nat\ldotp \lambda e_1: \alpha\ldotp \lambda e_2: \alpha \to \alpha\ldotp n\ \alpha\ e_1\ e_2
+            \end{align*}
+
+        \end{enumerate}
+
+        \item
+
+        \begin{enumerate}[label=(\roman*)]
+
+            \item In System F, give a Church encoding for (i) an \option\ type, (ii) the definitions of the $\none: \option$ and $\some: A \to \option$ operations, and (iii) the type and definition of the case
+            operation on options.
+            \begin{align*}
+                \option &= 1 + A = \forall \alpha\ldotp (1 \to \alpha) \to (A \to \alpha) \to \alpha\\
+                \none &= \Lambda \alpha\ldotp \lambda n: \alpha\ldotp \lambda s: A \to \alpha\ldotp n\\
+                \some &= \lambda x: A \to \Lambda \alpha\ldotp \lambda n: \alpha\ldotp \lambda s: A \to \alpha\ldotp g\ s(x)\\
+                \mathrm{typeof}(\case[X]) &= X \to (A \to X) \to (1 + A) \to X \\
+                \case[X] &= \lambda n: X\ldotp \lambda s: A \to X\ldotp \lambda x: 1 + A\ldotp x\ X\ n\ s
+            \end{align*}
+
+            \item Assume that $n: B$ and $s: A \to B$, and then
+
+            \begin{enumerate}[label=(\Roman*)]
+
+                \item Prove that $\case[B]\ n\ s\ \none = n$
+                \begin{align*}
+                     & \case[B]\ n\ s\ \none \\
+                    =& (\lambda n': B\ldotp \lambda s': A \to X\ldotp \lambda x: 1 + A\ldotp x\ B\ n'\ s')\ n\ s\ \none && \text{Definition of $\case[B]$} \\
+                    =& \none\ X\ n\ s && \text{Substitution} \\
+                    =& (\Lambda \alpha\ldotp \lambda n: \alpha\ldotp \lambda s: A \to \alpha\ldotp n)\ X\ n\ s && \text{Definition of $\none$} \\
+                    =& n && \text{Substitution}
+                \end{align*}
+
+                \item Prove that $\case[B]\ n\ s\ (\some\ x) = s\ x$
+                \begin{align*}
+                     & \case[B]\ n\ s\ (\some\ x) \\
+                    =& (\lambda n': B\ldotp \lambda s': A \to X\ldotp \lambda x: 1 + A\ldotp x\ B\ n'\ s')\ n\ s\ (\some\ x) && \text{Definition of $\case[B]$} \\
+                    =& \some\ x\ X\ n\ s && \text{Substitution} \\
+                    =& (\lambda x: A \to \Lambda \alpha\ldotp \lambda n: \alpha\ldotp \lambda s: A \to \alpha\ldotp g\ s(x))\ x\ X\ n\ s && \text{Definition of $\some$} \\
+                    =& s\ x && \text{Substitution}
+                \end{align*}
+
+            \end{enumerate}
+
+            \item In System F, define a predecessor operation $\pred: \nat \to \nat$, which returns \zero\ if given \zero\ as an argument, and returns $n$ if given $\suc\ n$ as an argument.
+
+            \[
+                \pred = \lambda n: \nat\ldotp \case[\nat]\ (n\ \none\ (\case[1 + \nat]\ (\some\ \zero)\ (\lambda m\ldotp \some\ (\suc\ n))))\ 0\ (\lambda n\ldotp n)
+            \]
+
+            \item In System F, define a subtraction operator $\sub: \nat \to \nat \to \nat$ which is defined to be \textit{saturating}. That is, $\sub\ m\ n$ returns the difference if $m \ge n$ and returns $0$
+            otherwise.
+            \[
+                \sub = \lambda m: \nat\ldotp \lambda n: \nat\ldotp \iter(n, z \to m, s(x) \to \pred\ x)
+            \]
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+    \item
+
+    \begin{examquestion}{2021}{9}{15}
+
+        \newcommand{\every}{\ensuremath{\mathsf{every}}}
+        \newcommand{\bool}{\ensuremath{\mathsf{Bool}}}
+        \newcommand{\true}{\ensuremath{\mathsf{true}}}
+        \newcommand{\false}{\ensuremath{\mathsf{false}}}
+        \newcommand{\List}[1]{\ensuremath{\mathsf{List}\ #1}}
+        \newcommand{\xs}{\ensuremath{\mathit{xs}}}
+        \newcommand{\fold}{\ensuremath{\mathsf{fold}}}
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \item In a simply-typed lambda calculus augmented with first-class continuations, booleans, a list type and its iterator (i.e., fold, but not full recursion), write a function
+            \[
+                \every: (X \to \bool) \to \List{X} \to \bool
+            \]
+            such that $\every\ p\ \xs$ returns \true\ if every element of \xs\ satisfies $p$, and \false\ otherwise. This function should also stop iterating over the list as soon as it finds a false element. You
+            may use SML or OCaml-style notation if desired, but explain any notation beyond the basic lambda-calculus.
+
+            \textbf{I was confused by ``stop iterating over the list as soon as it finds a false element'': as I understand it, this seems impossible without recursion (as\fold\ is atomic).}
+
+            The interpretation which (by elimination) I settled on was that the \textit{predicate} would not be unnecessarily evaluated on the elements of the list once the result of computation was known, but
+            that fold itself could continue.
+            \[
+                \every = \lambda p: \bool \to X\ldotp \lambda \xs: \List{X}\ldotp \fold\ \true\ (\lambda \mathit{acc}\ldotp \lambda x: X\ldotp \mathrm{if}\ \mathit{acc}\ \mathit{then}\ p\ x\ \mathit{else}\
+                \mathit{acc})
+            \]
+
+            \item In the monadic lambda calculus with stat, suppose we change the typing rule for reading locations to not cause a monadic effect: if we suggest changing the monadic lambda calculus to permit
+            treating reads as pure:
+            \[
+                \dfrac{\ell: X \in \Sigma}{\Sigma; \Gamma \vdash \ell: X}
+            \]
+            \begin{enumerate}
+
+                \item Is this rule still typesafe? Informally but carefully justify your answer.
+
+                No. Consider Landin's knot. We can ``tie'' Landins knot and the return value is an expression which only reads from locations. This expression will loop infinitely and so is not typesafe.
+                However, if reads are pure then it \textit{will} be considered as typesafe. So this rule is \textbf{not} typesafe.
+
+                \item Is the following \textit{common subexpression elimination} transformation sound? Either give an argument why it is, or supply a counterexample and explain why it shows it is not.
+
+                \begin{verbatim}
+let x = return e1;              let x = return e1;
+let y = e2;           =====>    let y = e2;
+let z = return e1;              [z/x]e3
+e3
+                \end{verbatim}
+
+                I presume the original expression was typo'd and meant to read \texttt{[x/z]e3} -- else the second expression can be badly-scoped by any term $e_3$ which uses either $z$ or $x$.
+
+                This transformation is \textbf{not} safe. Consider the situation that $e_1$ is an impure computation (with non-idempotent side effects) and $e_3$ is some expression whose result depends on the
+                state that is changed by $e_1$. We would have that the left-hand expression would run $e_1$ twice while the one on the right would only run it once. This means that they would start executing
+                $e_3$ with different stores!
+
+                Example: $e_1 = \ell \coloneqq !\ell + 1$, $e_2 = ()$, $e_3 = !\ell$ with the LHS expression denoted by $\mathit{LHS}$ and the RHS expression denoted by $\mathit{RHS}$.
+                $\abr{\ell: 0}{\mathit{LHS}} \rightsquigarrow \abr{\ell: 2}{2}$ while $\abr{\ell: 0}{\mathit{RHS}} \rightsquigarrow \abr{\ell: 1}{1}$. Clearly, we can see that these expressions are
+                \textbf{not} the same.
+
+            \end{enumerate}
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+    \item
+
+    \begin{examquestion}{2020}{9}{15}
+
+        \newcommand{\fail}{\ensuremath{\mathsf{fail}}}
+        \newcommand{\try}[2]{\ensuremath{\mathsf{try}\ #1\ \mathsf{except}\ #2}}
+        \newcommand{\exn}[1]{\ensuremath{\mathsf{Exn}\ #1}}
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \setcounter{enumii}{1}
+
+            \item Suppose we extend the simply-typed lambda calculus with the ability to raise exceptions with the \fail\ construct, and the ability to catch exceptions with the \try{e_1}{e_2}\ construct.
+            Suppose also that we track exceptions monadically, with the type \exn{A} representing possibly-failing computations of $A$.
+
+            \begin{enumerate}[label=(\roman*)]
+
+                \item Give a typing rule for signalling an error with \fail.
+                \[
+                    \dfrac{
+                    }{
+                    \Gamma \vdash \fail: \exn{A}
+                    }
+                \]
+
+                \item Give a typing rule for trapping an error with \try{e_0}{e_1}. Does your type for this term have an effect? Justify your design.
+                \[
+                    \dfrac{
+                    \Gamma \vdash e_0: \exn{A} \qquad \Gamma \vdash e_1: A
+                    }{
+                        \Gamma \vdash \try{e_0}{e_1} : A
+                    }
+                \]
+                This term can have an effect: consider the case $A = \exn{B}$ for some $B$. In this case, we have that the return value from this term is \textit{still} itself an exception. This means that it
+                affects control flow of other terms and thus has an effect!
+
+            \end{enumerate}
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+\end{enumerate}
+
+\section{Extension Questions}
+
+\begin{enumerate}
+
+    \item Write a term \texttt{and} that takes two Church booleans and returns their conjunction. (How do you change this for \texttt{or}?)
+    \[
+        \texttt{and} =
+        \Lambda \beta\ldotp
+        \lambda b_1: \forall \alpha\ldotp \alpha \to \alpha \to \alpha\ldotp
+        \lambda b_2: \forall \alpha\ldotp \alpha \to \alpha \to \alpha\ldotp
+        \lambda t: \beta\ldotp
+        \lambda f: \beta\ldotp
+        b_1\ \alpha\ (b_1\ \alpha\ t\ f)\ f
+    \]
+    To change for \texttt{or}, we shift the second boolean to be the result of the false condition.
+    \[
+        \texttt{or} =
+        \Lambda \beta\ldotp
+        \lambda b_1: \forall \alpha\ldotp \alpha \to \alpha \to \alpha\ldotp
+        \lambda b_2: \forall \alpha\ldotp \alpha \to \alpha \to \alpha\ldotp
+        \lambda t: \beta\ldotp
+        \lambda f: \beta\ldotp
+        b_1\ \alpha\ t\ (b_1\ \alpha\ t\ f)
+    \]
+
+    \item Write a function \texttt{equal} that takes two Church numerals and returns a church boolean.
+
+    Using the $\mathsf{sub}$ and $\mathsf{and}$ functions defined earlier,
+    \[
+        \texttt{equal} = \lambda n: \mathsf{nat}\ldotp \lambda m: \mathsf{nat}\ldotp \mathsf{and}(\mathsf{iter}(\mathsf{sub}(m, n), z \to \mathsf{true}, s(x) \to \mathsf{false}),
+        \mathsf{iter}(\mathsf{sub}(n, m), z \to \mathsf{true}, s(x) \to \mathsf{false}))
+    \]
+
+    \item
+    \begin{examquestion}{2014}{9}{13}
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \setcounter{enumii}{1}
+
+            \item Find, with justification, a PLC type $\tau$ for which the following typings are both provable:
+            \begin{gather*}
+                \{\} \vdash
+                \Lambda \alpha\ldotp \Lambda \beta\ldotp \lambda x: \alpha\ldotp \lambda y: \beta\ldotp \Lambda \gamma\ldotp \lambda z: \tau\ldotp z\ x\ y
+                : \forall \alpha\ldotp \forall \beta\ldotp \alpha \to \beta \to \forall \gamma\ldotp (\tau \to \gamma)
+                \\\\
+                \{\} \vdash
+                \Lambda \alpha\ldotp \Lambda \beta \ldotp \lambda z: \forall \gamma\ldotp \tau \to \gamma\ldotp z\ \alpha\ (\lambda x: \alpha\ldotp \lambda y: \beta\ldotp x)
+                : \forall \alpha\ldotp \forall \beta \ldotp (\forall \gamma\ldotp \tau \to \gamma) \to \alpha
+            \end{gather*}
+
+            \[
+                \tau = \alpha \to \beta \to \gamma
+            \]
+            In the first expression, we have $z: \tau$. We see that $z$ is passed $x: \alpha$ and $y: \beta$ as arguments and returns $\gamma$. Therefore in the first expression, $\tau = \alpha \to \beta \to \gamma$.
+
+            In the second expression, we have $z: \forall \gamma\ldotp \tau \to \gamma$. We then see $z\ \alpha\ (\lambda x: \alpha\ldotp \lambda y: \beta\ldotp x): \alpha$.
+            So we have $\tau = \alpha \to \beta \to \alpha$. But, since $\alpha$ was passed to $z$ as argument, $\alpha$ and $\gamma$ were unified; so we can replace any occurrence of an $\alpha$ in the type of
+            $z$ with a $\gamma$ and the type will still be correct. So $\tau = \alpha \to \beta \to \gamma$ is a possible type. This is the only such which is consistent with the first equation.
+
+            \item Give infinitely may different closed PLC expressions in beta-normal form of type $\forall \alpha\ldotp (\alpha \to \alpha) \to (\alpha \to \alpha)$.
+
+            Consider expressions of the form:
+            \[
+                \Lambda \alpha \ldotp \lambda f: \alpha \to \alpha \ldotp \lambda x: \alpha \ldotp f^n(x)
+            \]
+            where $f^n(x) = \underbrace{f(\ldots(f}_{\times n}(x)\ldots)$.
+
+            \item Ues your answer to part (a) to show that there is no closed PLC expression $Y$ of type $\forall \alpha \ldotp (\alpha \to \alpha) \to \alpha$ for which the beta-reduction
+            $Y\ \alpha\ f \to f(Y\ \alpha\ f)$ \textbf{holds}.
+
+            Assume there is such a $Y$. By definition, we have $Y\ \mathsf{nat}\ \mathsf{succ} \rightsquigarrow \mathsf{succ}(Y\ \mathsf{nat}\ \mathsf{succ})$. Since all terms in PLC terminate, we also have
+            $Y\ \mathsf{nat}\ \mathsf{succ} \rightsquigarrow^* n$ for some $n$. Thus, we have $n = n + 1$. This is clearly false and therefore the original assumption that some $Y$ existed which had this
+            condition must be false. Therefore, no such $Y$ can exist.
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+\end{enumerate}
+
+\end{document}

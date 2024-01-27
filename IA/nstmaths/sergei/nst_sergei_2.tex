@@ -1,0 +1,41 @@
+\documentclass[10pt, a4paper]{article}
+
+\input{./template/template.tex}
+\usepackage{physics}
+
+\begin{document}
+
+For a surface $\mathbf{S}$, there are two free variables. This means:
+
+\[
+\dd{\mathbf{S}} = \left(\pdv{\mathbf{r}}{x}\dd{x}\right)\times \left(\pdv{\mathbf{S}}{y}\dd{y}\right)
+\]
+
+\[
+\dd{\mathbf{S}} = \left(\pdv{\mathbf{r}}{\theta}\dd{\theta}\right)\times \left(\pdv{\mathbf{S}}{\phi}\dd{\phi}\right)
+\]
+
+Over the surface of a \textbf{sphere}:
+\[
+\dd{S} = a^2\sin\theta\dd{\theta}\dd{\phi}
+\]
+Where $a$ is the radius of the sphere.
+
+The volume is:
+\[
+\dd{V} = r^2\sin\theta\dd{r}\dd{\theta}\dd{\phi}
+\]
+
+Divergence Theorem:
+
+\[
+\oint \mathbf{F} \cdot \dd{\mathbf{S}} = \oint \nabla \times \mathbf{F} \dd{\mathbf{V}}
+\]
+
+Curl of a potential field is zero:
+
+\[
+\forall \phi. \nabla \times \nabla \phi = 0
+\]
+
+\end{document}

@@ -1,0 +1,991 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\usepackage{mathtools}
+\usepackage{ebproof}
+\usepackage{stmaryrd}
+\usepackage{textcomp}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2014}{6}{9}
+
+Consider the concurrent imperative language $L$ with syntax and conventional
+operational semantics as below.
+
+Say $p$, $m$ has a data race if there is a sequence of transitions $p$, $m
+\stackrel{l_1}{\to}\dots\stackrel{l_n}{\to}\stackrel{l}{\to}\stackrel{l
+'}{\to}$ were $l$ and $l'$ conflict: they are reads or writes t the same
+location, at least one is a write and they are by different threads.
+
+\begin{enumerate}
+
+\item Give a $p$ for which $p$, $m_0$ has a data race.
+\[
+p = tid_1: x\coloneqq 0; \mathbf{skip} \ | \ tid_2: x \coloneqq 1;
+\mathbf{skip}
+\]
+
+\item A \textit{vector clock} $c$ is a function from thread ids to natural
+numbers, identifying the $c(tid)'$th transition of each thread $tid$. Modify
+the semantics above to add a vector clock $c$ to each process thread
+($tid_c:s$), each process label ($tid_c: l$), and each memory location (with
+each $m(x)$ now being a pair $v_c$ of a value and vector clock). In your
+semantics each vector clock should be computed so as to record the latest
+transition number of all threads that have causally affected that point.
+Explain your semantics, perhaps with some simple examples.
+
+\newcommand{\letin}[1]{\mathbf{let} \ #1 \ \mathbf{in} \ }
+\newcommand{\ielse}[1]{\mathbf{if} \ #1 \ \mathbf{else} \ }
+
+\begin{align*}
+&statement, s \Coloneqq \ldots \\
+&expression, e \Coloneqq \ldots \\
+&process, p \Coloneqq tid_c:s \ | \ p|p' \\
+&label, l \Coloneqq \tau \ | \ \mathbf{W}x=v \ | \ \mathbf{R}x=v \ | \ tid_c:
+\tau \ | \ tid_c: \mathbf{W}x=v \ | \ \ tid_c: \mathbf{R}x=v
+\end{align*}
+\begin{center}
+\begin{prooftree}
+\infer0[WR]{
+x \coloneqq v; s \xrightarrow{\mathbf{W}x=v} s
+}
+\end{prooftree}
+\hspace{0.5cm}
+\begin{prooftree}
+\infer0[RD]{
+\letin{r = x}{s}
+\xrightarrow{\mathbf{R}x=v} \{v/r\}s
+}
+\end{prooftree}
+
+\begin{prooftree}
+\infer0[IF1]{
+\ielse{(v=v) \ s}{s'} \xrightarrow{\tau} s
+}
+\end{prooftree}
+\hspace{0.5cm}
+\begin{prooftree}
+\hypo{v \neq v'}
+\infer1[IF2]{
+\mathbf{if} \ (v = v') \ s \ \mathbf{else}\ s'
+\xrightarrow{\tau} s'
+}
+\end{prooftree}
+
+\begin{prooftree}
+\hypo{
+v = \llbracket op\rrbracket (v_1, \dots, v_n)
+}
+\infer1[OP]{
+\mathbf{let} \ r = op(v_1, \dots, v_n) \ \mathbf{in} \ s \xrightarrow{\tau}
+\{v/r\}s
+}
+\end{prooftree}
+
+\vspace{0.5cm}
+
+\begin{prooftree}
+\hypo{s \xrightarrow{l} s'}
+\infer1[THREAD]{tid_c:s \xrightarrow{tid_c:l} tid_c:s'}
+\end{prooftree}
+
+\vspace{0.5cm}
+
+\begin{prooftree}
+\hypo{
+tid_c: s \xrightarrow{tid_c: \tau} tid_c: s'
+}
+\hypo{
+c' = c \oplus \{(tid, c(tid) + 1)\}
+}
+\infer2[STAU]{
+tid_c: s, m \xrightarrow{tid_c: \tau} tid_{c'}: s', m
+}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\hypo{\begin{matrix}
+tid_{c_0}:s \xrightarrow{tid_{c_0}:\mathbf{R}x=v} tid_{c_0}:s' \\
+m(x) = (v, c_1) \\
+c_2 =
+\{
+(t, i) | t \in (\mathop{\text{dom}}(c_0 \cup c_1) - \{tid\}) \wedge i = \max
+(c_0(t), c_1(t))
+\}
+\oplus
+\{
+(tid, \max(c_0(tid), c_1(tid)) + 1)
+\}
+\end{matrix}
+}
+\infer1[SRD]{
+tid_{c_0}: s, m
+\xrightarrow{
+tid_{c_0}:\mathbf{R}x=v
+}
+tid_{c_2}: s', m
+}
+\end{prooftree}
+
+\vspace{0.5cm}
+
+\begin{prooftree}
+\hypo{\begin{matrix}
+tid_{c_0}:s \xrightarrow{tid_{c_0}:\mathbf{W}x=v} tid_{c_0}:s' \\
+m(x) = (\_, c_1) \\
+c_2 =
+\{
+(t, i) | t \in (\mathop{\text{dom}}(c_0 \cup c_1) - \{tid\}) \wedge i = \max
+(c_0(t), c_1(t))
+\}
+\oplus
+\{
+(tid, \max(c_0(tid), c_1(tid)) + 1)
+\}
+\end{matrix}
+}
+\infer1[SWR]{
+tid_{c_0}: s, m
+\xrightarrow{
+tid_{c_0}:\mathbf{R}x=v
+}
+tid_{c_2}: s', m \oplus(x, (v, c_2))
+}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\hypo{
+p_1, m \xrightarrow{l} p_1', m'
+}
+\infer1[PLEFT]{p_1 | p_2, m \xrightarrow{l} p_1'|p_2, m'}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\hypo{
+p_2, m \xrightarrow{l} p_2', m'
+}
+\infer1[PRIGHT]{p_1 | p_2, m \xrightarrow{l} p_1|p_2', m'}
+\end{prooftree}
+
+\end{center}
+
+The operations WR, RD, IF1, IF2 and OP are unchanged -- these are thread
+local semantics and so are not affected by changes regarding thread IDs.
+
+Labels are also added unconditionally to reductions.
+
+The rules STAU, SRD and SWR allow updates to the global store and keep the
+vector clocks consistent.
+
+The rules PLEFT and PRIGHT allow for interleaving of computation between
+processes.
+
+The main difference from the previous semantics is that parallelism is at a
+process level rather than a thread level.
+
+Consider the example below:
+\[
+0_{[1, 0]}:x\coloneqq 1; \mathbf{skip}| 1_{[0, 2]}:\mathbf{skip}, \{(x
+\mapsto (0, [0, 2]))\}
+\]
+\begin{center}
+\begin{prooftree}
+\infer0[WR]{
+x \coloneqq 1; \mathbf{skip} \xrightarrow{\mathbf{W}x=v} s
+}
+\infer1[THREAD]{
+0_{[1,0]}: x \coloneqq 1; \mathbf{skip} \xrightarrow{0_{[1,0]}\mathbf{W}x=v}
+0_{[1,0]}: \mathbf{skip}
+}
+\hypo{m(x)=(\_, [0, 2])}
+\hypo{
+c_2=[2, 2]
+}
+\infer3[SWR]{
+0_{[1, 0]}: x \coloneqq 1; \mathbf{skip}, \{(x \mapsto (0, [0, 2])) \xrightarrow{0_{[1,0]}\mathbf{W}x=v}
+0_{[2,2]}: \mathbf{skip}, \{(x \mapsto (1, [2, 2]))
+}
+\infer1[PRIGHT]{
+0_{[1, 0]}: x \coloneqq 1; \mathbf{skip}|1_{[0, 2]}:\mathbf{skip},
+\{(x \mapsto (0, [0, 2]))
+\xrightarrow{0_{[1,0]}\mathbf{W}x=v}
+0_{[2,2]}: \mathbf{skip}|1_{[0, 2]}:\mathbf{skip}, \{(x \mapsto (1, [2, 2]))
+}
+\end{prooftree}
+\end{center}
+
+\item Suppose that $p, m \xrightarrow{l}\xrightarrow{l_1}\dots
+\xrightarrow{l_n}\xrightarrow{l'}$ in your vector clock semantics, where $l$
+and $l'$ conflict but are separated by $l_1, \dots, l_n$. To implement a
+dynamic race detector, we would like to find conditions on $l_1, \dots,
+l_n$ under which there is some other execution with $l$ and $l'$ adjacent:
+$p, m \xrightarrow{\hat{l_1}}\dots
+\xrightarrow{\hat{l_{\hat{n}}}}\xrightarrow{\bar{l}}\xrightarrow{\bar{l'}}$
+(where $\bar{l}$ and $\bar{l'}$ are like $l$ and $l'$ but perhaps with
+different vector clocks). Give such a condition, as liberal as you can, and
+explain why it has that property.
+
+Unfortunately, I did not understand what the question was asking for.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\section{Notes Page 103}
+
+\begin{enumerate}
+
+\item[37.] Can you show all the conditions for \textit{O2PL} are necessary,
+by giving for each an example that satisfies all the others and either is not
+serialisable or deadlocks?
+
+\begin{itemize}
+
+\item If $a_i$ is $(\ell_j \coloneqq n)$ or $!\ell_j = n$ then for some $k <
+i$ we have $a_k = \mathbf{lock} \ m_j$ without an intervening
+$\mathbf{unlock} \ m_j$.
+
+\[
+\langle (\ell \coloneqq 1; \ell \coloneqq !\ell + 1)|(\ell \coloneqq 2), \{s
+\mapsto 0\}, \emptyset \rangle
+\]
+
+\item For each $j$, the subsequence of $a_1$, $a_2$, $\dots$ with labels
+$\mathbf{lock} \ m_j$ and $\mathbf{unlock} \ m_j$ is a prefix of
+$((\mathbf{lock} \ m_j)(\mathbf{unlock} \ m_j))^*$. Moreover, if
+$\neg(e_k \stackrel{a}{\longrightarrow})$ then the subsequence does not end
+in a $\mathbf{lock} \ m_j$.
+
+\[
+\begin{split}
+&\langle \\
+&\mathbf{lock} \ M_{\ell}; \ell \coloneqq 0; \ell \coloneqq !\ell + 1;
+\mathbf{unlock} \ M_\ell \\
+&| \\
+&\mathbf{unlock} \ M_{\ell} \\
+&| \\
+&\mathbf{lock} \ M_{\ell}; \ell \coloneqq 3; \mathbf{unlock} \ M_\ell, \\
+&\{\ell \mapsto 0\}, \\
+&\{M_\ell \mapsto \mathbf{false}\} \\
+&\rangle \\
+\end{split}
+\]
+
+\item If $a_i = \mathbf{lock} \ m_j$ and $a_{i'} = \mathbf{unlock} \ m_{j'}$
+then $i < i'$
+
+\[
+\begin{split}
+&\langle \\
+&
+\mathbf{lock} \ M_{\ell};
+\ell \coloneqq 1;
+\mathbf{unlock} \ M_{\ell};
+\mathbf{lock} \ M_{\ell};
+\ell \coloneqq !\ell + 1;
+\mathbf{unlock} \ M_{\ell}; \\
+&| \\
+&
+\mathbf{lock} \ M_{\ell};
+\ell \coloneqq 0;
+\mathbf{unlock} \ M_{\ell}
+,\\
+&\{\ell \mapsto 0\}, \\
+&\{M_\ell \mapsto \mathbf{true}\} \\
+&\rangle
+\end{split}
+\]
+
+\item If $a_i = \mathbf{lock} \ m_j$ and $a_{i'} = \mathbf{lock} \ m_{j'}$
+and $i < i'$ then $j < j'$.
+
+\[
+\begin{split}
+&\langle \\
+&\mathbf{lock} \ M_1; \mathbf{lock} \ M_2; \mathbf{unlock} \ M_2;
+\mathbf{uklock} \ M_1 \\
+&|\\
+&\mathbf{lock} \ M_2; \mathbf{lock} \ M_1; \mathbf{unlock} \ M_2;
+\mathbf{uklock} \ M_1 \\
+&\emptyset \\
+&\{M_{1} \mapsto \mathbf{true}, M_{2} \mapsto \mathbf{2}\} \\
+&\rangle \\
+\end{split}
+\]
+
+\end{itemize}
+
+\item [39.] Write a semantics for an extension of L1 with threads that are
+more like Unix threads (e.g.\ with thread ids, fork, etc\dots). Include some
+of the various ways Unix threads can exchange information.
+\begin{align*}
+&Process, p \Coloneqq (p|p) | (e, s) \\
+&Expression, e \Coloneqq \dots |\ fork()\ |\ exit(e)\ |\ join()
+\end{align*}
+
+\begin{center}
+\begin{prooftree}
+\infer0[FORK]{
+\langle fork(), s \rangle \to \langle ((0, s)|(1, s)) \rangle
+}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\hypo{
+\langle p_1 \rangle \to \langle p_1' \rangle
+}
+\infer1[PARL]{
+\langle p_1|p_2 \rangle \to \langle p_1'|p_2 \rangle
+}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\hypo{
+\langle p_1 \rangle \to \langle p_1' \rangle
+}
+\infer1[PARR]{
+\langle p_1|p_2 \rangle \to \langle p_1'|p_2 \rangle
+}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\hypo{
+\langle e, s \rangle \to \langle e', s' \rangle
+}
+\infer1[EXIT]{
+\langle exit(e), s \rangle \to \langle exit(e'), s' \rangle
+}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\infer0[JOIN]{
+\langle ((join(), s)|(exit(n), s')) \rangle
+\to
+\langle n, s \rangle
+}
+\end{prooftree}
+
+\vspace{0.5cm}
+
+\begin{prooftree}
+\infer0[FORK\_T]{\Gamma \vdash fork(): \text{int}}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\infer0[EXIT\_T]{\Gamma \vdash exit(e): unit}
+\end{prooftree}
+
+\vspace{0.2cm}
+
+\begin{prooftree}
+\infer0[JOIN\_T]{\Gamma \vdash join(): \text{int}}
+\end{prooftree}
+
+\end{center}
+
+\end{enumerate}
+\section{Notes Page 109}
+
+\begin{enumerate}
+
+\item [40.] Prove some of the other cases of the Congruence theorem for
+equivalence in L1.
+
+Assume that $e \simeq_\Gamma^T e'$
+
+\begin{itemize}[label=\textbf{case}]
+
+\item $C = \_ \ op \ e_2$
+
+Therefore $C[e]$ is of the form $e_1 \ op \ e_2$
+
+Recall the reduction rule $op1$
+\[
+\dfrac{
+\langle e, s \rangle \to \langle e', s' \rangle'
+}{
+\langle e \ op \ e_2, s \rangle \to \langle e' \ op \ e_2, s' \rangle
+}
+\]
+
+\begin{itemize}[label=\textbf{case}]
+
+\item $e \to^\omega \wedge e' \to^\omega$
+
+The reduction rule $op1$ will be applied until $e$ has been reduced to a
+value. However, by assumption $e \to^\omega$ -- so will never be
+reduced to a value. This implies that the $op1$ reduction rule can be
+infinitely applied. Therefore $C[e] \to^\omega$.
+
+Similarly, $C[e']\to^\omega$.
+
+Therefore $C[e] \simeq^T_\Gamma C[e']$ and the congruence property holds in
+this case.
+
+\item $e \to^* v \wedge e' \to^* v$
+
+The reduction rule $op1$ will be applied until $e$ has been reduced to a
+value. By assumption, this happens in a finite number of steps. Therefore
+$C[e] \to^* v \ op \ e_2$. Similarly, $C[e'] \to^* v \ op \ e_2$.
+
+Since both expressions have reduced to the same expression, all further
+reductions will be the same. We can therefore conclude that $C[e]
+\simeq^T_\Gamma C[e']$ and the congruence property holds in this case.
+
+\end{itemize}
+
+Since the congruence property for $\simeq^T_\Gamma$ holds for both sub-cases,
+we can conclude that it holds in this case.
+
+\item $\mathbf{if} \ e_1 \ \mathbf{then} \ \_ \ \mathbf{else} \ e_3$
+
+Recall the reduction rules for $if$. Invariant of the content of $e$ or
+$e'$, both $C[e]$ and $C[e']$ will both evaluate the expression $e_1$ until
+it is reduced to a value.
+
+\begin{itemize}[label=\textbf{case}]
+
+\item $e_1 \to^\omega$
+
+In this case, the reduction rule $if1$ will be infinitely applied for both
+$C[e]$ and $C[e']$. Therefore $C[e] \to^\omega$ and $C[e'] \to ^\omega$.
+Since both $C[e]$ and $C[e']$ loop infinitely: $C[e] \simeq^T_\Gamma C[e']$.
+
+\item $e_1 \to^* \mathbf{true}$
+
+\begin{align*}
+&e_1 \to^* \mathbf{true} \Longrightarrow \\
+&C[e] \to^* \mathbf{if\ true\ then\ }e \mathbf{\ else\ }e_2
+\end{align*}
+
+In this case, the reduction rule $if2$ can be applied. Therefore $C[e] \to^*
+e$. Similarly, $C[e'] \to^* e'$. Since $e \simeq_\Gamma^T e'$, we can
+conclude that $C[e] \simeq^T_{\Gamma} C[e']$ -- therefore contextual
+equivalence holds in this case.
+
+\item $e_1 \to^* \mathbf{false}$
+
+\begin{align*}
+&e_1 \to^* \mathbf{false} \Longrightarrow \\
+&C[e] \to^* \mathbf{if\ false\ then\ }e \mathbf{\ else\ }e_2
+\end{align*}
+
+In this case, the reduction rule $if3$ can be applied -- so $C[e] \to^* e_2$.
+Similarly, $C[e']\to^* e_2$. Since both expressions have reduced to the same
+expression, they are equivalent -- therefore $C[e]\simeq^T_\Gamma C[e']$ in
+this case.
+
+\end{itemize}
+
+Since contextual equivalence is proved for all subcases, it must hold in
+this case.
+
+\end{itemize}
+
+\end{enumerate}
+
+\begin{examquestion}{2017}{6}{10}
+
+Let $x$ range over a set $X$ of identifiers, $n$ range over the natural
+numbers $\mathbb{N}$ and $s$ range over stores: total functions from $X$ to
+$\mathbb{N}$.
+
+Consider a language with the following abstract syntax.
+\[
+e \Coloneqq n \ | \ x \coloneqq e \ | \ !x \ | \ e_1; e_2
+\]
+\begin{enumerate}[label=(\alph*)]
+
+\item Define a conventional deterministic small-step operational semantics
+$\langle e, s \rangle \to \langle e', s' \rangle $ for the language. Comment
+briefly on the choices you make.
+
+The language does not contain $\mathbf{skip}$. It is therefore necessary for
+sequences where the first expression is an integer to transition to the
+second sequence. It also makes the most logical sense for assignment to
+return the value. This permits ie chained assignment. The language uses
+left-to-right evaluation.
+
+\begin{center}
+\begin{prooftree}
+\infer0[(assign1)]{
+\langle x \coloneqq n, s \rangle
+\to
+\langle n, s + \{x \mapsto n\} \rangle
+}
+\end{prooftree}
+\end{center}
+
+\begin{center}
+\begin{prooftree}
+\hypo{
+\langle e, s \rangle
+\to
+\langle e', s' \rangle
+}
+\infer1[(assign2)]{
+\langle x \coloneqq e, s \rangle
+\to
+\langle x \coloneqq e', s' \rangle
+}
+\end{prooftree}
+
+\begin{prooftree}
+\hypo{
+s(x) = n
+}
+\infer1[(deref)]{
+\langle !x, s \rangle
+\to
+\langle n, s \rangle
+}
+\end{prooftree}
+
+\begin{prooftree}
+\infer0[(seq1)]{
+\langle n; e, s\rangle
+\to
+\langle e, s \rangle
+}
+\end{prooftree}
+
+\begin{prooftree}
+\hypo{
+\langle e_1, s \rangle
+\to
+\langle e_1', s' \rangle
+}
+\infer1[(seq2)]{
+\langle e_1; e_2, s \rangle
+\to
+\langle e_1'; e_2, s' \rangle
+}
+\end{prooftree}
+\end{center}
+
+\item If your language is deterministic and terminating, the operating
+semantics implicitly defines a more abstract semantics: we can regard each
+expression as a function over stores $\llbracket e \rrbracket$ that takes
+store $s$ to the unique number $n$ and store $s'$ such that
+\[
+\langle e, s \rangle
+\longrightarrow^*
+\langle n, s' \rangle
+\wedge
+\nexists e'', s''. \langle n, s' \rangle
+\longrightarrow
+\langle e'', s'' \rangle
+\]
+
+This language is quite limited in expressiveness. Describe, as clearly and
+precisely as you can, the set of functions from stores to (number, store)
+pairs that are expressible as $ \llbracket e \rrbracket $ for some $e$.
+
+The language has no ways of \textit{modifying} numbers or branching.
+Informally, the value of every location in the final store after an
+expression has evaluated is either a value in the initial store or is
+hardcoded into the program.
+
+Formally:
+\begin{gather*}
+\forall e, s, n, s'. \langle e, s \rangle \to^* \langle n, s' \rangle
+\Longrightarrow \\
+(\forall y \in \text{dom}(s'). \exists x \in \text{dom}(s). s
+(x) = s'(y)) \vee
+(\forall s''. \langle e, s'' \rangle \to^* \langle n', s''' \rangle
+\Longrightarrow s'(y) = s'''(y)) \\ \wedge \\
+(\exists x \in s. s (x) = n) \vee
+(\forall s''. \langle e, s''
+\rangle \to^* \langle n', s''' \rangle \Longrightarrow n = n')
+\end{gather*}
+
+\item the primitive contexts $C$ for this language are expressions with a
+single hole:
+\[
+C \Coloneqq x \coloneqq \_ \ | \ e_1; \_ \ | \ \_; e_2
+\]
+Write $C[e]$ for the expression resulting from replacing the hole in $C$ by
+$e$.
+
+Say a binary relation $\sim$ over expressions is a congruence if $e \sim
+e'$ implies $\forall C. C[e] \sim C[e']$.
+
+Say a binary relation $\sim$ over expressions respects final values if $e
+\sim e'$ implies $\forall s_0, n, n', s, s'. ( \langle e, s_0 \rangle
+\longrightarrow\langle n, s \rangle \wedge \langle e', s_0 \rangle
+\longrightarrow \langle n', s' \rangle ) \Longrightarrow n = n' $
+
+Use your characterisation of part (b) to define an equivalence relation over
+expressions that is a congruence and respects final values. Explain briefly
+why it has those properties
+\begin{gather*}
+e \sim e' \Longleftrightarrow \\
+\forall s_0. (\langle e, s_0 \rangle \longrightarrow^* \langle n, s \rangle \wedge
+\langle e', s_0 \rangle \longrightarrow^* \langle n', s' \rangle
+\Longrightarrow
+n = n' \wedge s = s') \\
+\end{gather*}
+This equivalence respects final values. This language does not contain any
+loops and so every valid expression is guaranteed to terminate.
+When the expressions have reduced to an integer, this equivalence requires
+that integer to be the same. This is the definition of respecting final
+values. The equivalence also requires that any store the expressions
+evaluate to are the same. So the side effects of any two expressions which
+are equivalent are the same. So in any context: the return value and the
+effects are the same. So they are both contextually equivalent and respect
+final values.
+
+\item Define a terminating algorithm that, for any expressions e and e',
+computes whether $e \sim e'$ or not. Explain informally why it is correct.
+
+Take two expressions. Consider the set of identifiers which occur in either
+expression. Place a total order on these -- let $x_n$ be the $n^{\text{th}}$
+identifier under this total order. Define two stores $s_e = \{(x_i, 2 \cdot i
+)\}$ and $s_o = \{(x_i, 2 \cdot i + 1)\}$.
+
+Evaluate each expression with each store:
+\begin{align*}
+\langle e, s_1 \rangle \longrightarrow^* \langle n_1, s_1' \rangle \\
+\langle e', s_2 \rangle \longrightarrow^* \langle n_2, s_2' \rangle \\
+\langle e, s_1 \rangle \longrightarrow^* \langle n_1', s_1'' \rangle \\
+\langle e', s_2 \rangle \longrightarrow^* \langle n_2', s_2'' \rangle
+\end{align*}
+\begin{gather*}
+n_1 = n_1' \wedge n_2 = n_2' \wedge s_1 = s_1' \wedge s_2 = s_2' \\
+\Longleftrightarrow \\
+e \sim e'
+\end{gather*}
+This algorithm evaluates expressions with an initial store with unique
+values. If the results of the expressions are the same, it repeats with
+another unique store to verify there is no situation where $e$ assigns a
+constant value which happens to be the same as the value in the location
+$e'$ assigned or vice-versa.
+
+If this algorithm finds $e \nsim e'$ then the two expressions produced
+different results in one of the tests. So there exists a counterexample to
+$e \sim e'$. Therefore $e \nsim e'$.
+
+The language has no integer manipulation. All the machine can do
+is shuffle the contents of the state or assign them to constants. This is
+also true for the return value. Since $\forall x. s(x)$ is unique and the
+value of a location $s(x)$ after $e$ executes is $n$ then
+either $e$ assigns $s(x)$ to the constant $n$ or there exists some $y$ such
+that $e$ assigns $s(x) = s(y)$. By running the algorithm twice with
+disjoint stores, we can tell for each location $\ell$ whether
+the effect of an expression $e$ is to assign it to a constant or the value
+of another location. We can also tell which constant or location this was. If
+$e \nsim e'$, then either their effects on the return value will be
+different or their effects on some store will be different. This test passes
+if and only if their effects on both the store and the return value are the
+same in all situations. Therefore, if $e \nsim e'$ then the test does not pass.
+
+Combining this and the previous result:
+\[
+e \sim e' \Longleftrightarrow \text{ the test passes}
+\]
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2004}{6}{11}
+
+L1 has the expression syntax
+\[
+\begin{split}
+e \coloneqq & \ n \ | \ b \ | \ e_1 \ op \ e_2 \ | \ \mathbf{if} \ e_1 \
+\mathbf{then} \ e_2 \ \mathbf{else} \ e_3 \\
+&| \ell \coloneqq e \ | \ !\ell \ | \ \mathbf{skip} \ | \ e_1; e_2 \ | \
+\mathbf{while} \ e_1 \ \mathbf{do} \ e_2
+\end{split}
+\]
+
+\begin{enumerate}
+
+\item Give the reduction rules for conditionals and while-loops.
+
+\begin{center}
+\begin{prooftree}
+\hypo{
+\langle e_1, s \rangle
+\to
+\langle e_1', s' \rangle
+}
+\infer1[(if1)]{
+\langle \mathbf{if} \ e_1 \ \mathbf{then} \ e_2 \ \mathbf{else} \ e_3, s
+\rangle
+\to
+\langle \mathbf{if} \ e_1' \ \mathbf{then} \ e_2 \ \mathbf{else} \ e_3, s'
+\rangle
+}
+\end{prooftree}
+\end{center}
+
+\begin{center}
+\begin{prooftree}
+\infer0[(if2)]{
+\langle \mathbf{if} \ \mathbf{true} \ \mathbf{then} \ e_2 \ \mathbf{else}
+\ e_3, s
+\rangle
+\to
+\langle e_2, s \rangle
+}
+\end{prooftree}
+\end{center}
+
+\begin{center}
+\begin{prooftree}
+\infer0[(if3)]{
+\langle \mathbf{if} \ \mathbf{false} \ \mathbf{then} \ e_2 \ \mathbf{else}
+\ e_3, s
+\rangle
+\to
+\langle e_3, s \rangle
+}
+\end{prooftree}
+\end{center}
+
+\begin{center}
+\begin{prooftree}
+\infer0[(while)]{
+\langle \mathbf{while} \ e \ \mathbf{do} \ e', s\rangle
+\to
+\langle \mathbf{if} \ e \ \mathbf{then} \ e'; \mathbf{while} \ e \
+\mathbf{do} \ e' \ \mathbf{else} \ \mathbf{skip} , s \rangle
+}
+\end{prooftree}
+\end{center}
+
+\item Define semantic equivalence $e_1 \simeq^T_\Gamma e_2$ for L1.
+
+Informally, either both $e_1$ and $e_2$ loop infinitely or they both
+terminate and their final values and stores are the same.
+
+\[
+\begin{split}
+e_1 \simeq^T_{\Gamma} e_2 \Longleftrightarrow \\
+(\Gamma \vdash e_1 : T \wedge \Gamma \vdash e_2 : T \wedge \\
+\forall s. \text{dom}(\Gamma) \subseteq \text{dom}(s) \Longrightarrow \\
+\langle e_1, s \rangle \longrightarrow^{\omega} \\
+\wedge \langle e_2, s \rangle \longrightarrow^{\omega} \\
+\vee \langle e_1, s \rangle \longrightarrow^* \langle v, s' \rangle \\
+\wedge \langle e_2, s \rangle \longrightarrow^* \langle v, s' \rangle \\
+\end{split}
+\]
+
+\item For each of the following pairs, state whether they are semantically
+equivalent; if not, state a nontrivial condition on the subexpressions $e$,
+$e_1$, $e_2$, $e_3$ that makes them so, and explain informally why it suffices.
+
+\begin{enumerate}
+
+\item  $l \coloneqq 3; e \stackrel{?}{\simeq} e; l \coloneqq 3$
+
+These are not equivalent, consider the case $e = l \coloneqq 0$.
+
+A necessary and sufficient criteria is: for all stores $s$ such that $l\in
+\text{dom}(s)$. $e$ assigns a value to $l$ before any reads and the final
+access to $l$ is a write setting $l$ to 3. Note that this holds for no
+accesses to the variable.
+
+\item $e; (\mathbf{if} \ e_1 \ \mathbf{then} \ e_2 \ \mathbf{else} \ e_3)
+\stackrel{?}{\simeq} \mathbf{if} \ e_1 \ \mathbf{then} \ e; e_2 \
+\mathbf{else} \ e; e_3$
+
+These two expressions are not equivalent. This is because $e$ is evaluated
+before $e_1$ in the first expression and $e_1$ is evaluated before $e$ in
+the second expression.
+
+\[
+e; \mathbf{if} \ e_1 \ \mathbf{then} \ \mathbf{skip} \ \mathbf{else} \
+\mathbf{skip} \simeq^T_{\Gamma} \mathbf{if} \ e_1 \ \mathbf{then} \
+\mathbf{skip} \ \mathbf{else} \ \mathbf{skip}; e
+\]
+
+\item $e; (\mathbf{if} \ e_1 \ \mathbf{then} \ e_2 \ \mathbf{else} \ e_3)
+\stackrel{?}{\simeq} \mathbf{if} \ e; e_1 \ \mathbf{then} \ e_2 \
+\mathbf{else} \
+e_3$
+
+These are semantically equivalent. Since in all cases, the order in which the
+expressions is evaluated is the same.
+
+\item $\mathbf{while} \ !l \geq 0 \ \mathbf{do} \ (e_2; e_3)
+\stackrel{?}{\simeq} \mathbf{if} \ !l \geq 0 \ \mathbf{then} \ e_2;
+(\mathbf{while} \ !l \geq 0 \ \mathbf{do} \ (e_3; e_2)); e_3 \ \mathbf{else}
+ \ \mathbf{skip}$
+
+These are both semantically equivalent. The predicate $l \geq 0$ is always
+true since $!l \in \mathbb{N}$ and all natural numbers are $\geq 0$. So both
+expressions a never-ending sequence of reductions. So they are semantically
+equivalent.
+
+Note that if the predicate $l \geq 0$ was not always true then the
+expressions would not be semantically equivalent.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2021}{4}{9}
+
+\begin{enumerate}
+
+\item Suppose that $l : \text{intref} \in \Gamma$. Now, consider the
+following program equivalence for L1:
+\[
+(\text{if} \ !l \leq 0 \ \text{then} \ e_1 \ \text{else} \ e_2); e_3
+\simeq^{\Gamma}_{\text{unit}} (\text{it} \ !l \leq 0 \ \text{then} \ e_1;
+e_3 \ \text{else} \ e_2; e_3)
+\]
+
+\begin{enumerate}
+
+\item Explain informally but carefully why this equivalence holds.
+
+The order in which the subexpressions are evaluated is the same in both
+programs.
+
+\item Using the definition of semantic equivalence, prove that this
+equivalence holds.
+
+Split into cases on the truth of $!l \leq 0$:
+
+\begin{itemize}
+
+\item[\textbf{case}] $!l \leq 0$
+
+For the LHS program:
+\[
+\begin{split}
+\langle (\text{if} \ !l \leq 0 \ \text{then} \ e_1 \ \text{else} \ e_2);
+e_3, s \rangle &\longrightarrow^2 \\
+\langle (\text{if} \ \mathbf{true} \ \text{then} \ e_1 \ \text{else} \ e_2);
+e_3, s \rangle &\longrightarrow \\
+\langle e_1; e_3, s \rangle &\longrightarrow \\
+\end{split}
+\]
+
+For the RHS program:
+\[
+\begin{split}
+\langle (\text{if} \ !l \leq 0 \ \text{then} \ ((e_1; e_3)) \ \text{else} \
+(e_2; e_3)), s \rangle &\longrightarrow^2\\
+\langle (\text{if} \ \mathbf{true} \ \text{then} \ ((e_1; e_3)) \ \text{else} \
+(e_2; e_3)), s \rangle &\longrightarrow \\
+\langle e_1; e_3, s \rangle &\longrightarrow \\
+\end{split}
+\]
+
+Since both programs reduce to the same program (and a program is trivially
+semantically equivalent to itself), we can conclude that the two original
+programs are semantically equivalent.
+
+\item [\textbf{case}] $!l > 0$
+
+For the LHS program:
+\[
+\begin{split}
+\langle (\text{if} \ !l \leq 0 \ \text{then} \ e_1 \ \text{else} \ e_2);
+e_3, s \rangle &\longrightarrow^2 \\
+\langle (\text{if} \ \mathbf{false} \ \text{then} \ e_1 \ \text{else} \ e_2);
+e_3, s \rangle &\longrightarrow \\
+\langle e_2; e_3, s \rangle &\longrightarrow \\
+\end{split}
+\]
+
+For the RHS program:
+\[
+\begin{split}
+\langle (\text{if} \ !l \leq 0 \ \text{then} \ ((e_1; e_3)) \ \text{else} \
+(e_2; e_3)), s \rangle &\longrightarrow^2\\
+\langle (\text{if} \ \mathbf{false} \ \text{then} \ ((e_1; e_3)) \
+\text{else} \
+(e_2; e_3)), s \rangle &\longrightarrow \\
+\langle e_2; e_3, s \rangle &\longrightarrow \\
+\end{split}
+\]
+
+In this case, both programs reduce to the same program. A program is
+trivially semantically equivalent to itself. Therefore the two programs are
+semantically equivalent.
+
+\end{itemize}
+
+\end{enumerate}
+
+\item Now, consider the following \textit{non}-equivalence
+
+\[
+e_3; (\text{if} \ !l \leq 0 \ \text{then} \ e_1 \ \text{else} \ e_2)
+\simeq^{\Gamma}_{\text{unit}} (\text{if} \ !l \leq 0 \ \text{then} \ e_3;
+e_1 \ \text{else} \ e_3; e_2)
+\]
+
+\begin{enumerate}
+
+\item Give a well-typed example exhibiting a counterexample of this
+equivalence.
+
+\begin{align*}
+e_1 &= l \coloneqq 1 &
+e_2 &= l \coloneqq 2 &
+e_3 &= l \coloneqq 3 &
+s = \{l \mapsto 0\}
+\end{align*}
+
+In the LHS program, $e_3$ is executed. When the predicate ie evaluated, it is
+false. So the else-branch is taken and $l$ is set to 2.
+
+In the RHS program, the predicate is first evaluated and is decided to be
+true. So the if-branch is taken, which sets $l$ to 1.
+
+\item Give a statically decidable condition under which the transformation
+is valid.
+
+The transformation is valid if $e$ does not write to $l$. Let the predicate
+$\Phi(e, l)$ mean ``$e$ cannot write to $l$''.
+
+Define it inductively:
+\begin{align*}
+\Phi(v, l) &= \mathbf{true} \\
+\Phi(l \coloneqq e, l) &= \mathbf{false} \\
+\Phi(l' \coloneqq e, l) &= \Phi(e, l) \\
+\Phi(\text{fn} \ x \Rightarrow e, l) &= \Phi(e, l) \\
+\Phi(e \ e', l) &= \Phi(e, l) \wedge \Phi(e', l) \\
+\Phi(\text{while} \ e \ \text{do} \ e', l) &= \Phi(e, l) \wedge \Phi(e', l) \\
+\Phi(\text{if} \ e_1 \ \text{then} \ e_2 \ \text{else} \ e_3, l) &=
+\Phi(e_1, l) \wedge \Phi(e_2, l) \wedge \Phi(e_3, l) \\
+\Phi(e_1 \ \text{op} \ e_2, l) &= \Phi(e_1, l) \wedge \Phi(e_2, l) \\
+\end{align*}
+The transformation is valid if $\Phi(e, l)$.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

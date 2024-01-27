@@ -1,0 +1,88 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2017}{23}{4}
+
+Consider the following simple evaluator for a language of expressions
+written in OCaml.
+
+\begin{lstlisting}[language=Caml]
+type expr =
+	| Integer of int
+	| Pair of expr * expr
+	| Apply of string * expr
+
+type value =
+	| INT of int
+	| PAIR of value * value
+
+let rec eval = function
+	| Integer n	-> INT n
+	| Pair (e1, e2)	-> PAIR (eval e1, eval e2)
+	| Apply (f, e)	-> eval_function(f, eval e)
+\end{lstlisting}
+In this code the function \texttt{eval\_function} has type
+\texttt{string~*~value~->~value} and is used to evaluate some ``built in''
+functions. For example,
+\[
+\texttt{eval\_function("add", PAIR(INT 10, INT 7))}
+\]
+could return the value \texttt{INT 17}.
+
+\begin{enumerate}
+
+\item Rewrite the \texttt{eval} function in continuation apssing style (CPS)
+to produce a function \texttt{eval\_cps} so that the function
+\[
+\texttt{let eval\_2 e = eval\_cps (fun x -> x) e}
+\]
+will produce the same result as the function \texttt{eval}.
+
+\begin{lstlisting}[language=Caml]
+let rec eval_cps k = function
+	| Integer n	-> k (INT n)
+	| Pair (e1, e2)	-> eval_cps (fun x -> eval_cps (fun y -> k (PAIR (x, y)) e2)) e1
+	| Apply (f, e)	-> eval_cps (fun x -> k (eval_function (f, x))) e
+\end{lstlisting}
+
+\item Eliminate higher-order continuations from your \texttt{eval\_cps}
+function. That is, introduce a data type \texttt{cnt} to represent
+continuations and write functions of type
+\begin{lstlisting}[language=Caml]
+eval_cps_dfn	: cnt -> expr -> value
+apply_cnt	: cnt * value -> value
+eval_3		: expr -> value
+\end{lstlisting}
+using the technique of defunctionalisation. Note that
+\texttt{eval\_cps\_dfn} and \texttt{apply\_cnt} will be mutually recursive.
+
+\begin{lstlisting}[language=Caml]
+type cnt = Nil
+	| Eval_pair_cnt of expr * cnt
+	| Make_pair_cnt of value * cnt
+	| Apply_cnt of string * cnt
+
+let rec eval_cps_dfn k = function
+	| Integer n -> apply_cnt (k, INT n)
+	| Pair (e1, e2) -> eval_cps_dfn (Eval_pair_cnt(e2, k)) e1
+	| Apply (f, e) -> eval_cps_dfn (Apply_cnt(f, k)) e
+
+and apply_cnt = function
+	| Nil, v -> v
+	| Eval_pair_cnt(e, k), v -> eval_cps_dfn (Make_pair_cnt(v, k)) e
+	| Make_pair_cnt(v1, k), v2 -> apply_cnt (k, (PAIR(v1, v2)))
+	| Apply_cnt(f, k), v -> apply_cnt (k, eval_function(f, v))
+
+let eval_3 = eval_cps_dfn Nil
+\end{lstlisting}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

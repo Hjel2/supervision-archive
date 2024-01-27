@@ -1,0 +1,61 @@
+\input{./template/prefs/me.tex}
+
+\documentclass[10pt, a4paper]{article}
+
+\input{./template/includes.tex}
+\input{./template/template.tex}
+
+\begin{document}
+
+\section*{And($M_1, M_2$)}
+
+Remember the and construction for the \textit{And} of two DFA's $M_1$, $M_2$.
+
+The formula is in the question sheet:
+
+Given two DFA's:
+\[
+\begin{split}
+M_1 &= (Q_1, \Sigma, \delta_1, s_1, F_1) \\
+M_2 &= (Q_2, \Sigma, \delta_2, s_2, F_2) \\
+\end{split}
+\]
+
+The DFA defined as:
+\[
+M = (Q_1\times Q_2, \Sigma, \delta, (s_1, s_2), F_1\times F_2)
+\]
+\[
+\delta((q_1, q_2), a) = (\delta_1(q_1, a), \delta_2(q_2, a))
+\]
+
+Is the DFA which is in an accepting state when \textit{BOTH} $M_1$, $M_2$ are in accepting states.
+
+\vspace{0.5cm}
+
+\section*{Pumping Lemma}
+
+Note that $L$ is a regular language implies that $L$ enjoys the Pumping Lemma property. 
+
+A language $L$ enjoys the Pumping Lemma property does not imply that it is regular:
+
+\vspace{0.5cm}
+
+Regular Language $\Longrightarrow$ Pumping Lemma
+
+Pumping Lemma $\not\Longrightarrow$ Regular
+
+The Pumping Lemma states that for all regular languages, if they accept a string $s$ 
+of length $\geq \ell$ for some $\ell$ then there exists some $u_1 v u_2 = s$ where $|v| \geq 1$ ($v \neq \varepsilon$) 
+and $|u_1v| \leq \ell$ such that $\forall n \in \mathbb{N}. u_1 v^n u_2 \in L$. 
+
+To prove a language is not regular, you must find some $w_\ell$ for arbitrary $\ell$ 
+which cannot be pumped. 
+
+So for $L = a^nb^n$, you find $w_\ell = a^\ell b^\ell$ and say that ``since the first $\ell$ letters 
+are $a$, $v$ must be some sequence of $a$'s of length $s$, $u_1$ is length $r$ and $u_2$ is $a^{\ell - r - s}b^\ell$. 
+Then consider $v^2$ then the string is now $a^{\ell + r}b^\ell$. $r \neq 0$ so $\ell + r \neq \ell$. 
+So the string is not of the form $a^nb^n$. However it is still in the language $L$. So $L$ cannot 
+be pumped and hence $L$ is not regular.
+
+\end{document}

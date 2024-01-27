@@ -1,0 +1,127 @@
+\input{./template/prefs/me.tex}
+
+\documentclass[10pt, a4paper]{article}
+
+\input{./template/includes.tex}
+\input{./template/template.tex}
+
+\usepackage{listings}
+\usepackage{pdfpages}
+\let\oldpdfpagesdonotuseitonlyincludesonepageunlessyousupplyanoptionalargument\includepdf
+\renewcommand{\includepdf}[9]{}
+\newcommand{\image}[1]{\oldpdfpagesdonotuseitonlyincludesonepageunlessyousupplyanoptionalargument[pages=-]{#1}}
+
+\begin{document}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item 
+
+\begin{enumerate}
+
+\item We're using a Na\"ive Bayes classifier. So the 
+approach we're using is a smoothed probabilistic generative multiclass classifier.
+
+The features I would use are whether each pixel is black or white. Given that the majority of all 
+pixels will be black, I will model the presence of black pixels. The features are the colour of each of 
+the individual pixels: so there are $150 \times 200 = 30000$ features. With this many features and any reasonably-sized 
+training dataset, we will have a very high uncertainty on the probabilities of each feature given a 
+class and each feature will be very uninformative.
+
+The probability of an image $i$ being in a class $c$
+
+\[
+\log P(c|i) = \log P(c) + \sum_{w_i \in i} \lg P(w_i|c)
+\]
+
+Note that we are using log-probabilities for numerical stability (else all probabilities would tend to zero with an unusably 
+high uncertainty rapidly).
+
+Unfortunately, the probabilities are not independent -- so the Na\"ive Bayes assumption is proken since the 
+probability of one pixel being black massively increases the probability of one of it's neighbours being black.
+
+\item The training data is the set of pixels from each of the hand-drawn images. It was collected by human annotators who 
+annotated each picture according to what it represented. 
+
+The models parameters were estiamted according to the following formula:
+
+\[
+P(c) = \frac{\mathit{Count}(c)}{\sum_{c_i \in C}\mathit{Count}(c_i)}
+\]
+
+\[
+P(w_i|c) = \frac{\mathit{Count}(w_i, c) + 1}{\mathit{Count}_{w_i \in V}(w_i) + |V|}
+\]
+
+Where $i$ is the image, $C$ is the set of classes (house, tent, boat and igloo) and 
+$V$ is the set of all pixels.
+
+\end{enumerate}
+
+\item We should granulate the images -- reducing the resolution by merging several adjacent pixels into one 
+pixel (this pixel being black if 3 or more constituent pixels are black). This will greatly reduce the uncertainty on the data. Currently the probability of any individual pixel 
+being black is so low that it's got a very high uncertainty and fairly informative. If we were to merge 
+4 adjacent pixels and turn the images into a $75 \times 100$ pixel images (now only having 7500 features rather 
+than 300000 we would be able to get much better predictions). Further improvements could involve a higher degree 
+of merging however we would need to experimentally test to find out the optimal degree of merging and what the feature should be 
+(ie I suggest the resultant pixel should be black if 3 or more of the subpixels are black -- but maybe 4 or more or 2 or more would be more appropriate).
+
+This should improve results since it massively decreases the uncertainty on probabilities.
+
+\item 
+
+\begin{enumerate}
+
+\item Door or no Door, Sea or no Sea, lots of Curved lines or few Curved lines (what constitutes lots of curved 
+lines would require testing), Roof or no Roof. 
+
+Igloos and tent's don't have doors, only boats and houses can have the sea (although houses are far less 
+likely to have the sea, while tents can not have the sea at all), houses and tents are less likely than 
+igloos or boats to have curved lines while boats and igloos are 
+likely to have more curved lines and only houses and boats will have rooves.
+
+I think these features would be discriminative and would be possible to predict automatically.
+
+These features would allow us to discriminate between the classes fairly well.
+
+\begin{itemize}
+
+\item Door or no Door
+
+Houses and boats have doors so this feature would be discriminative. This would also be relatively easy 
+to predict automatically since doors have a fairly uniform shape (square with a circle inside it).
+
+\item Sea or no Sea
+
+Almost all drawings of boats would have the sea while very few of any other category would have the sea. This 
+feature would be very good at discriminating boats and very prevelant while still being moderatelly easy to 
+predict automatically.
+
+\item Lots of curved lines or few curved lines.
+
+Igloos have a very high proportion of curved lines while the other classes have significantly fewer curved lines. 
+This feature would be very discriminative for igloos -- although it would require testing to find out an appropriate 
+boundary for this. This would also be a prevelant feature.
+
+\item Roof or no roof
+
+Houses and boats have rooves while the other classes don't usually. This would be discriminative and easy to make automatically  
+due to the amount of shading on rooves.
+
+\end{itemize}
+
+\item We could incorporate the features described above as features in our pixel classifier. Our classifier 
+would now have 7504 features -- four of which are high level.
+
+The high level features would have a very low uncertainty compared to the pixels -- for example tents cannot be 
+on the sea so anything on the sea would not be a tent. Our Na\"ive Bayes classifier is (should be) smoothed and so 
+would move probability mass from higher probability features to this impossible feature. 
+We could solve this by decreasing the smoothing for the high level features to account for this (so they'd 
+still be smoothed but significantly less so -- for example add-one smoothing for the pixel values and add-0.001 smoothing 
+for the high-level features).
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

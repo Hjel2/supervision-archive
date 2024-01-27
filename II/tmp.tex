@@ -1,0 +1,65 @@
+\documentclass[10pt, a4paper]{article}
+
+\input{/home/hjel/Documents/latex/template/template}
+
+\usepackage{tikz}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+    \filldraw[color=red!60, fill=red!5, very thick] (0,0) circle (4);
+    \filldraw[color=blue!60, fill=blue!5, very thick] (0,-1) circle (2.9);
+    \filldraw[color=green!60, fill=green!5, very thick] (0,-2) circle (1);
+    \node at (0, 3) {All Codes};
+    \node at (0, 0.5) {Uniquely Decodable Codes};
+    \node at (0, -2) {Prefix Codes};
+
+\end{tikzpicture}
+
+\begin{tikzpicture}
+
+    \node (root) at (0, 3) {$\bullet$};
+    \node (n1) at (-1, 2) {$c$};
+    \node (n2) at (1, 2) {$\bullet$};
+    \node (n3) at (0.5, 1) {$a$};
+    \node (n4) at (1.5, 1) {$\bullet$};
+    \node (n5) at (1.25, 0) {$b$};
+    \node (n6) at (1.75, 0) {$d$};
+    \path (root) edge node[above left] {0} (n1);
+    \path (root) edge node[above right] {1} (n2);
+    \path (n2) edge node[above left] {0} (n3);
+    \path (n2) edge node[above right] {1} (n4);
+    \path (n4) edge node[above left] {0} (n5);
+    \path (n4) edge node[above right] {1} (n6);
+
+\end{tikzpicture}
+
+\begin{tikzpicture}
+
+    \node (b) at (-0.2, 0) {$b$};
+    \node (bp) at (0.2, 0) {$\frac13$};
+    \node (d) at (-0.2, -0.5) {$d$};
+    \node (dp) at (0.2, -0.5) {$\frac13$};
+    \node (a) at (-0.2, -1) {$a$};
+    \node (ap) at (0.2, -1) {$\frac16$};
+    \node (c) at (-0.2, -1.5) {$c$};
+    \node (cp) at (0.2, -1.5) {$\frac16$};
+
+    \node (bd) at (1.2, 0) {$\frac23$};
+    \node (ac) at (1.2, -1) {$\frac12$};
+
+    \node (bdac) at (2.2, 0) {$1$};
+
+    \path (bp) edge node[above] {$0$} (bd);
+    \path (dp) edge node[below right] {$1$} (bd);
+
+    \path (ap) edge node[above] {$0$} (ac);
+    \path (cp) edge node[below right] {$1$} (ac);
+
+    \path (bd) edge node[above] {$0$} (bdac);
+    \path (ac) edge node[below right] {$1$} (bdac);
+
+\end{tikzpicture}
+
+\end{document}

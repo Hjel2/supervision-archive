@@ -1,0 +1,352 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\usepackage{ebproof}
+\usepackage{stmaryrd}
+
+\begin{document}
+
+\begin{examquestion}{1999}{6}{10}
+
+\begin{enumerate}
+
+\item Describe the role of Herbrand models in mechanical theorem proving.
+What may we infer when a set of clauses has no Herbrand model?
+
+A Herbrand Model is an interpretation such that the clauses hold and the
+domain of the interpretation is the Herbrand Universe. Formally, a Herbrand
+Model is a pair $(\mathcal{H}, I)$ where $\mathcal{H}$ is the domain of the
+variables and $I$ is a mapping from variables and function literals to
+elements in the Herbrand Universe $\mathcal{H}$ or concrete functions.
+
+The goal of many mechanical theorem provers (such as those using DPLL) is to
+\textit{find} a Herbrand Model. If a set of clauses has no Herbrand Model;
+the set of clauses is \textit{unsatisfiable}.
+
+\item Convert the following problem into clause form. Justify each step you
+take and explain in what respect the set of clauses is equivalent to the
+original problem.
+
+\[
+\exists x \left[ P(x) \wedge Q(x) \right]
+\longrightarrow
+\exists x \left[ P(f(x, x)) \vee \forall y Q(y) \right]
+\]
+\begin{align*}
+\intertext{To convert to clause form; we must Skolemize, then negate and convert to CNF.
+The clauses are the disjunctions.}
+\intertext{For clarity, I will rename the variables such
+that the new expression is $\alpha$-equivalent and has no duplicate names}
+\exists x \left[ P(x) \wedge Q(x) \right]
+&\longrightarrow
+\exists z \left[ P(f(z, z)) \vee \forall y Q(y) \right] \\
+\intertext{Skolemize. We must firstly replace existentially bound variables
+with Skolem Constants or Skolem Functions as appropriate. In this case, both
+$x$ and $z$ become Skolem Constants}
+& P(a) \wedge Q(a)
+\longrightarrow
+P(f(b, b)) \vee \forall y Q(y) \\
+\intertext{Now remove all universal quantifiers}
+& P(a) \wedge Q(a)
+\longrightarrow
+P(f(b, b)) \vee Q(y) \\
+\intertext{Negate. Then use the equivalence $\neg(A \to B) \simeq A \wedge
+\neg B$}
+& P(a) \wedge Q(a)\wedge \neg (P(f(b, b)) \vee Q(y)) \\
+\simeq & P(a) \wedge Q(a)\wedge \neg P(f(b, b)) \wedge \neg Q(y)) \\
+\intertext{Now convert CNF to clauses by taking each disjunct as a clause}
+& \{P(a)\}\ \{Q(a)\}\ \{\neg P(f(b, b))\}\ \{\neg Q(y))\}
+\end{align*}
+
+Skolemization does not preserve meaning or validity of a formula. However,
+it retains inconsistency. The final set of clauses is inconsistent if
+and only if the original formula was inconsistent.
+
+\item Describe the Herbrand universe for your clauses.
+
+The Herbrand universe $\mathcal{H}$ for these clauses is described
+as follows:
+\begin{align*}
+H_0 &= \{c, d\} \\
+H_{i+1} &= H_i \cup \{f(a, b) \ | \ a, b \in H_i\} \\
+\mathcal{H} &= \bigcup_{i \geq 0} H_i
+\end{align*}
+
+The Herbrand Universe can also be defined recursively as follows:
+\[
+\mathcal{H} = \{f(x, y) \ | \ x, y \in \mathcal{H}\}
+\]
+
+\item Produce a resolution proof from your clauses or give reasons why none
+exists.
+\begin{align*}
+\intertext{To prove the theorem, we must derive the empty clause $\boxempty$}
+& \{P(a)\}\ \{Q(a)\}\ \{\neg P(f(b, b))\}\ \{\neg Q(y))\} \\
+\intertext{Firstly, resolve $Q(a)$ with $\neg Q(y)$ using the unifier
+$\sigma = [a/y]$}
+\sim& \{P(a)\}\ \{Q(a)\}\ \{\neg P(f(b, b))\}\ \{\neg Q(a))\} \\
+\sim& \{P(a)\}\ \{\neg P(f(b, b))\}\ \boxempty \\
+\intertext{The empty clause been derived so the original theorem cannot be
+proved}
+\end{align*}
+\item Exhibit a Herbrand model for your clauses or give reasons why none
+exists.
+
+Since the empty clause was shown to be inconsistent. Therefore the theorem
+is unsatisfiable.
+
+A Herbrand Model is an interpretation for which the clauses are satisfied.
+By the proof above, the clauses are unsatisfiable and therefore there is no
+Herbrand Model.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{1998}{5}{10}
+
+\begin{enumerate}
+
+\setcounter{enumi}{1}
+
+\item Attempt to prove the above formula using the sequent calculus until
+either it is proved or the proof cannot be continued.
+
+\begin{center}
+\begin{prooftree}
+\infer0{
+P \to Q, R
+\Rightarrow
+R
+}
+\infer1[$(\neg l)$]{
+P \to Q, \neg R, R
+\Rightarrow
+}
+\hypo{
+R
+\Rightarrow
+P, Q
+}
+\infer0{
+Q, R
+\Rightarrow
+Q
+}
+\infer2[$(\to l)$]{
+P \to Q, R
+\Rightarrow
+Q
+}
+\infer1[$(\neg l)$]{
+P \to Q, \neg Q, R
+\Rightarrow
+}
+\infer2[$(\vee l)$]{
+P \to Q, \neg R \vee \neg Q, R
+\Rightarrow
+}
+\infer1[$(\neg r)$]{
+P \to Q, \neg R \vee \neg Q
+\Rightarrow
+\neg R
+}
+\infer1[$(\wedge l)$]{
+(P \to Q) \wedge (\neg R \vee \neg Q)
+\Rightarrow
+\neg R
+}
+\infer1[$(\to r)$]{
+\Rightarrow \left[ (P \to Q) \wedge (\neg R \vee \neg Q) \right] \to \neg R
+}
+\end{prooftree}
+\end{center}
+
+\item Design a method for determining whether a prepositional formula is
+inconsistent. The method should work by examining the formula's disjunctive
+normal form. Demonstrate your method by applying it to the formula:
+\[
+\neg \left[ (P \wedge Q) \vee (Q \to P) \right]
+\]
+
+Informally:
+\begin{itemize}
+
+\item Convert the formula to DNF
+
+\item If the reduction to DNF yields $\mathbf{f}$ then the formula is
+inconsistent and unsatisfiable.
+
+\item If the reduction yields $\mathbf{t}$ then the formula is valid
+
+\item If the DNF is a disjunction of multiple terms, then the formula is
+satisfiable but not valid.
+
+\end{itemize}
+
+Formally:
+\begin{itemize}
+
+\item Start with a propositional formula $F$.
+
+\item Replace all occurrences of $A \leftrightarrow B$ with $(A \to B) \wedge
+(B \to A)$:
+\[
+A \leftrightarrow B \Rightarrow (A \to B) \wedge (B \to A)
+\]
+
+\item Replace all occurrences of $A \leftarrow B$ with $B \to A$
+\[
+A \leftarrow B \Rightarrow B \to A
+\]
+
+\item Replace all occurrences of $A \to B$ with $\neg A \vee B$:
+\[
+A \to B \Rightarrow \neg A \vee B
+\]
+
+\item While there are any negated formulae (ie negations which are not
+literals); push in a negation using De Morgens Laws. IE while it can be done;
+, do one one of the following operations.
+\begin{align*}
+\neg (A \vee B) &\Rightarrow \neg A \wedge \neg B \\
+\neg (A \wedge B) &\Rightarrow \neg A \vee \neg B
+\end{align*}
+
+The formula is now in negation normal form
+
+\item While there is a double negation, eliminate a double-negation:
+\[
+\neg \neg A \Rightarrow A
+\]
+
+\item While it can be done; apply distributivity to push all $\wedge$s in.
+\[
+A \wedge (B \vee C) \Rightarrow A \wedge B \vee A \wedge C
+\]
+
+\item Use associativity to remove all brackets
+
+\item Remove all conjuncts of the form $A \wedge \dots \wedge \neg A$
+
+\end{itemize}
+
+After performing these operations, the formula is in DNF\@. If the formula
+is non-empty then there exists one conjunct which was not removed -- this
+conjunct is satisfiable. Since Skolemization preserves consistency, we can
+conclude that the original formula was consistent in this case.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2005}{5}{9}
+
+\begin{enumerate}
+
+\item In order to prove the following formula by resolution, what set of
+clauses should be submitted to the prover? Justify your answer briefly.
+\[
+\forall x \left[ P(x) \vee Q \to \neg R(x) \right] \wedge
+\forall x \left[ \left( Q \to \neg S(x) \right) \to \left( P(x) \wedge R(x)
+\right) \right] \to \forall x S(x)
+\]
+
+We should Skolemize the formula, then convert to DNF and negate (so the
+negation is in CNF). The clauses we submit to the prover should be the
+disjunctions.
+
+In this particular case, this formula uses implication. Therefore, we can
+simplify it quicker using the identity
+$\neg (A \to B) \simeq A \wedge \neg B$.
+\begin{align*}
+& \forall x \left[ P(x) \vee Q \to \neg R(x) \right] \wedge
+\forall x \left[ \left( Q \to \neg S(x) \right) \to \left( P(x \wedge R(x))
+\right) \right] \to \forall x S(x) \\
+\intertext{Skolemize the formula. Since there are no existential
+quantifiers, this involves only dropping the universal quantifiers}
+& \left[ P(x) \vee Q \to \neg R(x) \right] \wedge
+\left[ \left( Q \to \neg S(x) \right) \to \left( P(x) \wedge R(x)
+\right) \right] \to S(x) \\
+\intertext{Next negate. I will use the identity $\neg(A \to B) \simeq A
+\wedge \neg B$}
+\simeq& \left[ P(x) \vee Q \to \neg R(x) \right] \wedge
+\left[ \left( Q \to \neg S(x) \right) \to \left( P(x) \wedge R(x)
+\right) \right] \wedge \neg S(x) \\
+\simeq& \left[ \neg (P(x) \vee Q) \vee \neg R(x) \right] \wedge
+\left[ \neg\left( Q \to \neg S(x) \right) \wedge \left( P(x) \wedge R(x)
+\right) \right] \wedge \neg S(x) \\
+\simeq& \left[ \neg P(x) \wedge Q \vee \neg R(x) \right] \wedge
+\left[ \neg\left( \neg Q \vee \neg S(x) \right) \wedge P(x) \wedge R(x)
+ \right] \wedge \neg S(x) \\
+\simeq& \left[ \neg (P(x) \vee Q) \vee \neg R(x) \right] \wedge
+\left[ \neg\left( Q \to \neg S(x) \right) \wedge \left( P(x) \wedge R(x)
+\right) \right] \wedge \neg S(x) \\
+\simeq& \left[ \neg P(x) \wedge \neg Q \vee \neg R(x) \right] \wedge
+\left[ Q \wedge S(x) \wedge P(x) \wedge R(x)
+ \right] \wedge \neg S(x) \\
+\simeq& (\neg P(x) \vee \neg R(s)) \wedge (\neg Q \vee \neg R(x)) \wedge
+Q \wedge S(x) \wedge P(x) \wedge R(x) \wedge \neg S(x) \\
+\simeq& \{\neg P(x), \neg R(s)\}\ \{\neg Q, \neg R(x)\}\
+\{Q\}\ \{S(x)\}\ \{P(x)\}\ \{R(x)\}\ \{\neg S(x)\}
+\end{align*}
+
+\item Derive the empty clause using resolution with the following set of
+clauses, or give convincing reasons why it cannot be derived.
+
+\begin{align*}
+ & \{\neg P(x, x)\}\ \{P(x, f(x))\}\ \{\neg P(x, y), \neg P(y, z), P(x, z)\} \\
+\intertext{Note that variables scope is \textit{only} in their clause.
+For clarity, I will rename the variables}
+=& \{\neg P(v, v)\}\ \{P(w, f(w))\}\ \{\neg P(x, y), \neg P(y, z), P(x, z)\} \\
+\intertext{To apply resolution, we must unify $\neg P(v, v)$ and $P(x, z)$.
+Using the most general unifier $\sigma = [v/x, v/z]$}
+=& \{\neg P(v, v)\}\ \{P(w, f(w))\}\ \{\neg P(v, y), \neg P(y, v), P(v, v)\} \\
+=& \{P(w, f(w))\}\ \{\neg P(v, y), \neg P(y, v)\} \\
+\intertext{Notice the two terms in the RHS clause are the same under
+$\alpha$-equivalence. Using idempotence, we can remove one.}
+=& \{P(w, f(w))\}\ \{\neg P(y, v)\} \\
+\intertext{Use the unifier $\sigma = [w/y, f(x)/v]$}
+=& \{P(w, f(w))\}\ \{\neg P(w, f(w))\} \\
+=& \boxempty
+\end{align*}
+
+\item Derive the empty clause using resolution with the following set of
+clauses or give convincing reasons why it cannot be derived. (Note that $a$
+and $b$ are constants.)
+
+\begin{align*}
+ & \{\neg P(a)\}\ \{Q(a)\}\ \{R(b)\}\ \{S(b)\}\ \{\neg Q(x), P(x), \neg R(y),
+\neg Q(y)\}\ \{\neg S(x), \neg R(x), Q(x)\} \\
+\intertext{Since variables are scoped only within their clause, I rename for
+ clarity}
+=& \{\neg P(a)\}\ \{Q(a)\}\ \{R(b)\}\ \{S(b)\}\ \{\neg Q(x), P(x), \neg R(y),
+\neg Q(y)\}\ \{\neg S(z), \neg R(z), Q(z)\} \\
+\intertext{Using the unifier $\sigma = [a/x]$}
+=& \{R(b)\}\ \{S(b)\}\ \{\neg P(a)\}\ \{Q(a)\}\ \{\neg Q(a), P(a), \neg R(y),
+\neg Q(y)\}\ \{\neg S(z), \neg R(z), Q(z)\} \\
+=& \{R(b)\}\ \{S(b)\}\ \{\neg P(a)\}\ \{P(a), \neg R(y),
+\neg Q(y)\}\ \{\neg S(z), \neg R(z), Q(z)\} \\
+=& \{R(b)\}\ \{S(b)\}\ \{\neg R(y), \neg Q(y)\}\ \{\neg S(z), \neg R(z), Q
+(z)\} \\
+\intertext{Using the unifier $\sigma = [b/y, b/z]$}
+=& \{R(b)\}\ \{S(b)\}\ \{\neg R(b), \neg Q(b)\}\ \{\neg S(b), \neg R(b), Q
+(b)\} \\
+=& \{R(b)\}\ \{\neg R(b), \neg Q(b)\}\ \{S(b)\}\ \{\neg S(b), \neg R(b), Q
+(b)\} \\
+\intertext{Using idempotence, we can duplicate the clause $\{R(b)\}$}
+=& \{R(b)\}\ \{\neg R(b), \neg Q(b)\}\ \{R(b)\}\ \{S(b)\}\ \{\neg S(b), \neg
+ R(b), Q(b)\} \\
+=& \{\neg Q(b)\}\ \{R(b)\}\ \{\neg R(b), Q(b)\} \\
+=& \{\neg Q(b)\}\ \{Q(b)\} \\
+=& \boxempty
+\end{align*}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

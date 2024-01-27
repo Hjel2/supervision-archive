@@ -1,0 +1,176 @@
+\input{./infofile}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template}
+
+\begin{document}
+
+\begin{enumerate}
+
+\item You manage two junior programmers and overhear the following
+conversation:
+
+A: ``I don't know why anyone needs a language other than Java, it provides
+clean thread-based parallel programming''
+
+B: ``Maybe, but I write my parallel programs in a functional programming
+language because they are then embarrassingly parallel''
+
+Discuss the correctness of these statements and the extent to which they
+cover the range of languages for parallel programming.
+
+Java only provides green-threads. While these provide concurrency, they do
+not provide parallelism (user-level threading). Programs written in a
+functional programming language \textit{are} embarassingly parallel. However,
+this sets the limits of parallelism -- and modern functional languages are
+not even close to these limits. In many cases, running small functions on
+different cores or threads is more overhead than running it serially.
+Therefore, many implementations do not exploit this massive possibility for
+parallelism.
+
+OCaml 5 has added multicore support by default. However, the speedup
+observed when compared to OCaml 4 is small. While OCaml 5 \textit{is} faster
+on many workloads, the difference in speed is not significant on most
+workloads.
+
+\item What is the difference between internal and external iteration?
+
+External iteration is normal iterating over a loop. Internal iteration is
+nested loops where each internal loop is executed on a different core. For
+example:
+
+External Iteration:
+\begin{lstlisting}[language=C]
+for (int i = 0; i < n; i++){
+	// body
+}
+\end{lstlisting}
+
+Internal Iteration:
+\begin{lstlisting}[language=C]
+for (int core = 0; core < NUMCORES; core++){
+	for (int i = 0; i < n / NUMCORES; i++){
+		// body
+	}
+}
+\end{lstlisting}
+
+\item Scripting languages and dynamically typed languages are identical;
+discuss.
+
+Scripting Languages are a type of languages which are intended to be used
+for writing short programs which are used once (or a small number of times)
+and subsequently thrown away. While dynamically typed languages are
+languages which perform tyepchecking at runtime.
+
+Scripting languages are often dynamically typed, there are dynamically
+typed languages (such as python) which are not scripting languages.
+
+\item Discuss the notion of ``class'' in relation to JavaScript.
+
+% TODO
+
+\item Explain what is meant by a monad in a programming language, giving
+the two fundamental operations of a monad along with their types.
+
+% TODO
+
+\item Consider the use of a monad for input-output. For the purposes of this
+question, take the IO monad as including two operations \texttt{readint} and
+\texttt{writeint} which respectively read integers from \texttt{stdin} and
+write integers to \texttt{stdout}. Give the types of these operators.
+
+\begin{align}
+\texttt{readint}:& \texttt{int}\ \texttt{IO}\\
+\texttt{writeint}:& \texttt{int} \to \texttt{unit}\ \texttt{IO}
+\end{align}
+
+\item Assume \texttt{MLreadint} and \texttt{MLwriteint} are primitives with
+side effects for input/output and consider the ML expression \texttt{add1}
+of type \texttt{int}:
+
+\begin{lstlisting}[language=ml]
+let val x = MLreadint() in MLwriteint(x+1); x end
+\end{lstlisting}
+
+Give an equivalent expression which uses the IO monad instead of
+side-effects, and state its type.
+
+% TODO
+
+Give a function \texttt{run2diff} which can be applied to the previous
+answer. When so applied it should give a value in the IO monad which
+corresponds to ML code that runs add1 twice and returns the difference
+between the values read.
+
+% TODO
+
+\item State what happens when attempting to compile and execute the
+following Java fragment (explaining the origin of any error messages or
+exceptions which might arise).
+
+\begin{lstlisting}[language=java]
+Object n = new Integer(42), o = new String("Whoops");
+Object [] v;
+Integer [] w = new Integer[10];
+v = w;
+v[4] = n;
+v[5] = o;
+\end{lstlisting}
+
+% TODO
+
+\item Consider the Java code:
+\begin{lstlisting}[language=java]
+Object n = new Integer(42);
+ArrayList<? extends Object> v1;
+ArrayList<Object> v2;
+ArrayList<Integer> w = new ArrayList<>(10);
+\end{lstlisting}
+Explain any differences in behaviour between assignments \texttt{v1 = w} and
+\texttt{v2 = w} and also between method calls \texttt{v1.set(4,n)} and
+\texttt{v2.set(4,n)}.
+
+% TODO
+
+\item In the programming language Scala, a generic class like the following
+one
+\begin{lstlisting}[language=scala]
+abstract class Stack[A] {
+  def push(x : A) : Stack[A];
+  def top : A;
+  def pop : Stack[A];
+}
+\end{lstlisting}
+
+is non-variant by default. Why? Modify it to make it co-variant.
+
+% TODO
+
+\item Consider the declarations
+\begin{lstlisting}[language=ml]
+structure Z = struct   type t = int; val z = 0 end;
+structure A = Z :  sig type t;       val z : t end;
+structure B = Z :> sig type t = int; val z : t end;
+structure C = Z :> sig type t;       val z : t end;
+\end{lstlisting}
+in the SML Modules language. Explain the behaviour of the SML interpreter
+on inputting each of the expressions.
+
+% TODO
+
+\begin{lstlisting}[language=ml]
+Z.z = A.z;
+Z.z = B.z;
+Z.z = C.z;
+\end{lstlisting}
+
+\item What are the similarities and differences between Haskell type
+classes, overloading, and dynamic dispatch used in object-oriented languages?
+
+% TODO
+
+\end{enumerate}
+
+\end{document}

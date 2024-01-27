@@ -1,0 +1,108 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\input{../prologstyle}
+
+\begin{document}
+
+\begin{examquestion}{2001}{5}{7}
+
+Consider the following Prolog program, which is intended to define the
+third argument to be the maximum value of the first two numeric arguments:
+\begin{lstlisting}[style=pstyle]
+max(X, Y, X) :- X >= Y, !.
+max(X, Y, Y).
+\end{lstlisting}
+
+\begin{enumerate}
+
+\item Provide an appropriate query to show that the above program can give an
+incorrect result.
+
+The query below returns true -- when it's clearly false.
+
+\begin{lstlisting}[style=pstyle]
+max(2, 1, 1).
+\end{lstlisting}
+
+\item Explain the cause of the error.
+
+The second clause has no guard. So if the first condition is not satisfied
+then the second will always be satisfied -- even if it should not be. So any
+false condition of the form \texttt{max(X, Y, Y)} will return true.
+
+\item Suggest a correction.
+
+\begin{lstlisting}[style=pstyle]
+max2(X, Y, X) :- X >= Y.
+max2(X, Y, Y) :- X < Y.
+\end{lstlisting}
+
+\item Write a Prolog program to find the maximum of a list of numbers.
+
+\begin{lstlisting}[style=pstyle]
+maxlist([H], H).
+maxlist([H|T], X) :- maxlist(T, Y), max2(H, Y, X).
+\end{lstlisting}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{1996}{6}{7}
+
+\begin{enumerate}
+
+\item Describe how lists that are represented by difference lists may be
+concatenated (or ``appended'') in constant time.
+
+Difference lists are lists with exposed pointers at the end. Empty
+difference lists are represented by
+\begin{lstlisting}[style=pstyle]
+A-A.
+\end{lstlisting}
+
+Appending to difference lists can be done by the single fact
+\begin{lstlisting}[style=pstyle]
+append(A-B, B-C, A-C).
+\end{lstlisting}
+
+\item Define a procedure \texttt{rotate(X, Y)} where both \texttt{X} and
+\texttt{Y} are represented by difference lists, and \texttt{Y} is formed by
+rotating \texttt{X} to the left by one element.
+
+\begin{lstlisting}[style=pstyle]
+% rotate(+[H|T]-[H|X], ?T-X)
+% succeeds if the second argument is the first but rotated
+rotate([H|T]-[H|X], T-X).
+\end{lstlisting}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{1997}{6}{7}
+
+A binary tree is constructed from binary compound terms \texttt{n(a, b)}
+called \textit{nodes}, where components \texttt{a} and \texttt{b} are
+either nodes or integers. Suppose integer components are restricted to the
+values 0 and 1.
+
+Write a Prolog program to return a list of all the 0's and a list of all
+the 1's in a given tree. For example, the goal \texttt{enum(n(n(0,1),1),X,Y)}
+should instantiate \texttt{X} to \texttt{[0]} and \texttt{Y} to \texttt{[1,
+1]}. The program is required to use difference lists.
+
+\begin{lstlisting}[style=pstyle]
+enum(T, X, Y) :- enum2(T, X-[], Y-[]).
+enum2(0, [0|X]-X, Y-Y).
+enum2(1, X-X, [1|Y]-Y).
+enum2(n(A, B), X1-X3, Y1-Y3) :- enum2(A, X1-X2, Y1-Y2), enum2(B, X2-X3, Y2-Y3).
+\end{lstlisting}
+
+\end{examquestion}
+
+\end{document}

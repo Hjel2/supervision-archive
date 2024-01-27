@@ -1,0 +1,756 @@
+\documentclass[10pt,oneside,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{physics}
+
+\input{./templatenst/template.tex}
+
+\fancyhead[RO,LE]{{\bfseries NST Maths, SV~16}\\ 21-05-2022 12:00, Video Link}
+
+\begin{document}
+
+\begin{enumerate}
+
+\setcounter{enumi}{20}
+
+\item
+By the definition of determinant:
+\[
+\begin{split}
+\forall \mathbf{M}, j. |\mathbf{M}| &= \sum_{i=1} \mathbf{M}_{j, i} C_{j, i} \Longrightarrow \\
+|\mathbf{A}_i| &= \sum_{j = 1} (\mathbf{A}_i)_{j, i} C_{j, i} \\
+&= \sum_{j = 1} \mathbf{y}_i C_{j, i}
+\end{split}
+\]
+
+\[
+\begin{split}
+\mathbf{x}_i 
+&= \sum_{j = 1} \left( \mathbf{A}^{-1} \right)_{ij}\mathbf{y}_j \\
+&= \sum_{j = 1} \frac{C_{j, i}}{|\mathbf{A}|} \mathbf{y}_j \\
+&= \sum_{j = 1} \frac{\mathbf{y}_j C_{j, i}}{|\mathbf{A}|} \\
+&= \frac{|\mathbf{A}_i|}{|\mathbf{A}|} \\
+\end{split}
+\]
+
+There are two interpretations of the last question, I will describe both:
+
+\begin{itemize}
+
+\item ``Comment on the cases where there is no inverse and where the inverse is not unique.''
+
+There is no inverse if and only if $\det \mathbf{A} = 0$.
+
+If there is an inverse, then it is unique.
+
+\item ``Comment on the cases where there is no solution to the equation and where the solution to the equation is not
+ unique.
+
+There is no solution to the equation if and only if the determinant of $\mathbf{A}$ is zero and $\mathbf{y} $
+contains values which cause the equations to become inconsistent.
+
+$\mathbf{A}\mathbf{x} = \mathbf{y} $ has multiple solutions if and only if the determinant of $\mathbf{A}$ is zero and
+$\mathbf{y} $ contains values which do not cause equations to become inconsistent.
+
+\end{itemize}
+
+\item 
+
+\[
+\begin{split}
+\begin{pmatrix}
+1 & 1 & a \\
+3 & 4 & 2 + 3a \\
+-1 & 1 & 1 \\
+\end{pmatrix}
+\begin{pmatrix}
+x \\
+y \\
+z \\
+\end{pmatrix}
+&= 
+\begin{pmatrix}
+1 \\
+5 \\
+b \\
+\end{pmatrix} \\
+\end{split}
+\]
+
+\[
+\begin{split}
+|\mathbf{A}| &= 1\begin{vmatrix} 4 & 2 + 3a \\ 1 & 1 \\ \end{vmatrix} - 1 \begin{vmatrix} 3 & 2 + 3a \\ -1 & 1 \\ \end{vmatrix} + a\begin{vmatrix} 3 & 4 \\ -1 & 1 \\ \end{vmatrix} \\
+             &= (2 - 3a) - (5 + 3a) + 7a \\
+             &= a - 3 \\
+\end{split}
+\]
+
+Unique solutions do not exist for $a = 3$.
+
+\[
+\begin{split}
+x + y + 3z &= 1 \\
+x - x + y + y + 3z + z &= b + 1 \\
+2y + 4z &= b + 1 \\
+\end{split}
+\]
+\[
+\begin{split}
+3x + 4y + 11z &= 5 \\
+3x - 3x + 4y - 3y + 11z - 9z &= 5 - 3 \\
+y + 2z &= 2 \\
+2y + 4z &= 4 \\
+\end{split}
+\]
+So for the equation to have any solutions;
+\[
+b + 1 = 4 \Longrightarrow b = 3
+\]
+
+So there are many solutions for $b = 3$ and there are no solutions for $b \neq 3$.
+
+\item 
+
+\[
+\mathbf{A} =
+\begin{pmatrix}
+1 & 4 & -6 \\
+0 & 4 & 0 \\
+0 & 0 & 9 \\
+\end{pmatrix}
+\]
+
+\item
+
+\[
+\mathbf{R} =
+\begin{pmatrix}
+0 & -1 & 0 \\
+1 & 0 &  0 \\
+0 & 0 & 1 \\
+\end{pmatrix}
+\]
+
+\item
+
+The eigenvalues of a reflection matrix are the coefficients of the unit normal to the plane in which the reflection
+matrix reflects.
+
+Two of the eigenvectors lie in the plane and the other is the normal to the plane. They form a basis where the plane
+lies in two axis and the third eigenvector is the distance from the plane.
+They are orthogonal.
+
+\item
+
+\begin{enumerate}[label=(\roman*)]
+
+\item
+
+\[
+\begin{split}
+\begin{vmatrix}
+5 - \lambda & 1 & 1 \\
+1 & 3 - \lambda & 1 \\
+1 & 1 & 3 - \lambda \\
+\end{vmatrix}
+&= \mathbf{0} \\
+(5 - \lambda)((3 - \lambda)^2 - 1) - (3 - \lambda - 1) + (1 - (3 - \lambda)) &= 0 \\
+(5 - \lambda)(\lambda^2 - 6\lambda + 8) + \lambda - 2 + \lambda - 2 &= 0 \\
+\lambda^3 - 11\lambda^2 + 36\lambda - 36\lambda &= 0 \\
+(\lambda - 2)(\lambda - 3)(\lambda - 6) &= 0 \\
+\end{split}
+\]
+
+The eigenvalues are $2, 3, 6$. So all the eigenvalues are all real.
+
+\item
+
+The sum of the eigenvalues is $2 + 3 + 6 = 11$. $Tr(\mathbf{M}) = 5 + 3 + 3 = 11$. So the sum of the eigenvalues is
+equal to the trace of the matrix $\mathbf{M}$.
+
+\item
+
+\[
+\begin{split}
+|\mathbf{M}| &=
+\begin{vmatrix}
+5 & 1 & 1 \\
+1 & 3 & 1 \\
+1 & 1 & 3 \\
+\end{vmatrix} \\
+&=
+5 (9 - 1) - 1(3 - 1) + 1(1 - 3) \\
+&= 40 - 2 - 2 \\
+&= 36 \\
+\end{split}
+\]
+
+The product of the eigenvalues is $2 \times 3 \times 6 = 36$. So the product of the eigenvalues is equal to the
+determinant of the matrix.
+
+\item
+The eigenvector for $\lambda = 2$:
+\[
+\begin{split}
+(\mathbf{M} - 2\mathbf{I})\mathbf{e}_1 &= \mathbf{0} \\
+\begin{pmatrix}
+3 & 1 & 1 \\
+1 & 1 & 1 \\
+1 & 1 & 1 \\
+\end{pmatrix}
+\mathbf{e}_1 &= \mathbf{0} \\
+\end{split}
+\]
+\begin{align*}
+3\mathbf{v}_1 + \mathbf{v}_2 + \mathbf{v}_3 &= 0 & \mathbf{v}_1 + \mathbf{v}_2 + \mathbf{v}_3 &= 0 \\
+2\mathbf{v}_1 &= 0 & 2\mathbf{v}_2 + 2\mathbf{v}_3 &= 0 \\
+\mathbf{v}_1 &= 0 & \mathbf{v}_2 &= -\mathbf{v}_3 \\
+\end{align*}
+Setting $\mathbf{v}_2 = \frac{1}{\sqrt {2}}$ gives the normalised eigenvector $\mathbf{e}_1$.
+\[
+\mathbf{e}_1 =
+\frac{1}{\sqrt {2}}\begin{pmatrix}
+0 \\ 1 \\ -1 \\
+\end{pmatrix}
+\]
+
+The eigenvector for $\lambda = 3$:
+\[
+\begin{split}
+(\mathbf{M} - 3\mathbf{I})\mathbf{e}_2 &= \mathbf{0} \\
+\begin{pmatrix}
+2 & 1 & 1 \\
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+\end{pmatrix}
+\mathbf{e}_2 &= \mathbf{0} \\
+\end{split}
+\]
+\begin{align*}
+\mathbf{v}_1 &= -\mathbf{v}_3 & \mathbf{v}_1 &= -\mathbf{v}_2 \\
+\end{align*}
+Setting $\mathbf{v}_1 = \frac{1}{\sqrt {3}}$ gives the normalised eigenvector:
+\[
+\mathbf{e}_2 =
+\frac{1}{\sqrt {3}}
+\begin{pmatrix}
+1 \\ -1 \\ -1 \\
+\end{pmatrix}
+\]
+
+The eigenvector for $\lambda = 6$:
+\[
+\begin{split}
+(\mathbf{M} - 6\mathbf{I})\mathbf{e}_3 &= \mathbf{0} \\
+\begin{pmatrix}
+-1 & 1 & 1 \\
+1 & -3 & 1 \\
+1 & 1 & -3 \\
+\end{pmatrix}
+\mathbf{e}_3 &= \mathbf{0} \\
+\end{split}
+\]
+\begin{align*}
+-v_1 + v_2 + v_3 &= 0 & v_1 -3v_2 + v_3 &= 0 & v_1 + v_2 - 3v_3 &= 0 \\
+-2v_2 + 2v_3 &= 0 & 4v_1 - 8v_3 &= 0 \\
+v_2 &= v_3 & v_1 &= 2v_3 \\
+\end{align*}
+Setting $v_3 = \frac{1}{\sqrt {6}}$ gives the normalised eigenvector:
+\[
+\mathbf{e}_3 =
+\frac{1}{\sqrt {6}}
+\begin{pmatrix}
+2 \\ 1 \\ 1
+\end{pmatrix}
+\]
+
+\[
+\mathbf{e}_1 \cdot \mathbf{e}_2 = \mathbf{e}_1 \cdot \mathbf{e}_3 = \mathbf{e}_2 \cdot \mathbf{e}_3 = 0
+\]
+So the eigenvectors are orthogonal.
+
+\end{enumerate}
+
+\item
+
+\[
+\begin{split}
+|\mathbf{A} - \lambda\mathbf{I}| &= 0 \\
+\begin{vmatrix}
+4 - \lambda & -2 & 0 \\
+-2 & 3 - \lambda & -2 \\
+0 & -2 & 2 - \lambda \\
+\end{vmatrix} &= 0 \\
+(4 - \lambda)((3 - \lambda)(2 - \lambda) - 4) - 4(2 - \lambda) &= 0 \\
+(4 - \lambda)(\lambda^2 - 5 \lambda + 6 - 4) - 8 + 4\lambda &= 0 \\
+(4 - \lambda)(\lambda^2 - 5\lambda + 2) - 8 + 4\lambda &= 0 \\
+\lambda^3 - 5\lambda^2 + 2\lambda - 4\lambda^2 + 20\lambda - 8 + 8 - 4\lambda &= 0 \\
+\lambda^3 - 9\lambda^2 + 18\lambda &= 0 \\
+\lambda(\lambda^2 - 9\lambda + 18) &= 0 \\
+\lambda(\lambda - 3)(\lambda - 6) &= 0 \\
+\end{split}
+\]
+
+For $\lambda = 0$:
+\begin{gather*}
+\begin{pmatrix}
+4 & -2 & 0 \\
+-2 & 3 & -2 \\
+0 & -2 & 2 \\
+\end{pmatrix}
+\mathbf{v}
+=
+\mathbf{0} \\
+2v_1 = v_2 \wedge v_2 = v_3 \\
+\end{gather*}
+Setting $v_1 = \frac{1}{3}$ gives the normalised eigenvector:
+\[
+\mathbf{e}_1 = \frac{1}{3}\begin{pmatrix}
+1 \\ 2 \\ 2 \\
+\end{pmatrix}
+\]
+
+For $\lambda = 3$:
+\begin{gather*}
+\begin{pmatrix}
+1 & -2 & 0 \\
+-2 & 0 & -2 \\
+0 & -2 & -1 \\
+\end{pmatrix}
+\mathbf{v} = \mathbf{0} \\
+v_1 = 2v_2 \wedge v_1 = -v_3 \\
+\end{gather*}
+Setting $v_2 = \frac{1}{3} $ gives the normalised eigenvector:
+\[
+\mathbf{e}_2 = \frac{1}{3}\begin{pmatrix}
+2 \\ 1 \\ -2 \\
+\end{pmatrix}
+\]
+
+For $\lambda = 6$:
+\begin{gather*}
+\begin{pmatrix}
+-2 & -2 & 0 \\
+-2 & -3 & -2 \\
+0 & -2 & -4 \\
+\end{pmatrix}
+\mathbf{v} = \mathbf{0} \\
+v_1 = -v_2 \wedge v_2 = -2v_3 \\
+\end{gather*}
+Setting $v_3 =\frac{1}{3} $ gives the normalised eigenvector:
+\[
+\mathbf{e}_3 =\frac{1}{3} \begin{pmatrix}
+2 \\ -2 \\ 1 \\
+\end{pmatrix}
+\]
+
+\[
+\begin{split}
+\mathbf{y} &= \mathbf{y}\cdot \mathbf{e}_1 \mathbf{e}_1 + \mathbf{y}\cdot \mathbf{e}_2 \mathbf{e}_2 +
+\mathbf{y}\cdot \mathbf{e}_3 \mathbf{e}_3 \\
+&= 0\mathbf{e}_1 + 3\mathbf{e}_2 + 6\mathbf{e}_3 \\
+\end{split}
+\]
+So the coordinates of $y$ in the basis $(\mathbf{e}_1, \mathbf{e}_2, \mathbf{e}_3)$ are $(0, 3, 6)$.
+
+\[
+\begin{split}
+\mathbf{Ax} &= \mathbf{y} \\
+\mathbf{Ax} &= 3\mathbf{e}_2 + 6\mathbf{e}_3 \\
+\mathbf{Ax} &= \mathbf{A}(\mathbf{e_2} + \mathbf{e}_3) \\
+\end{split}
+\]
+So $\mathbf{x} = \mathbf{e}_2 + \mathbf{e}_3 $ is a solution to the equation.
+
+This is not unique since $\forall k. \mathbf{A}k\mathbf{e}_1 = 0 \times k \times \mathbf{e}_1 = \mathbf{0}$.
+So $\forall k. \mathbf{x} = k\mathbf{e}_1 + \mathbf{e}_2 + \mathbf{e}_3$ is a solution to the equation.
+
+\item
+
+\[
+\begin{split}
+\left( \mathbf{Ax}  \right)_{ij} &= \sum^{}_{j=1} a_{ij}x_j \\
+&= \sum^{}_{j=1, k=1} \lambda e_{ik}e^T_{kj}x_j \\
+&= \sum^{}_{j=1, k=1} \lambda e_{ik}e_{jk}x_j \\
+&= \sum^{}_{j=1} \lambda e_{i}e_j x_j \\
+&= \lambda \mathbf{e} \cdot \mathbf{x} \mathbf{e} \\
+\end{split}
+\]
+
+The definition of an eigenvalue and eigenvector of $\mathbf{A}$ is that $\mathbf{A}\mathbf{e} = \lambda\mathbf{e} $.
+Since $ \mathbf{A}\mathbf{e} = \lambda \mathbf{e} $, and
+$\mathbf{A}\mathbf{e} = \lambda \left( \mathbf{e} \cdot \mathbf{e} \right) \mathbf{e} = \lambda\mathbf{e}$, $\lambda$
+ is an eigenvalue of
+$\mathbf{A}$ with eigenvector $\mathbf{e}$ as required. Note that all eigenvectors are orthogonal. So for all the
+other eigenvectors of $\mathbf{A}$, $\mathbf{A}\mathbf{e}_i = 0$. So the eigenvalue of all the other eigenvectors
+must be zero.
+
+Hence $\mathbf{A}$ has eigenvalue $\lambda$ with eigenvector $\mathbf{e}$ and all other eigenvalues
+are zero. As required.
+
+% thinking about using the result above to show that the vector formed by the mehtod they describe must have
+% eigenvectors and eigenvalues as B. We can then state that since they're aboeu to uniquely determine the matrix B,
+% this matrix must be B.
+
+Let
+\[
+\mathbf{C} \triangleq \lambda_1 \mathbf{e}_1 \mathbf{e}^T_1 + \lambda_2 \mathbf{e}_2 \mathbf{e}^T_2 \dots + \lambda_n
+\mathbf{e}_n \mathbf{e}^T_n
+\]
+Since eigenvectors are orthonormal, $\mathbf{e}_i\mathbf{e}_j = \delta_{ij}$.
+Matrix multiplication and addition is distributive. So from the result with $\mathbf{A}$:
+\[
+\forall i. \mathbf{C}\mathbf{e}_i = \lambda\mathbf{e}_i
+\]
+Hence the eigenvectors and eigenvalues of $\mathbf{C}$ are $\lambda_1, \lambda_2, \dots, \lambda_n $ and
+$\mathbf{e}_1, \mathbf{e}_2, \dots \mathbf{e}_n $.
+Since eigenvectors and eigenvalues uniquely determine a matrix and $\mathbf{C} $ has the same eigenvectors and
+eigenvalues as $\mathbf{B} $, $\mathbf{B} = \mathbf{C}$. So:
+\[
+\mathbf{B} = \lambda_1 \mathbf{e}_1 \mathbf{e}^T_1 + \lambda_2 \mathbf{e}_2 \mathbf{e}^T_2 \dots + \lambda_n
+\mathbf{e}_n \mathbf{e}^T_n
+\]
+As required.
+
+\item
+
+\[
+\begin{pmatrix}
+x & y & z \\
+\end{pmatrix}
+\begin{pmatrix}
+1 & 8 \\
+8 & -11 \\
+\end{pmatrix}
+\begin{pmatrix}
+x \\ y \\ z \\
+\end{pmatrix}
+=
+1
+\]
+
+\[
+\begin{split}
+\begin{vmatrix}
+1 - \lambda & 8 \\
+8 & -11 - \lambda \\
+\end{vmatrix}
+&=
+(\lambda - 1)(\lambda + 11) - 64 \\
+&= \lambda^2 + 10\lambda - 75 \\
+&= (\lambda - 5)(\lambda + 15)
+\end{split}
+\]
+So the eigenvalues of $\mathbf{A}$ are $\lambda_1 = 5$ and $\lambda_2 = -15$.
+
+For $\lambda_1$:
+\[
+\begin{pmatrix}
+-4 & 8 \\
+8 & -16 \\
+\end{pmatrix}
+\begin{pmatrix}
+a \\ b \\
+\end{pmatrix}
+=
+\mathbf{0} \\
+\]
+\[
+a = 2b
+\]
+Setting $b = \frac{1}{\sqrt {5}}$ gives a normalised eigenvector:
+\[
+\mathbf{e}_1 =
+\frac{1}{\sqrt {5}}
+\begin{pmatrix}
+2 \\ 1 \\
+\end{pmatrix}
+\]
+
+For $\lambda_2$:
+\[
+\begin{pmatrix}
+16 & 8 \\
+8 & 4 \\
+\end{pmatrix}
+=
+\mathbf{0}
+\]
+\[
+2a = -b
+\]
+Setting $a = \frac{1}{\sqrt {5}}$ gives a normalised eigenvector:
+\[
+\mathbf{e}_2 =
+\frac{1}{\sqrt {5}}
+\begin{pmatrix}
+1 \\ -2 \\
+\end{pmatrix}
+\]
+
+\begin{align*}
+x &= \begin{pmatrix}
+1 \\ 0 \\
+\end{pmatrix}\cdot \mathbf{e}_1 \mathbf{e}_1 +
+\begin{pmatrix}
+1 \\ 0 \\
+\end{pmatrix}\cdot \mathbf{e}_2 \mathbf{e}_2
+&
+y &= \begin{pmatrix}
+0 \\ 1 \\
+\end{pmatrix}\cdot \mathbf{e}_1 \mathbf{e}_1 +
+\begin{pmatrix}
+0 \\ 1 \\
+\end{pmatrix}\cdot \mathbf{e}_2 \mathbf{e}_2 \\
+x &= \frac{1}{\sqrt {5}}(2\mathbf{e}_1 + \mathbf{e}_2) & y &= \frac{1}{\sqrt {5}}(\mathbf{e}_1 - 2\mathbf{e}_2)
+\end{align*}
+
+\[
+\begin{split}
+x^2 + 16xy - 11y^2 &= 1 \\
+x(x + 16y) - 11y^2 &= 1 \\
+\frac{1}{5}(2\mathbf{e}_1 + \mathbf{e}_2)(2\mathbf{e}_1 + \mathbf{e}_2 + 16(\mathbf{e}_1 - 2\mathbf{e}_2)) - 11
+(\mathbf{e}_1 - 2\mathbf{e}_2)^2) &= 1 \\
+(2\mathbf{e}_1 + \mathbf{e}_2)(18\mathbf{e}_1 - 31\mathbf{e}_2) - 11\mathbf{e}_1^2 +
+44\mathbf{e}_1\mathbf{e}_2 - 44\mathbf{e}_2^2 &= 5 \\
+36\mathbf{e}_1 - 44\mathbf{e}_1\mathbf{e}_2 - 31\mathbf{e}_2^2 - 11\mathbf{e}_1^2 +
+44\mathbf{e}_1\mathbf{e}_2 - 44\mathbf{e}_2^2 &= 5 \\
+25\mathbf{e}_1^2 - 75\mathbf{e}_2^2 &= 5 \\
+5\mathbf{e}_1^2 - 15\mathbf{e}_2^2 &= 1 \\
+\end{split}
+\]
+
+\item
+
+\[
+\begin{split}
+f &= x^3 + xy + y^2 \\
+\pdv{f}{x} &= 3x^2 + y \\
+\pdv{f}{y} &= x + 2y \\
+\pdv[2]{f}{x}{y} &= 1 \\
+\pdv[2]{f}{x} &= 6x \\
+\pdv[2]{f}{y} &= 2 \\
+\end{split}
+\]
+
+At a stationary point, $\pdv{f}{x} = \pdv{f}{y} = 0$.
+\begin{align}
+x + 2y &= 0 & 3x^2 + y &= 0 \\
+x + 2y &= 0 & y &= -3x^2 \\
+x - 6x^2 &= 0 \\
+x(6x - 1) &= 0 \\
+\end{align}
+\[
+x = 0 \vee x = \frac{1}{6}
+\]
+At $x = 0$:
+\[
+\begin{split}
+x + 2y &= 0 \\
+2y &= 0 \\
+y &= 0 \\
+\end{split}
+\]
+At $x = \frac{1}{6}$:
+\[
+\begin{split}
+x + 2y &= 0 \\
+\frac{1}{6} + 2y &= 0 \\
+y &= -\frac{1}{12} \\
+\end{split}
+\]
+So the stationary points of the function $f$ are $\left( 0, 0 \right)$ and $\left( \frac{1}{6}, -\frac{1}{12} \right)$.
+
+The Hessian for the function $f$ at the point $(0, 0)$ is:
+\[
+\mathbf{H}
+=
+\begin{pmatrix}
+0 & 1 \\
+1 & 2 \\
+\end{pmatrix}
+\]
+\[
+\begin{split}
+|\mathbf{H} - \lambda\mathbf{I}| &= 0 \\
+\lambda(\lambda - 2) - 1 &= 0 \\
+\lambda^2 - 2\lambda - 1 &= 0 \\
+\lambda &= 1 \pm \sqrt {2} \\
+\end{split}
+\]
+Since the eigenvectors have opposite signs, the point $(0, 0)$ must be a stationary point.
+
+The Hessian for the function $f$ at the point $\left( \frac{1}{6}, -\frac{1}{12} \right)$ is:
+\[
+\mathbf{H}
+=
+\begin{pmatrix}
+1 & 1 \\
+1 & 2 \\
+\end{pmatrix}
+\]
+\[
+\begin{split}
+|\mathbf{H} - \lambda\mathbf{I}| &= 0 \\
+(\lambda - 1)(\lambda - 2) - 1 &= 0 \\
+\lambda^2 - 3\lambda + 1 &= 0 \\
+\lambda &= \frac{3 \pm \sqrt {5}}{2} \\
+\end{split}
+\]
+Since all eigenvalues at this point are positive, the function must have a minimum at this point.
+
+\item
+
+The following matrix is orthogonal if and only if the dot product of every pair of the columns is zero.
+
+\begin{align*}
+c_1 \cdot c_2 &= \frac{1}{2}(1 + 1 - \sqrt {2^2}) & c_1 \cdot c_3 &= \frac{1}{2}(\sqrt {2} - \sqrt {2} + 0) & c_2
+\cdot c_3 &= \frac{1}{2}(\sqrt {2} - \sqrt {2}) \\
+&= 0 & &= 0 & &= 0 \\
+\end{align*}
+
+If $\mathbf{x}$ is aligned with this axis, then $f(\mathbf{x}) = \mathbf{x}$.
+
+\[
+\begin{split}
+|\mathbf{O} - \lambda\mathbf{I}| &=
+\frac{1}{8}
+\begin{vmatrix}
+1 - 2\lambda & 1 & \sqrt {2} \\
+1 & 1 - 2\lambda & -\sqrt {2} \\
+-\sqrt {2} & \sqrt {2} & -2\lambda \\
+\end{vmatrix} \\
+&= \frac{1}{8}\left((1 - 2\lambda)((1 - 2\lambda)(-2\lambda) + 2) - 1(-2\lambda - 2) + \sqrt {2}\left(\sqrt {2} + \sqrt
+{2}(1 - 2\lambda)\right)\right) \\
+&= \frac{1}{8} ((1 - 2\lambda)(4\lambda^2 - 2\lambda + 2) + (2\lambda + 2) + (4 - 4\lambda)) \\
+&= \frac{1}{8}(-8\lambda^3 + 8\lambda^2 - 6\lambda + 2 + 2\lambda + 2 + 4 - 4\lambda) \\
+&= \frac{1}{8}(-8\lambda^3 + 8\lambda^2 - 8\lambda + 8) \\
+&= -(\lambda^3 - \lambda^2 + \lambda - 1) \\
+&= -(\lambda - 1)(\lambda^2 + 1) \\
+\end{split}
+\]
+Setting $\lambda = 1$ gives $|\mathbf{O} - \lambda\mathbf{I}| = 0$. So $1$ is an eigenvalue of $\mathbf{O}$.
+
+The axis of rotation is the eigenvector corresponding to eigenvalue 1.
+
+\[
+\frac{1}{2}
+\begin{pmatrix}
+-1 & 1 & \sqrt {2} \\
+1 & -1 & -\sqrt {2} \\
+\sqrt {2} & \sqrt {2} & -2 \\
+\end{pmatrix}
+\mathbf{v} = \mathbf{0} \\
+\]
+\begin{align*}
+v_1 - v_2 - \sqrt {2}v_3 &= 0 & \sqrt {2}v_1 + \sqrt {2}v_2 - 2v_3 &= 0 \\
+2\sqrt {2}v_2 &= 0 & 2\sqrt {2}v_1 - 4v_3 &= 0 \\
+v_2 &= 0 & v_1 &= \sqrt {2} v_3 &= 0 \\
+\end{align*}
+
+Setting $v_3 = \frac{1}{\sqrt {3}}$ gives the normalised eigenvector:
+\[
+\mathbf{e} =
+\frac{1}{\sqrt {3}}
+\begin{pmatrix}
+\sqrt {2} \\ 0 \\ 1 \\
+\end{pmatrix}
+\]
+$\mathbf{e}$ is the axis of rotation.
+
+If vectors lie in the 2D subspace orthogonal to the axis of rotation, then the
+coordinate of the axis of rotation is zero. Consider now only the 2D subspace which
+is orthogonal to the axis of rotation with $0\mathbf{e}_1$. A vector lying in
+this subspace will experience a 2D rotation of $\theta$ \textit{within this subspace}.
+
+So the matrix has the same effect as a 2D rotation within the subspace given by:
+\[
+\mathbf{R} =
+\begin{pmatrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta \\
+\end{pmatrix}
+\]
+
+\[
+\mathbf{R} =
+\begin{pmatrix}
+\cos \theta & -\sin \theta \\
+\sin \theta & \cos \theta \\
+\end{pmatrix}
+\]
+For all eigenvalues of $\mathbf{R}$, $|\mathbf{R} - \lambda \mathbf{I}|$.
+
+\[
+\begin{split}
+|\mathbf{R} - \lambda\mathbf{I}| &= 0 \\
+\begin{vmatrix}
+\cos\theta - \lambda & -\sin\theta \\
+\sin\theta & \cos\theta - \lambda \\
+\end{vmatrix}
+&= 0 \\
+(\cos\theta - \lambda)(\cos\theta - \lambda) - (\sin\theta)(-\sin\theta) &= 0 \\
+\cos^2\theta - 2\lambda \cos\theta + \lambda^2 + \sin^2\theta &= 0 \\
+\lambda^2 - 2\lambda \cos\theta + 1 &= 0 \\
+\end{split}
+\]
+\[
+\begin{split}
+\lambda &= \frac{2\cos\theta \pm \sqrt {4\cos^2\theta - 4}}{2} \\
+&= \cos\theta \pm \sqrt {\cos^2\theta - 1} \\
+&= \cos\theta \pm \sqrt {-\sin^2\theta} \\
+&= \cos\theta \pm i\sin\theta \\
+\end{split}
+\]
+\begin{align*}
+\lambda &= \cos\theta + i\sin\theta & & \vee \ \ & \lambda &= \cos -\theta + i\sin -\theta \\
+\lambda &= e^{i\theta} & & \vee \ \ & \lambda &= e^{-i\theta} \\
+\end{align*}
+
+If $\mathbf{O}$ is a rotation matrix about an axis, then in this coordinate system,
+$\mathbf{O}$ is a standard 3D rotation matrix in the form of one of the below matrices:
+
+\begin{align}
+\begin{pmatrix}
+1 & 0 & 0 \\
+0 & \cos\theta & -\sin\theta \\
+0 & \sin\theta & \cos\theta \\
+\end{pmatrix}
+& &
+\begin{pmatrix}
+\cos\theta & 0 & -\sin\theta \\
+0 & 1 & 0 \\
+\sin\theta & 0 & \cos\theta \\
+\end{pmatrix}
+& &
+\begin{pmatrix}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta  & 0\\
+0 & 0 & 1 \\
+\end{pmatrix}
+\end{align}
+
+Note that the trace of all of these matrices is $1 + 2\cos\theta$. So the
+trace of $\mathbf{O}$ is $1 + 2\cos\theta$.
+
+The trace of $\mathbf{O}$ is 1. Defining $0 \leq \theta < 2\pi$ gives:
+\[
+\begin{split}
+1 &= 1 + 2\cos\theta \\
+0 &= 2\cos\theta \\
+0 &= \cos\theta \\
+\end{split}
+\]
+\[
+\theta = \frac{\pi}{2} \vee \theta = \frac{3\pi}{2}
+\]
+
+So $\theta$ is a rotation of $\frac{\pi}{2}$ or $\frac{3\pi}{2} $.
+
+\dag Presumably which depends on which direction you define your rotation to
+go -- these calculations didn't differentiate between clockwise and anticlockwise
+and so we would expect two results $\theta_1, \theta_2$ where $\theta_1 = 2\pi - \theta_2$.
+
+\end{enumerate}
+
+\end{document}

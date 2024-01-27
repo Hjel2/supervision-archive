@@ -1,0 +1,365 @@
+\input{./infofile}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template}
+
+\begin{document}
+
+\begin{examquestion}{2018}{6}{4}
+
+Consider the following two decision problems:
+
+\begin{itemize}
+
+\item \textbf{Reach} -- the problem of deciding, given a \textit{directed
+graph} $G$ and two vertices $a$ and $b$ in $G$, whether there is a path in
+$G$ from $a$ to $b$.
+
+\item \textbf{UReach} -- the problem of deciding, given an
+\textit{undirected graph} $G$ and two vertices $a$ and $b$ in $G$, whether
+there is a path in $G$ from $a$ to $b$.
+
+\end{itemize}
+
+It is known that \textbf{Reach} is NL-complete (under logarithmic-space
+reductions) and that \textbf{UReach} is in the complexity class L\@.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Based on the above information, for each of the following statements,
+state whether it is true, false or unknown. In each case, give justification
+for your answer and in the case where the truth of the statement is
+unknown, state any implications that might follow from it being true or false.
+
+\begin{enumerate}
+
+\item \textbf{Reach} $\le_L$ \textbf{UReach}, i.e \textbf{Reach} is
+reducible in logarithmic-space to \textbf{UReach}.
+
+This is unknown.
+
+If there is a logarithmic space reduction from any $\mathsf{NL}$-complete
+language to any language in $\mathsf L$ then would be able to conclude
+$\mathsf{NL} = \mathsf L$. Since $\mathsf{L} \stackrel{?}{=} \mathsf{NL}$, we
+can conclude that there is no known reduction from any
+$\mathsf{NL}$-complete language to any language in $\mathsf L$ and therefore
+the statement is unknown.
+
+If it were true then \textbf{Reach} $\in \mathsf L$. This implies that
+$\mathsf{L} = \mathsf{NL}$.
+
+If it is false then $\mathsf L \ne \mathsf{NL}$.
+
+\item \textbf{UReach} $\le_L$ \textbf{Reach}
+
+This is true.
+
+By the definition of NL-completeness and the fact that $\mathsf{L}\subseteq \mathsf{NL}$
+by definition, we have:
+\begin{align*}
+\forall A \in \mathsf{NL}. A &\le_L \textbf{Reach} \implies\\
+\forall A \in \mathsf{L}. A &\le_L \textbf{Reach} \implies\\
+\textbf{UReach} &\le_L \textbf{Reach}
+\end{align*}
+
+\item \textbf{UReach} is in $\mathsf P$
+
+This is true.
+
+It is known that $\mathsf L \subseteq \mathsf P$. Since \textbf{UReach} $\in \mathsf L$,
+we have \textbf{UReach} $\in \mathsf P$.
+
+\item If \textbf{Reach} is in $\mathsf L$, then $\mathsf P = \mathsf{NP}$.
+
+This is false.
+
+\textbf{Reach} is in $\mathsf L$ if, and only if, for any $f(n) \in \Omega(\lg n).
+\mathsf{SPACE}(f(n)) = \mathsf{NSPACE}(f(n))$. However, the second statement
+is clearly not equivalent to $\mathsf{P} = \mathsf{NP}$ -- it bounds the
+space required to simulate a nondeterministic Turing machine -- from which
+we can conclude $\mathsf{NTIME}(f(n)) \subseteq \mathsf{TIME}(c^{\lg n + f(n
+)})$ -- which was known already! This result would place a tighter bound on
+the constant $c$ -- but does not bring the whole expression down exponentially.
+
+\end{enumerate}
+
+\item Let us say that a nondeterministic Turing machine is \textit{symmetric}
+if for any two configurations $c_1$ and $c_2$ of $M$, if $c_1 \to_M c_2$,
+then $c_2 \to_M c_1$. We write $\mathsf{SL}$ for the class of all languages
+that are accepted by a symmetric Turing machine using $\mathcal O(\lg n)$
+work space on inputs of length $n$.
+
+By using the configuration graph and using the fact that \textbf{UReach} is
+in $\mathsf L$, explain why it follows that $\mathsf{SL} \subseteq \mathsf L$.
+
+Let SNTM denote symmetric nondeterministic Turing machine.
+
+Let $\mathsf{SYM}$ denote the language of SNTMs $S$ and inputs $x$ which
+they accept. So $\mathsf{SYM} = \{([S], x)|S \text{ accepts } x\}$
+
+Consider an arbitrary language $A \in \mathsf{SL}$ and the problem of
+testing whether $x \in A$ for arbitrary $x$ and $A$. Let $S$ denote the SNTM
+which accepts $A$. Consider the configuration graph of an $S$ with $x$
+on its input tape. By definition of symmetry, it has the property that if $
+c_1 \to c_2$ then $c_2 \to c_1$. This means that all directed edges come in
+pairs. So the configuration graph can be interpreted as an undirected graph.
+
+I propose the reduction which adds an (undirected) edge from every possible
+accepting state in the configuration graph of $S(x)$ into a single new state
+and asks whether this new state is reachable from the initial state of the
+SNTM\@. I prove this is equivalent to the initial problem:
+
+\begin{itemize}
+
+\item RTP $x \in A \implies f(x) \in \textbf{UReach}$
+
+If $x \in A$ then by the definition of a Nondeterministic Turing machine,
+there must be some path from the start state to \textit{some} accepting
+state. Since the new node is connected to every accepting state, we can
+conclude that in $f(x)$, the new node is reachable from this accepting state.
+
+So we can conclude that $f(x) \in \textbf{UReach}$, as required.
+
+\item RTP $f(x) \in \textbf{UReach} \implies x \in A$
+
+Assume the new node is reachable from the start state. Since this new node
+is \textit{only} reachable from accepting states, we can conclude that some
+accepting state must be reachable from the start state. So $S(x)$ can reach
+an accepting state. By the definition of a nondeterministic Turing machine,
+we have that $S$ accepts $x$. So $x \in A$.
+
+\end{itemize}
+
+Since $S$ accepts in logarithmic space, we have that the size of the
+configuration graph of $S$ is bounded by: $|Q||\Sigma|^{\lg n}|\lg n|$. Since
+\textbf{UReach} is in $\mathsf L$, we can decide whether two nodes are
+reachable from each other in an undirected graph using logarithmic space.
+
+So the complexity of deciding whether $x \in A$ in $\mathsf{SL}$ uses
+$\mathcal O\left( \lg |Q| + \lg n\lg |\Sigma| + \lg \lg n \right) =
+\mathcal O(\lg n) \subseteq \mathsf L$.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2016}{6}{2}
+
+The \textit{Graph Isomorphism} problem is the problem of deciding, given two
+graphs $G_1 = (V_1, E_1)$ and $G_2 = (V_2, E_2)$, whether there is a
+bijection $\beta: V_1 \to V_2$ such that
+\[
+(u, v) \in E_1 \qquad \text{if, and only if,} \qquad (\beta(u), \beta(v)) \in E_2
+\]
+for all $u, v \in V_1$.
+
+The Graph Isomorphism problem is not known to be in P nor known to
+be NP-complete.
+
+We define GI to be the set of all languages $L$ which are
+\textit{polynomial-time reducible} to Graph Isomorphism.
+
+What can you conclude from the above definitions and information about the
+truth of the following statements? If the statement is true or false,
+justify your answer and if you cannot conclude anything about its truth,
+explain why that is so.
+
+\begin{enumerate}
+
+\item Graph Isomorphism is in NP
+
+This is true.
+
+Graph Isomorphism is polynomially verifiable by the algorithm which takes a
+certificate $\beta$ (the size of which is clearly bound by a polynomial) and
+checks whether it meets the criteria given in the statement of Graph
+Isomorphism (which can clearly be done in polynomial time):
+\[
+(u, v) \in E_1 \iff (\beta(u), \beta(v)) \in E_2
+\]
+
+\item Graph Isomorphism is in co-NP
+
+This is unknown.
+
+No way of determining whether two graphs are \textit{not} isomorphic has
+been given. We have been told that Graph Isomorphism is in NP, is not
+NP-complete but is not known to be in P. This is not sufficient to conclude
+that Graph Isomorphism is in co-NP\@.
+
+\item $\text{GI} \subseteq \text{NP}$
+
+This is true.
+
+Consider an arbitrary $G \in \text{GI}$. Since $G \le_P $Graph Isomorphism
+(by definition), we know that $G$ is decidable in polynomial time by a
+nondeterministic Turing machine by reducing $G$ to an instance of Graph
+Isomorphism and testing whether the resulting graphs are isomorphic. So we
+have $\forall G \in \text{GI}. G \in \text{NP}$. This implies
+$\text{GI} \subseteq \text{NP}$.
+
+\item $\text{NP} \subseteq \text{GI}$
+
+This is unknown.
+
+A language $L$ is NP-complete if it is both in NP and is NP-hard.
+
+Since Graph Isomorphism is in NP and not known to be NP-complete, we can
+conclude that Graph Isomorphism must not be known to be NP-hard. Let $\mathsf{G}$
+denote Graph Isomorphism.
+
+By the definition of NP-hardness:
+
+If Graph Isomorphism is not NP-hard:
+\begin{align*}
+\neg (\forall A \in \text{NP}. A \le_P \mathsf{G}) & \implies \\
+\exists A \in \text{NP}. A \not\le_P \mathsf{G} & \implies \\
+\exists A \in \text{NP}. A \notin \text{GI} & \implies \\
+\text{NP} \nsubseteq \text{GI}
+\end{align*}
+
+If Graph Isomorphism is NP-hard:
+\begin{align*}
+\forall A \in \text{NP}. A \le_P \mathsf{G} & \implies \\
+\forall A \in \text{NP}. A \in \text{GI} & \implies \\
+\text{NP} \subseteq \text{GI}
+\end{align*}
+
+Therefore, it is not known whether this is true or false.
+
+\item $\text{P} \subseteq \text{GI}$
+
+This is true.
+
+Any language $L_1 \in \text{P}$ can be polynomially reduced to \textit{any}
+language $L_2$ (except $\emptyset$ or $\Sigma^*$) by the algorithm which
+solves the problem and maps it onto an instance of $L_2$ with the same truth.
+
+Therefore, $\forall L \in \text{P}. L \le_P \text{Graph Isomorphism}$. By
+the definition of GI, $\forall L \in \text{P}. L \in \text{GI}$.
+Therefore $\text{P} \subseteq \text{GI}$.
+
+\item $\text{GI} \subseteq \text{P}$
+
+This is unknown.
+
+If Graph Isomorphism is in P, then this holds. However, if Graph Isomorphism
+is \textit{not} in P then this does not hold.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2011}{6}{1}
+
+The following is a quotation from an Internet forum on cryptography.
+
+\hspace{2em} Cracking RSA is NP-complete so nothing better than brute force is
+possible.
+
+Your task is to evaluate to what extent (if any) this statement is true. For full
+marks, you will consider the following questions.
+
+\begin{itemize}
+
+\item What would it mean, precisely, for ``cracking RSA'' to be NP-complete?
+In particular, what is the decision problem involved and what is meant by
+saying it is NP-complete?
+
+Cracking RSA can be defined as the decision problem: ``given a public key
+$e$ and an value $y$ which was encrypted using it, find an $x$ such that
+$R(e, x) = y$''.
+
+A language $L$ is NP-complete if and only if it is both in NP and NP-hard.
+
+A language is in NP if and only if it is solvable in polynomial time by a
+nondeterministic algorithm.
+
+A language $L$ is NP-hard if and only if all languages $A$ in NP are
+polynomially reducible to it. In maths: $\forall A \in \text{NP}. A \le_P L$.
+
+Saying that RSA is NP-complete means that it is both in NP and for every
+problem in NP, there exists a reduction from it to an instance of decrypting
+a RSA encryption given the public key and encrypted value (but no private key).
+
+\item Is the problem, in fact, NP-complete? Why or why not?
+
+Whether RSA is NP-complete is \textbf{unknown}.
+
+RSA is polynomially verifiable by the certificate of the $x$ which can be
+encrypted to the digest. Since the set of polynomially verifiable languages
+is equal to the set NP, we have that RSA is in NP\@.
+
+However, RSA is not known to be NP-hard. Therefore, RSA is not known to be
+NP-complete.
+
+\item What is meant, precisely, by the conclusion, ``nothing better than brute
+force is possible''?
+
+``Nothing better than brute force is possible'' means ``the only algorithms
+for cracking RSA perform by testing every possible value which could hash''.
+
+\item Assuming the premise is correct, i.e ``cracking RSA is NP-complete'',
+does the conclusion follow? Why or why not?
+
+The conclusion \textit{does not follow}.
+
+$\text{P} = \text{NP}$ is an \textit{open problem}. If RSA was NP-complete
+and P was \textbf{not} equal to NP, then the author would be partially
+correct. There would be no deterministic polynomial-time algorithm for
+cracking RSA\@. However, randomised algorithms may be able to find
+solutions in polynomial time with very high probability. Therefore, the
+statement still does not follow in this case.
+
+In the case that $\text{P} = \text{NP}$, since cracking RSA is in the
+complexity class NP; there would exist a polynomial-time algorithm for
+cracking RSA and therefore the conclusion would \textit{also} not follow.
+
+\item What is the relationship, more generally, between encryption systems
+and NP-completeness?
+
+No encryption algorithm is known to be NP-complete.
+
+\end{itemize}
+
+``cracking RSA'' is believed to be the inverse of a one-way function. The
+properties of a one-way function $f$ are as follows:
+\begin{itemize}
+
+\item $f$ is one-to-one
+
+\item $f \in \mathsf{FP}$
+
+\item $f^{-1} \notin \mathsf{FP}$
+
+\item $\exists k \in \mathbb{R}. \forall x. |x|^{\frac{1}{k}} \le |f(x)| \le
+|x|^k$
+
+\end{itemize}
+
+Where $\mathsf{FP}$ is defined as the set of functions which are computable
+in polynomial time.
+
+UP (unambiguous polynomial) is the set of languages which are computable by
+an unambiguous nondeterministic Turing machine in polynomial time. In maths,
+if $L$ is a language in UP, then there must exists some nondeterministic
+polynomial-time verifier $R$ such that:
+\[
+L = \{x|\exists! y. R(x, y)\}
+\]
+
+$\text{P} \ne \text{UP} \iff $ there exists a one-way function.
+
+Note that $\text{P} \ne \text{UP}$ is a stronger statement than $\text{P} \ne \text{NP}$.
+
+By the definition of UP, we have $\text{UP} \subseteq \text{NP}$. Therefore,
+if $\text{P} \ne \text{UP}$, we have $\text{P} \ne \text{NP}$.
+
+There are some encryption algorithms which are provably secure (such as the
+one-time pad), where the only way to decrypt an encrypted string is to know
+the decryption key.
+
+\end{examquestion}
+
+\end{document}

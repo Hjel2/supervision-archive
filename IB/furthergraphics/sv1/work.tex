@@ -1,0 +1,422 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{color}
+
+\begin{document}
+
+\section*{Further Graphics Exercise Set I}
+
+\begin{enumerate}
+
+\setcounter{enumi}{1}
+
+\item What geometric shape does the following curve describe?
+
+\[
+\left( x(t), y(t) \right) = \left( e^t\cos(t), e^t \sin(t) \right)
+\]
+
+This planar curve describes an anticlockwise spiral.
+
+\item
+
+\begin{enumerate}
+
+\item How do you compute the surface normal $\mathbf{n}$ for a parametric
+surface?
+
+For a parametric surface with equation $f(u, v) = (x, y, z)$, the
+surface normal $\mathbf{n}$ is given by:
+\[
+\pdv{f}{u}\times\pdv{f}{v}
+\]
+
+\item Below you find the parameterisation of a \textit{torus}. Compute the
+surface normal $\mathbf{n}$ for $u = \frac{1}{3}\pi$, $v = \frac{3}{4}\pi$.
+\begin{gather*}
+s(u, v) = \left(\left(3 + \sqrt{2} \cos(v)\right)\cos(u), \left(3 + \sqrt{2} \cos(v)\right)\sin(u), \sqrt{2} \sin(v) \right) \\\\
+\pdv{s}{u} =
+\left(-\left(3 + \sqrt{2} \cos(v)\right)\sin(u), \left(3 + \sqrt{2} \cos(v)\right)\cos(u), 0 \right) \\\\
+\pdv{s}{v} =
+\left(-\sqrt{2} \sin(v)\cos(u), -\sqrt{2} \sin(v)\sin(u), \sqrt{2} \cos(v)\right)
+\end{gather*}
+
+{\color{blue} Substitute the values in earlier rather than cross-producting
+the $\cos$, $\sin$ terms}
+
+\[
+\begin{split}
+\mathbf{n}
+&= \pdv{s}{u} \times \pdv{s}{u} \\
+&= \begin{pmatrix}
+-\left(3 + \sqrt{2}\cos(v)\right)\sin(u)\\
+\left(3 + \sqrt{2}\cos(v)\right)\cos(u)\\
+0\\
+\end{pmatrix}
+\times
+\begin{pmatrix}
+-\sqrt{2}\sin(v)\cos(u)\\
+-\sqrt{2}\sin(v)\sin(u)\\
+\sqrt{2}\cos(v)\\
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+\sqrt{2}\left( 3 + \sqrt{2}\cos(v) \right)\cos(u)\cos(v)\\
+\sqrt{2}\left( 3 + \sqrt{2}\cos(v) \right)\sin(u)\cos(v) \\
+\sqrt{2}\left( 3 + \sqrt{2}\cos(v) \right)\left(\sin^2(u) + \cos^2(u)\right)
+\sin(v) \\
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+\sqrt{2}\left( 3 + \sqrt{2}\cos(v) \right)\cos(u)\cos(v)\\
+\sqrt{2}\left( 3 + \sqrt{2}\cos(v) \right)\sin(u)\cos(v) \\
+\sqrt{2}\left( 3 + \sqrt{2}\cos(v) \right)\sin(v) \\
+\end{pmatrix}\\
+\end{split}
+\]
+
+Substituting in the values for $(u, v)$ gives:
+
+\[
+\begin{split}
+\mathbf{n}\left( \frac{\pi}{3}, \frac{3\pi}{4} \right)
+&=
+\begin{pmatrix}
+\sqrt{2}\left( 3 + \sqrt{2}\cos\left( \frac{3\pi}{4} \right) \right)
+\cos\left( \frac{\pi}{3} \right)
+\cos\left( \frac{3\pi}{4} \right)\\
+\sqrt{2}\left( 3 + \sqrt{2}\cos\left( \frac{3\pi}{4} \right) \right)\sin\left(
+\frac{\pi}{3} \right)\cos\left( \frac{3\pi}{4} \right) \\
+\sqrt{2}\left( 3 + \sqrt{2}\cos\left( \frac{3\pi}{4} \right) \right)\sin\left( \frac{3\pi}{4} \right) \\
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+-\sqrt{2}\left( 3 - 1 \right)
+\frac{1}{2}\frac{\sqrt {2}}{2}\\
+\sqrt{2}\left( 3 - 1 \right)\frac{\sqrt{3}}{2}\frac{\sqrt {2}}{2} \\
+\sqrt{2}\left( 3 - 1 \right)\frac{1}{2} \\
+\end{pmatrix}\\
+&=
+\begin{pmatrix}
+-1\\
+1 \\
+\sqrt{2} \\
+\end{pmatrix}\\
+\end{split}
+\]
+
+
+\end{enumerate}
+
+\setcounter{enumi}{4}
+
+\item If we define a curve in $\mathbb{R}^2$ with the implicit function $f
+(x, y) = x^2 y^2$, what problem could there arise when computing the
+surface normal?
+
+The surface normal for a function which is implicitly defined is:
+\[
+\mathbf{n} = \begin{pmatrix}
+\pdv{f}{x} \\
+\pdv{f}{x} \\
+\end{pmatrix}
+\]
+
+Which in this case is:
+\[
+\begin{pmatrix}
+2x y^2 \\
+2x^2 y \\
+\end{pmatrix}
+=
+2xy\begin{pmatrix}
+y\\
+x\\
+\end{pmatrix}
+\]
+
+By definition, at all points on the surface of the curve: $x^2 y^2 = 0$.
+Therefore $x$ or $y$ is zero. So for all points on the curve, $xy = 0$. So,
+the normal for any point on the curve is:
+\[
+0\cdot
+\begin{pmatrix}
+y\\
+x\\
+\end{pmatrix}
+= \begin{pmatrix}
+0\\
+0\\
+\end{pmatrix}
+\]
+
+$ \begin{pmatrix}
+0\\0\\
+\end{pmatrix} $ is not a valid normal!
+
+\item
+
+\begin{enumerate}
+
+\item What data structure is used to represent triangle meshes?
+
+{\color{blue} Attributes such as position, u-v maps, normals and colour are
+stored with each of the vertices}
+
+Triangle meshes can be represented as a graph embedded in 3D space where $V$
+is the set of vertices; $E \subseteq V \times V$ is the set of edges; $F
+\subseteq V \times V \times V$ is the set of faces; and $P \subseteq V \times
+\mathbb{R}^n$ is a mapping from each vertex to a point in n-dimensional
+space (where $n$ is 3 in most applications).
+
+\item What parts of this data structure pertain to the topology and which to
+the geometry of a surface?
+
+The mapping from the vertices to the points in 3D pertains to the topology
+-- it varies when the shape is transformed. The edges and faces
+pertain to the geometry; they are invariant of transformations.
+
+{\color{blue} This is more like a parametric representation, we order the set
+and then consider this as a function from indices to points}
+
+\end{enumerate}
+
+\item Compared to the triangle mesh, a point set lacks a vital piece of
+information in that it no longer identifies the neighbouring vertices of any
+given vertex. Why is such information necessary or useful in the first place
+and how do point set surfaces work without it?
+
+The adjacency matrix is essential to know the geometry of the polygon we are
+using to  approximate the surface.
+
+Point-set surfaces instead approximate the underlying surface. In
+practice most surfaces are smooth and therefore the approximation-based
+methods get very similar results to polygon-based surface representations.
+
+A simple approximation method selects a query point and a fixed distance --
+all points closer to the query point than this fixed distance are in the
+``neighbourhood''. We then assume that the surface is the plane which best
+fits all the points in the neighbourhood.
+
+{\color{blue} In reality we train a NN to fit the surface from the point-set
+representation and then query the NN}
+
+\setcounter{enumi}{13}
+
+\item
+
+\begin{enumerate}
+
+\item What is rigging? Briefly describe what kind of structure and data are
+added to the geometry/surface model.
+
+{\color{blue} The bones are a tree -- there is usually a root which we
+define to be ``a central point which we will use to move the whole object''.
+ Sometimes we just have a root bone which is not connected to anything.}
+
+Rigging is the process of attaching points on the surface of an object to the
+``bones'' of the object. This is an essential stage in the process of
+animation.
+
+We create bones, often storing them in a tree such that a transformation on
+one will move the others below it in the tree -- making animation easier.
+
+We add a (sparse) matrix to the surface model. This matrix
+contains the weights which define the impact of a transformation on a
+given bone on a point on the surface.
+
+\item Assume we have a cylinder with an axis aligned to the $x$-axis. The
+cylinder extends from $-1$ to $1$ on the $x$-axis and has a base radius of 1.
+We embed two bones inside the cylinder along the $x$-axis: one extends from
+-1 to 0, the other from 0 to 1. We define the influence of each bone on each
+point on the cylinder as the inverse distance of the point to the bone.
+Assume we transform the second bone with the new transformation $T$.
+Determine the concrete weights and give a formula of how the new position
+$x'$ would be computed from the weights $w_1(x)$, $w_2(x)$, $x$ and $T$ for
+a point on the surface (a) in the middle and (b) on either end.
+
+{\color{blue} They meant a point on the surface of a hollow cylinder. All
+weights must sum to 1.}
+
+Let bone 1 be the bone from $-1$ to $0$ and let bone 2 be the bone from $0$
+to $1$.
+
+\begin{enumerate}
+
+\item In the middle
+
+\begin{align*}
+w_1(x) &= 0.5 & w_2(x) &= 0.5
+\end{align*}
+
+\[
+x' = 0.5 \cdot x + 0.5\cdot\mathbf{T}x
+\]
+
+\item On either end.
+
+For $x = (-1, 0)$:
+
+\begin{align}
+w_1(x) &= 1 & w_2(x) &= 0
+\end{align}
+
+\[
+x' = 1 \cdot x + 0\cdot\mathbf{T}x = x
+\]
+
+For $x = (1, 0)$:
+
+\begin{align*}
+w_1(x) &= 0 & w_2(x) &= 1
+\end{align*}
+
+\[
+x' = 0 \cdot x + 1 \cdot \mathbf{T}x = \mathbf{T}x
+\]
+
+\end{enumerate}
+
+\end{enumerate}
+
+\item Thinking about fundamental properties
+
+\begin{enumerate}
+
+\item What is the advantage of representing rigid transformations with dual
+quaternions for blending.
+
+Dual quaternions can be used to perform shortest-path transformations. This
+allows us to blend transformations while ensuring the resulting
+transformation is still valid; without distortions.
+
+\item Briefly explain one fundamental disadvantage of using quaternion based
+shortest-path blending for rotations as compared to linear blend skinning.
+
+Linear-blend skinning on linearly interpolates points. Therefore,
+transforming nearby points with the same transformations is guaranteed to
+leave the transformed points close to each other. Therefore a continuous
+surface will remain continuous after transformation.
+
+However, quaternions find the shortest path. This path will change suddenly.
+Therefore there exists weights such that a tiny change in weight will make
+the same quaternion interpolate onto a completely different path.
+
+{\color{blue} Imagine we interpolate between two rotations, $\theta_1$ and
+$\theta_2$. The shortest-path interpolation is discontinuous at $\pi$. The
+shortest-path at $\pi$ radians is wildly divergent.}
+
+{\color{blue} Additionally, quaternions preserve volume and therefore cannot
+represent volume changes}
+
+\end{enumerate}
+
+\item Derivations and deeper understanding
+
+Below we list all required properties of dual quaternions for the rest of
+the exercise.
+
+A dual quaterion $\hat{\mathbf{q}}$ can be written in the form
+$\hat{\mathbf{q}} = \mathbf{q}_0 + \epsilon\mathbf{q}_\epsilon $, where
+$\mathbf{q}_0$ and $\mathbf{q}_\epsilon$ are quaternions and $\epsilon$ is
+the dual unit with the property $\epsilon^2 = 0$. The norm of
+$\hat{\mathbf{q}}$ is then given by:
+
+\[
+\|\hat{\mathbf{q}}\| = \|\mathbf{q}_0\| + \epsilon\frac{\langle
+\mathbf{q}_0, \mathbf{q}_\epsilon \rangle}{\|\mathbf{q}_0\|}
+\]
+
+Dual quaternions representing rigid transformations can be written in the
+following form:
+
+\[
+\hat{\mathbf{q}} = \cos\left( \frac{\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{\hat{\theta}}{2} \right)
+\]
+
+where $\hat{\theta} = \theta_0 + \epsilon\theta_\epsilon$ and
+$\hat{\mathbf{s}} = \mathbf{s}_0 + \epsilon\mathbf{s}_\epsilon$. Here,
+$\mathbf{s}_0$ is the axis of rotation, $\theta_0$ is the rotation angle and
+$\theta_\epsilon$ is the amount of translation along $\mathbf{s}_0$. since
+this is a unit dual quaternion it can be shown that $ \langle \mathbf{s}_0,
+\mathbf{s}_\epsilon \rangle = 0 $ and $ \langle \mathbf{s}_0, \mathbf{s}_0
+\rangle = 1$.
+
+The power of a dual quaternion is defined by
+
+\begin{align*}
+e^{\hat{\mathbf{q}}} &= \cos\left( \|\hat{\mathbf{q}}\| \right) +
+\frac{\hat{\mathbf{q}}}{\|\hat{\mathbf{q}}\|}\sin\left( \|\hat{\mathbf{q}}\| \right)
+&
+\ln\left( \cos\left( \frac{\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{\hat{\theta}}{2} \right) \right) &=
+\hat{\mathbf{s}}\frac{\hat{\theta}}{2}
+\end{align*}
+
+\begin{enumerate}
+
+\setcounter{enumi}{2}
+
+\item Utilizing the properties above, for a dual quaternion 
+$\hat{\mathbf{q}} = \cos\left( \frac{\hat{\theta}}{2} \right) + 
+\hat{\mathbf{s}} \sin \left( \frac{\hat{\theta}}{2} \right) $, prove that:
+
+\[
+\hat{\mathbf{q}}^t = \cos\left( \frac{t\hat{\theta}}{2} \right) + 
+\hat{\mathbf{s}}\sin\left( \frac{t\hat{\theta}}{2} \right)
+\]
+
+\[
+\begin{split}
+\hat{\mathbf{s}}\frac{\hat{\theta}}{2} &=
+\ln \left( \cos\left( \frac{\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{\hat{\theta}}{2} \right) \right) \\
+e^{\hat{\mathbf{s}}\frac{\hat{\theta}}{2}} &=
+\cos\left( \frac{\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{\hat{\theta}}{2} \right) \\
+e^{\hat{\mathbf{s}}\frac{t\hat{\theta}}{2}} &=
+\cos\left( \frac{t\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{t\hat{\theta}}{2} \right) \\
+e^{t\left(\hat{\mathbf{s}}\frac{\hat{\theta}}{2}\right)} &=
+\cos\left( \frac{t\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{t\hat{\theta}}{2} \right) \\
+e^{t\ln \hat{\mathbf{q}}} &=
+\cos\left( \frac{t\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{t\hat{\theta}}{2} \right) \\
+\hat{\mathbf{q}}^t &=
+\cos\left( \frac{t\hat{\theta}}{2} \right) +
+\hat{\mathbf{s}}\sin\left( \frac{t\hat{\theta}}{2} \right) \\
+\end{split}
+\]
+
+\item How can a single dual quaternion with represent rotations and
+transformations in the $xy$-plane?
+
+Chalses' Theorem states that any rigid displacement is equivalent to some
+screw displacement.
+
+In this case, the dual quaternion would have a screw axis perpendicular to
+the $xy$-plane and passing through the midpoint between the center of the
+original shape and the center of the target with rotation $\pi$ and
+displacement 0.
+
+{\color{blue} We have a center of rotation and rotate around the center. We
+just choose the center carefully and then rotate. We choose a vector around
+which we rotate -- so a rotation of $\pi$ around a vector
+$\underline{\mathbf{0}} + \begin{pmatrix} 1 \\ 0 \\ 0 \\\end{pmatrix}$ is
+the same as rotating the object with coordinates $\begin{pmatrix}
+\hat{x} \\ \hat{y} \\ \hat{z} \\\end{pmatrix}$ by $\pi$ and
+translating it by $\begin{pmatrix} -2\hat{x} \\ 0 \\ 0 \\ \end{pmatrix}$.}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

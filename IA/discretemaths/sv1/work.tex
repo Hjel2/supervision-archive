@@ -1,0 +1,685 @@
+\input{../../template/prefs/jp738.tex}
+\input{../../template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./infofile.tex}
+\input{../../template2/includes.tex}
+\input{../../template2/template.tex}
+
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+
+\begin{document}
+
+\section{On Proofs}
+
+\subsection{Basic Exercises}
+
+\begin{enumerate}
+
+\item Suppose $n$ is a natural number larger than 2, and $n$ is not a prime number. 
+Then $n \cdot 2 + 13$ is not a prime number.
+
+Disproof by counterexample:\\
+Let $n = 8$. \\
+Then $n \cdot 2 + 13 = 29$. \\
+But 29 is prime.
+So the statement is disproved.
+
+\item If $x^2 + y = 13$ and $y \neq 4$ then $x \neq 3$.
+
+This statement is logically equivalent to the contrapositive: if $x = 3$ then 
+$y = 4$ or $x^2 + y \neq 13$.
+This is proved below.
+\begin{equation}
+\begin{split}
+x &= 3\\
+x^2 + y &= 13\\
+3^2 + y &= 13\\
+9 + y &= 13\\
+y &= 4\\
+\end{split}
+\end{equation}
+So either the $y = 4$ or $x^2 + y \neq 13$ as required.
+
+\item For an integer $n$, $n^2$ is even if and only if $n$ is even.
+
+If:\\
+Assume $n$ is even. So $n$ can be written in the form $2\cdot k$ for some $k$. 
+\begin{equation}
+\begin{split}
+n &= 2\cdot k\\
+n^2 &= 4\cdot k^2\\ 
+&= 2(2\cdot k^2)
+\end{split}
+\end{equation}
+This is an even number of the form $2\cdot i$ where $i = 2\cdot k^2$.\\
+So if $n$ is even; then $n^2$ is even.
+
+Only if:\\
+If $n^2$ is even then $n$ is even. This is logically equivalent to the 
+contrapositive: if $n$ is odd then $n^2$ is odd.\\
+Assume $n$ is odd. So $n$ can be written in the form $2\cdot k + 1$ for some $k$.
+\begin{equation}
+\begin{split}
+n &= 2\cdot k + 1\\
+n^2 &= (2\cdot k + 1)\cdot(2\cdot k + 1)\\
+&= 4\cdot k^2 + 4\cdot k + 1\\
+&= 2(2\cdot k^2 + 2\cdot k) + 1\\
+\end{split}
+\end{equation}
+This is an odd number of the form $2\cdot j + 1$ where $j=2\cdot k^2 + 2\cdot k$.\\
+So if $n$ is odd; then $n^2$ is odd. As required.
+
+\item For all real numbers $x$ and $y$ there is a real number $z$ such that 
+$x + z = y - z$.
+
+\begin{equation}
+\begin{split}
+x + z &= y - z\\
+2\cdot z &= y - x\\
+\therefore z &= \frac{y - x}{2}\\
+\end{split}
+\end{equation}
+
+Since the set of reals is closed under both addition and division and $x, y \in \mathbb{R}$: $\frac{y - x}{2}\in\mathbb{R}$. 
+Hence $z\in\mathbb{R}$ and the statement is proved.
+
+\item For all real numbers $x$ and $y$ there is an integer $z$ such that 
+$x + z = y - z$.
+
+Disproof by counterexample:\\
+Let $y = x + 1$.
+\begin{equation}
+\begin{split}
+x + z &= y - z\\
+x + z &= x + 1 - z\\
+2\cdot z &= 1\\
+z &= \frac{1}{2}\\
+\end{split}
+\end{equation}
+In this case: $z$ is not an integer and so the statement is disproved.
+
+\item The sum of two rational numbers is a rational number.
+Let $a = \frac{x}{y}$. Let $b = \frac{p}{q}$.
+\begin{equation}
+\begin{split}
+a + b &= \frac{x}{y} + \frac{p}{q}\\
+a + b &= \frac{q\cdot x}{q\cdot y} + \frac{p\cdot y}{q\cdot y}\\
+a + b &= \frac{p\cdot y + q\cdot x}{q\cdot y}\\
+\end{split}
+\end{equation}
+This is a rational number of the form $\frac{s}{t}$ where $s=p\cdot y 
++ q\cdot x$ and $t = q\cdot y$. So the sum of two rational numbers is a rational 
+number -- as required.
+
+\item For every real number $x$, if $x \neq 2$ then there is a unique real 
+number y such that $\frac{2\cdot y}{y + 1} = x$.
+\begin{equation}
+\begin{split}
+x &= \frac{2\cdot y}{y + 1}\\
+x\cdot y + x &= 2\cdot y\\
+x &= y\cdot (2 - x)\\
+\frac{x}{2 - x} &= y\\
+\end{split}
+\end{equation}
+
+Since $(\frac{x}{2 - x})$ is defined for all $x\neq 2$: there exists a $y$ for 
+all $x\neq 2$.
+
+Now we only need to prove that $y$ is unique for all x.
+
+I will prove this by contradiction. Let $f(x) = \frac{x}{2 - x}$. Assume that 
+there exists an $x_0$ and an 
+$x_1$ such that $f(x_0) = f(x_1)$.
+\begin{equation}
+\begin{split}
+f(x_0) &= f(x_1)\\
+\frac{x_0}{2 - x_0} &= \frac{x_1}{2 - x_1}\\
+2\cdot x_0 - x_0\cdot x_1 &= 2\cdot x_1 - x_0 \cdot x_1\\
+2\cdot x_0 &= 2\cdot x_1\\
+x_0 &= x_1\\
+\therefore (f(x_0)= f(x_1))&\Longrightarrow (x_0 = x_1) \text{ so f is an injective function}\\
+\end{split}
+\end{equation}
+
+Since $(\frac{x}{2 - x})$ is an injective function: $y$ is unique.
+
+Hence the statement is proved.
+
+\item For all integers $m$ and $n$, if $m\cdot n$ is even, then either m is 
+even or n is even.
+
+This statement is logically equivalent to the contrapositive:\\
+If both $m$ and $n$ are odd then $m\cdot n$ is odd.\\
+Let $m = 2\cdot i + 1$ and $n = 2\cdot j + 1$.
+\begin{equation}
+\begin{split}
+m\cdot n &= (2\cdot i + 1)\cdot (2\cdot j + 1)\\
+m\cdot n &= 4\cdot i\cdot j + 2\cdot i + 2\cdot j + 1\\
+m\cdot n &= 2\cdot(2\cdot i\cdot j + i + j) + 1\\
+\end{split}
+\end{equation}
+This is an odd number of the form $2\cdot k + 1$ where $k = 2\cdot i\cdot j + i + j$. 
+So the contrapositive is proved and hence the statement is proved -- as required.
+
+\end{enumerate}
+
+\subsection{Core Exercises}
+
+\begin{enumerate}
+
+\item Characterise those integers $d$ and $n$ such that:
+
+\begin{enumerate}
+
+\item $0|n$
+
+$n = 0$
+
+\item $d|0$
+
+$d \in \mathbb{Z}$
+
+\end{enumerate}
+
+\item Let $k$, $m$, $n$ be integers with $k$ positive. Show that:
+\begin{equation}
+\begin{split}
+(k\cdot m)|(k\cdot n) &\Longleftrightarrow m|n\\
+\end{split}
+\end{equation}
+
+\begin{center}
+
+($\Longrightarrow$)
+
+\begin{equation}
+\begin{split}
+(k\cdot m)&|(k\cdot n)\\
+k\cdot m \cdot i &= k\cdot n \text{ for some $i$}\\
+m \cdot i &= n\\
+\therefore m &| n \text{ as required}
+\end{split}
+\end{equation}
+
+($\Longleftarrow$)
+
+\begin{equation}
+\begin{split}
+m&|n\\
+m\cdot i &= n\\
+k\cdot m\cdot i &= k\cdot n\\
+(k\cdot m) \cdot i &= (k\cdot n)\\
+\therefore (k\cdot m)&|(k\cdot n)\text{ as required}\\
+\end{split}
+\end{equation}
+
+And so the statement is proved.
+\end{center}
+
+\item Prove or disprove that: For all natural numbers $n$, $2|2^n$.
+
+$n$ is a natural number. So $n \geqslant 1$. So $n - 1 \geqslant 0$.\\
+Hence $2^{n - 1} \in \mathbb{Z}^+$.\\
+\begin{equation}
+\begin{split}
+2 \cdot (2^{n - 1}) &= 2^n\\
+2^{(n-1)} \in \mathbb{Z}^+\\
+\therefore 2&|2^n\text{ as required}
+\end{split}
+\end{equation}
+Hence $2|2^n$.
+
+The submission said this statement was true and was based on the \textbf{wrong} 
+belief that $0 \not\in \mathbb{N}$. The below proof is correct taking $0\in \mathbb{N}$.
+
+Disproof by counter example: Let $n$ = 0.
+\begin{equation}
+\begin{split}
+2^0 &= 1\\
+2 \not| \text{ } 1\\
+\end{split}
+\end{equation}
+So the statement is disproved.
+
+\item Show that for all integers $l$, $m$, $n$,
+\begin{equation}
+\begin{split}
+l|m \wedge m|n \Longrightarrow l|n\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+a\cdot l &= m\\
+b\cdot m &= n\\
+a\cdot (b \cdot l) &= n\\
+(a\cdot b)\cdot l &= n\\
+\therefore l &| n\\
+\end{split}
+\end{equation}
+
+\item Find a counterexample to the statement: For all positive integers $k$, $m$, $n$, 
+\begin{equation}
+\begin{split}
+(m|k \wedge n|k) \Longrightarrow (m\cdot n)|k\\
+\end{split}
+\end{equation}
+
+Let $m = 4$, $n = 6$ and $k = 12$.\\
+$4 | 12 \wedge 6 | 12$\\
+So $m | k \wedge n | k$\\
+But $24 \not| \text{ }12$.\\
+Hence this is a counterexample to the statement so the statement is disproved.
+
+\item Prove that for all integers $d$, $k$, $l$, $m$, $n$,
+
+\begin{enumerate}
+
+\item $d|m \wedge d|n \Longrightarrow d|(m + n)$
+
+\begin{equation}
+\begin{split}
+d &| m \\
+i\cdot d &= m\\
+d &| n\\
+j\cdot d &= n\\
+i\cdot d + j\cdot d &= m + n\\
+(i + j)\cdot d &= (m + n)\\
+\therefore d &| (m + n)\\
+\end{split}
+\end{equation}
+So the statement is proved as required.
+
+\item $d|m \Longrightarrow d|k\cdot m$
+
+\begin{equation}
+\begin{split}
+d &| m\\
+i\cdot d &= m\\
+k\cdot i\cdot d &= k\cdot m\\
+(k\cdot i)\cdot d &= k\cdot m\\
+\therefore d&|(k\cdot m) \text{ as required}
+\end{split}
+\end{equation}
+
+\item $d|m \wedge d|n \Longrightarrow d|(k\cdot m + l\cdot n)$
+
+From part (b): $d|m \Longrightarrow d|(k\cdot m)$.\\
+So $d|m \wedge d|n \Longrightarrow d|(k\cdot m) \wedge (l\cdot n)$.
+
+From part (a): $d|m \wedge d|n \Longrightarrow d|(m+n)$.\\
+So $d|(k\cdot m) \wedge d|(l\cdot n) \Longrightarrow d|(k\cdot m + l\cdot n)$ as required.
+
+\end{enumerate}
+
+\item Prove that for all integers $n$,
+\begin{equation}
+\begin{split}
+30 | n \Longleftrightarrow (2|n \wedge 3|n \wedge 5|n)\\
+\end{split}
+\end{equation}
+
+If:
+
+\begin{equation}
+\begin{split}
+30|n\\
+30\cdot k &= n\\
+2\cdot (15\cdot k) &= n\\
+\therefore 2|n \text{ as required}\\
+3\cdot (10\cdot k) &= n\\
+\therefore 3|n \text{ as required}\\
+5\cdot (6\cdot k) &= n\\
+\therefore 5|n \text{ as required}\\
+\end{split}
+\end{equation}
+
+Only if:
+
+If $a | c$ and $b | c$ and $b$ and $c$ are coprime: then $a\cdot b | c$.
+
+Since $2$, $3$ and $5$ are all coprime:\\
+\begin{equation}
+\begin{split}
+2 | n \wedge 3 | n \wedge 5 | n 
+&\Longrightarrow (2\cdot 3\cdot 5)|n\\
+&\Longrightarrow 30|n \text{ as required}\\
+\end{split}
+\end{equation}
+
+\item Show that for all integers $m$ and $n$,
+\begin{equation}
+\begin{split}
+(m|n \wedge n|m)\Longrightarrow (m=n\cup m=-n)\\
+\end{split}
+\end{equation}
+
+\begin{equation}\label{mndivideeachother1}
+\begin{split}
+m &| n\\
+k\cdot m &= n\\
+\end{split}
+\end{equation}
+
+\begin{equation}\label{mndivideeachother2}
+\begin{split}
+n &| m\\
+c\cdot n &= m\\
+\end{split}
+\end{equation}
+
+Combining (\ref{mndivideeachother1}) and (\ref{mndivideeachother1}) gives:
+
+\begin{equation}\label{mndivideeachother2}
+\begin{split}
+k\cdot c\cdot n &= n\\
+k\cdot c &= 1\\
+c &= \frac{1}{k}\\
+\end{split}
+\end{equation}
+
+However, since both $c$ and $k$ are integers, this means that either 
+$(c=1 \wedge k=1) \cup (c=-1 \wedge k=-1)$. \\
+So $(n = m) \cup (n = -m)$ as required.
+
+\item Prove or disprove that: For all positive integers $k$, $m$, $n$,
+\begin{equation}
+\begin{split}
+k|(m \cdot n) \Longrightarrow k|m \cup k|n\\
+\end{split}
+\end{equation}
+
+Disproof by counterexample:
+
+Let $k = 6$, $m = 3$ and $n = 4$.\\
+$6|12$ so $k|(m\cdot n)$.\\
+However, $6\not|\text{ }3$ and $6\not|\text{ }4$.\\
+So the statement is disproved by a counterexample.
+
+\item Let $P(m)$ be a statement for $m$ ranging over the natural numbers, 
+and consider the following derived statemets (with $n$ also ranging over the 
+natural numbers):
+\begin{equation}
+\begin{split}
+P^\#(n)\triangleq \forall k \in \mathbb{N}. 0 \leqslant k \leqslant n \Longrightarrow P(k)\\
+\end{split}
+\end{equation}
+
+\begin{enumerate}
+
+\item Show that, for all natural numbers $\ell$, $P^\#(\ell)\Longrightarrow P(\ell)$\\
+
+\begin{equation}\label{phashnimpliesp}
+\begin{split}
+P^\#(n)&\triangleq \forall k \in \mathbb{N}. 0 \leqslant k \leqslant n \Longrightarrow P(k)\\
+P^\#(n)&= (\forall k \in \mathbb{N}. 0\leqslant k \leqslant (n - 1) \Longrightarrow P(k)) \wedge P(n)\\
+P^\#(n)&= P^\#(n - 1)\wedge P(n)\\
+\therefore P^\#(n) &\Longrightarrow P(n)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item Exhibit a concrete statement $P(m)$ and a specific natural number $n$ for which 
+the following statement does \textit{not} hold:
+\begin{equation}
+\begin{split}
+P(n) \Longrightarrow P^\#(n)\\
+\end{split}
+\end{equation}
+
+Let $P(n) \triangleq (\exists k \in \mathbb{N}. n = 2\cdot k)$.
+
+If $n = 2$ the the statement above does not hold (since $P(n)$ is true but $P^\#(n)$ is 
+not true.
+
+\item Prove the following:
+
+\begin{itemize}
+
+\item $P^\#(0) \Longleftrightarrow P(0)$
+
+\begin{equation}
+\begin{split}
+P^\#(n)&\triangleq \forall k \in \mathbb{N}. 0 \leqslant k \leqslant n \Longrightarrow P(k)\\
+\therefore P^\#(0)&\triangleq \forall k \in \mathbb{N}. 0 \leqslant k \leqslant 0 \Longrightarrow P(k)\\
+P^\#(0)&\triangleq P(0)\\
+\end{split}
+\end{equation}
+
+So $P^\#(0)$ is equivalent to $P(0)$.\\
+Hence $P^\#(0) \Longleftrightarrow P(0)$ as required.
+
+\item $\forall n \in \mathbb{N}. (P^\#(n) \Longrightarrow P\#(n+1)) 
+\Longleftrightarrow (P^\#(n) \Longrightarrow P(n+1))$\\
+
+($\Longrightarrow$)
+
+\begin{equation}
+\begin{split}
+&\text{ } P^\#(n) \Longrightarrow P^\#(n + 1)\\
+=&\text{ } P^\#(n) \Longrightarrow P^\#(n + 1)\Longrightarrow P(n + 1)\text{ using (\ref{phashnimpliesp})}\\
+=&\text{ } P^\#(n) \Longrightarrow P(n+1) \text{ as required}\\
+\end{split}
+\end{equation}
+
+($\Longleftarrow$)
+
+\begin{center}
+\begin{equation}\label{phashtop}
+\begin{split}
+P^\#(n+1)&\triangleq \forall k \in \mathbb{N}. 0 \leqslant k \leqslant n+1 \Longrightarrow P(k)\\
+P^\#(n+1)&= \forall k \in \mathbb{N}. 0 \leqslant k < n \Longrightarrow P(k) \wedge P(n+1)\\
+\therefore P^\#(n + 1) &= P^\#(n) \wedge P(n + 1)\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+& \text{ }P^\#(n) \Longrightarrow P(n+1)\\
+=& \text{ }P^\#(n) \Longrightarrow (P^\#(n) \wedge P(n+1))\\
+=& \text{ }P^\#(n) \Longrightarrow P^\#(n + 1)\text{ as required using (\ref{phashtop})}\\
+\end{split}
+\end{equation}
+\end{center}
+
+\item $(\forall m \in \mathbb{N}. P^\#(m))\Longleftrightarrow (\forall m  \in\mathbb{N}.P(m))$
+
+\begin{center}
+($\Longrightarrow$)
+
+\begin{equation}
+\begin{split}
+P^\#(n) &\Longrightarrow P(n)\text{ using \ref{phashnimpliesp}}\\
+\therefore (\forall m \in \mathbb{N}. P^\#(m)) &\Longrightarrow (\forall m \in \mathbb{N}. P(m)) \text{ as required}\\
+\end{split}
+\end{equation}
+
+($\Longleftarrow$)
+
+\begin{equation}
+\begin{split}
+&\forall m \in\mathbb{N}.P(m)\\
+\therefore\text{ } &\forall m, k \in \mathbb{N}.\text{ } 0 \leqslant k \leqslant m \Longrightarrow P(m)\\
+\therefore\text{ } & \forall m \in \mathbb{N} P^\#(m)\\
+\text{Since $m$ is arbitrary: }&\forall m \in \mathbb{N}. P^\#(m)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\end{split}
+\end{equation}
+
+\end{center}
+
+\end{itemize}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection{Optional Exercises}
+
+\begin{enumerate}
+
+\item A series of questions about the properties and relationships of triangular and 
+square numbers (adapted from David Burton).
+
+\begin{itemize}
+
+\item A natural number is said to be \textit{triangular} if it is of the form $\Sigma^k_{i=0}i=0+1+...+k$, for 
+some natural $k$. For example, the first three triangular numbers are $t_0=0$, $t_1=1$ and $t_2=3$.
+
+Find the next three triangular numbers $t_3$, $t_4$ and $t_5$.
+
+$t_3 = 6$, $t_4 = 10$, $t_5 = 15$
+
+\item Find a formula for the $k^{th}$ triangular number $t_k$.
+
+$t_k = \frac{k}{2}\cdot(k + 1)$
+
+\item A natural number is said to be \textit{square} if it is of the form $k^2$ for some natural 
+number $k$.
+
+Show that $n$ is triangular iff $8\cdot n + 1$ is a square. (Plutarch, circ. 100BC)
+
+If:
+
+Let $n$ be a number such that $8\cdot n + 1$ is a square number.\\
+Let $k^2 = 8\cdot n + 1$\\
+Since $8\cdot n + 1$ is a number of the form $2\cdot i + 1$ where $i = (4\cdot n)$; 
+$8\cdot n + 1$ is odd. As $8\cdot n + 1$ is odd: $k$ must be odd.\\
+So $k = 2\cdot j + 1$ for some $j$.\\
+\begin{equation}
+\begin{split}
+8\cdot n + 1 &= (2\cdot j + 1)^2\\
+8\cdot n + 1 &= 4\cdot j^2 + 4\cdot j + 1\\
+8\cdot n 	 &= 4\cdot j^2 + 4\cdot j\\
+n			 &= \frac{1}{2}(j^2 + j)\\
+n			 &= \frac{j}{2}(j + 1) \text{ as required}\\
+\end{split}
+\end{equation}
+
+Only if:
+
+Let n be a triangle number. So $n = \frac{k}{2}\cdot(k + 1)$ for some k.
+\begin{equation}
+\begin{split}
+8\cdot n + 1 &= 8\cdot \frac{k}{2}\cdot(k + 1) + 1\\
+			 &= 4\cdot k\cdot (k + 1) + 1\\
+			 &= 4\cdot k^2 + 4\cdot k + 1\\
+			 &= (2\cdot k + 1)^2\\
+\end{split}
+\end{equation}
+So if $n$ is a trangle number then $8\cdot n + 1$ is a square number.
+
+Hence $n$ is triangular iff $8\cdot n + 1$ is a square number.
+
+\item Show that the sum of every two consecutive triangular numbers is a square. (Nicomachus, circ. 100BC)
+
+\begin{equation}
+\begin{split}
+t_k + t_{k + 1} &= \frac{k}{2}\cdot (k + 1) + \frac{k + 1}{2}\cdot(k + 2)\\
+				&= \frac{k + 1}{2}\cdot k + \frac{k + 1}{2}\cdot(k + 2)\\
+				&= \frac{k + 1}{2}\cdot(2\cdot k + 2)\\
+				&= (k + 1)\cdot (k + 1)\\
+				&= (k + 1)^2\\
+\end{split}
+\end{equation}
+So the sum of two consecutive triangular numbers is square. As required.
+
+\item Show that, for all natural numbers $n$, if $n$ is triangular, then so are $9\cdot n + 1$, $25\cdot n + 3$, 
+$49\cdot n + 6$ and $81\cdot n + 10$. (Euler, 1775)
+
+$n$ is triangular. So $n = \frac{k}{2}\cdot(k + 1)$ for some k.
+\begin{equation}
+\begin{split}
+9\cdot n + 1 &= 9\cdot \frac{k}{2}\cdot(k + 1) + 1\\
+			 &=	\frac{9\cdot k^2}{2} + \frac{9\cdot k}{2} + 1\\
+			 &= \frac{1}{2}\cdot (9\cdot k^2 + 9\cdot k + 2)\\
+			 &=	\frac{1}{2}\cdot (3\cdot k + 1)\cdot (3\cdot k + 2)\\
+			 &= \frac{3\cdot k + 1}{2}\cdot ((3\cdot k + 1) + 1)\\
+\end{split}
+\end{equation}
+So if $n$ is a triangular number then so is $9\cdot n + 1$.
+
+\begin{equation}
+\begin{split}
+25\cdot n + 3 &= 25\cdot \frac{k}{2}\cdot(k + 1) + 3\\
+			  &= \frac{25\cdot k^2}{2} + \frac{25\cdot k}{2} + 3\\
+			  &= \frac{1}{2}\cdot (25\cdot k^2 + 25\cdot k + 6)\\
+			  &= \frac{1}{2}\cdot (5\cdot k + 2)\cdot (5\cdot k + 3)\\
+			  &= \frac{5\cdot k + 2}{2}\cdot ((5\cdot k + 2) + 1)\\
+\end{split}
+\end{equation}
+So if $n$ is a triangular number then so is $25\cdot n + 3$.
+
+\begin{equation}
+\begin{split}
+49\cdot n + 6 &= 49\cdot \frac{k}{2}\cdot(k + 1) + 6\\
+		 	  &= \frac{49\cdot k^2}{2} + \frac{49\cdot k}{2} + 6\\
+			  &= \frac{1}{2}\cdot (49\cdot k^2 + 49\cdot k + 12)\\
+			  &= \frac{1}{2}\cdot (7\cdot k + 3)\cdot (7\cdot k + 4)\\
+			  &= \frac{7\cdot k + 3}{2}\cdot ((7\cdot k + 3) + 1)\\
+\end{split}
+\end{equation}
+So if $n$ is a triangular number then so is $49\cdot n + 6$.
+
+\begin{equation}
+\begin{split}
+81\cdot n + 10 &= 81\cdot \frac{k}{2}\cdot(k + 1) + 10\\
+			   &= \frac{81\cdot k^2}{2} + \frac{81\cdot k}{2} + 10\\
+			   &= \frac{1}{2}\cdot (81\cdot k^2 + 81\cdot k + 20)\\
+			   &= \frac{1}{2}\cdot (9\cdot k + 4)\cdot (9\cdot k + 5)\\
+			   &= \frac{9\cdot k + 4}{2}\cdot ((9\cdot k + 4) + 1)\\
+\end{split}
+\end{equation}
+So if $n$ is a triangular number then so is $81\cdot n + 10$.
+
+Hence the statement is proved.
+
+\item Prove the generalisation: For all $n$ and $k$ natural numbers, there exists a natural number 
+$q$ such that $(2\cdot n + 1)^2\cdot t_k+t_n=t_q$. (Jordan 1991, attributed to Euler)
+
+\begin{equation}
+\begin{split}
+&(2\cdot n + 1)^2\cdot t_k+t_n\\
+=& (2\cdot n + 1)^2\cdot \frac{k}{2}\cdot(k + 1) + \frac{n}{2}\cdot(n + 1)\\
+=& (4\cdot n^2 + 4\cdot n + 1)\cdot \frac{k}{2}\cdot(k + 1) + \frac{n}{2}\cdot(n + 1)\\
+=& \frac{1}{2}((4\cdot n^2\cdot k + 4\cdot n \cdot k + k)\cdot(k + 1) + n^2 + n))\\
+=& \frac{1}{2}(4\cdot n^2\cdot k^2 + 4\cdot n \cdot k^2 + k^2 + 4\cdot n^2\cdot k + 4\cdot n \cdot k + k + n^2 + n)\\
+=& \frac{1}{2}(2\cdot n \cdot k + n + k)\cdot((2\cdot n \cdot k + n + k) + 1)\\
+=& \frac{(2\cdot n \cdot k + n + k)}{2}\cdot((2\cdot n \cdot k + n + k) + 1)\\
+=& \frac{q}{2}\cdot(q + 1) \text{ where } q = 2\cdot n \cdot k + n + k\\
+\end{split}
+\end{equation}
+So for each $n$ and $k$, there exists an integer $q$ such that $(2\cdot n + 1)^2\cdot t_k+t_n=t_q$ as required.
+
+\end{itemize}
+
+\item Let $P(x)$ be a predicate on a variable $x$ and let $Q$ be a statement not mentioning $x$. Show that 
+the following equivalence holds:
+\begin{equation}
+\begin{split}
+((\exists x. P(x))\Longrightarrow Q)\Longleftrightarrow(\forall x.(P(x)\Longrightarrow Q))\\
+\end{split}
+\end{equation}
+
+($\Longrightarrow$)
+
+$Q$ is independent of $x$. Since $P(x)$ is dependent only on $x$ and $Q$ is independent 
+of $x$; $Q$ is independent of $P(x)$.
+
+So if there exists a single case such that $(P(x) \Longrightarrow Q)$, then Q is always true 
+(since Q is independent of P(x)).\\
+So $(\forall P(x) \Longrightarrow Q)$. As required.
+
+($\Longleftarrow$)
+
+Since $(\forall x.(P(x)\Longrightarrow Q))$, $P(x)\Longrightarrow Q$ for at least one $x$. 
+So $((\exists x. P(x))\Longrightarrow Q)$ as required.
+
+\end{enumerate}
+
+\end{document}

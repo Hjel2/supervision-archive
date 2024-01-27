@@ -1,0 +1,638 @@
+\input{../../template/prefs/jp738.tex}
+\input{../../template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./infofile.tex}
+\input{../../template/includes.tex}
+\input{../../template/template.tex}
+
+\begin{document}
+
+\section*{4. On Induction}
+
+\subsection*{4.1 Basic exercises}
+ 
+\begin{enumerate}
+
+\item Prove that for all natural numbers $n \geq 3$, if $n$ distinct points on a circle are joined in 
+consecutive order by straight lines, then the interior angles of the resulting polygon add up to 
+$180 \cdot (n - 2)$ degrees.
+
+Proof by induction:
+
+When $n= 3$, the $3$ points on the circle join up to form a triangle.\\
+The interior angles of a triangle sum to $180^\circ$. 
+\begin{equation}
+\begin{split}
+ & 180 \cdot (3 - 2)\\
+=& 180 \cdot 1\\
+=& 180\\
+\end{split}
+\end{equation}
+So the statement holds for $n = 3$.
+
+Assume that the statement holds for $n = k$.\\
+Joining $k + 1$ points on the circle forms a shape with $k + 1$ sides.\\
+If we join the $k^\text{th}$ point and the $0^\text{th}$ point then we see that the $k + 1$ sided shape 
+can be decomposed into a $k$ sided shape and a triangle.\\
+Since we have not changed the outer part of the shape, the sum of the interior angles is unchanged.\\
+By assumption the sum of the interior angles in the $k$ sided shape is $180\cdot (k - 2)$. 
+The sum of the interior angles of a triangle is $180$. So the sum of the interior angles of the 
+$k + 1$ sided shape is: 
+\begin{equation}
+\begin{split}
+ &180\cdot (k - 2)^\circ + 180^\circ\\
+=& 180\cdot ((k + 1) - 2)^\circ\\
+\end{split}
+\end{equation}
+
+So if the statement holds for $n = k$ then it also holds for $n = k + 1$. Since the statement holds for 
+$n = 3$, by induction it must also hold for all $n \geq 3$.
+
+\item Prove that, for any positive integer $n$, a $2^n \times 2^n$ square grid with any one square removed 
+can be tiles with L-shaped pieces consisting of 3 squares.
+
+Proof by induction:
+
+At $n = 0$:
+At $n = 0$ the grid is sized $1 \times 1$. If you remove 1 square then there are 0 squares to fill with 
+L-shaped pieces. Hence the grid has been filled with L-shaped pieces.
+
+Assume that we can fill the grid with L-shaped pieces after removing one piece at $n = k$.\\
+Since we can fill the grid with L-shaped pieces after removing one piece at $n = k$, there is one empty 
+piece. So if we have three $2^k \times 2^k$ grids, then there are three empty pieces. We can place the 
+three $2^k \times 2^k$ grids next to each other (in an L-shape) so that the three gaps are next to each 
+other in an L-shape. We can hence place a L-shaped block in there and connect them. We now place another 
+$2^k \times 2^k$ grid so that the four grids are now in a square. This square has side length 
+$2\cdot 2^k = 2^{k + 1}$ and height $2\cdot 2^k = 2^{k + 1}$. Therefore it is a square grid of size 
+$2^{k + 1} \times 2^{k + 1}$.
+
+So if the statement holds for $n = k$ then it also holds for $n = k + 1$. Since it holds for $n = 0$, by 
+induction it must also hold for all $n \in \mathbb{N}$.
+
+\end{enumerate}
+
+\subsection*{4.2 Core exercises}
+
+\begin{enumerate}
+
+\item Establish the following
+
+\begin{enumerate}
+
+\item For all positive integers $m$ and $n$,
+
+\begin{equation}
+\begin{split}
+(2^n - 1)\cdot \sum^{m-1}_{i=0} 2^{i \cdot n} &= 2^{m \cdot n} - 1\\
+\end{split}
+\end{equation}
+
+\begin{equation}\label{2nmminus1}
+\begin{split}
+(2^n - 1)\cdot \sum^{m-1}_{i=0} 2^{i \cdot n} &= (2^n - 1)\cdot(2^{m \cdot n - n} + 2^{m \cdot n - 2\cdot n} + \cdots + 1) \Longleftrightarrow\\
+(2^n - 1)\cdot \sum^{m-1}_{i=0} 2^{i \cdot n} &= 2^n \cdot 2^{m \cdot n - n} + 2^n \cdot 2^{m \cdot n - 2\cdot n} + \cdots + 2^n \cdot 1 - 2^{m \cdot n - n} - 2^{m \cdot n - 2\cdot n} - \cdots - 1 \Longleftrightarrow \\
+(2^n - 1)\cdot \sum^{m-1}_{i=0} 2^{i \cdot n} &= 2^{m \cdot n} + 2^{m \cdot n - n} + \cdots + 2^n - 2^{m \cdot n - n} - 2^{m \cdot n - 2\cdot n} - \cdots - 1 \Longleftrightarrow \\
+(2^n - 1)\cdot \sum^{m-1}_{i=0} 2^{i \cdot n} &= 2^{m \cdot n} + 2^{m \cdot n - n} - 2^{m \cdot n - n} + \cdots + 2^n - 2^n - 1 \Longleftrightarrow \\
+(2^n - 1)\cdot \sum^{m-1}_{i=0} 2^{i \cdot n} &= 2^{m \cdot n} - 1 \text{ as required} \\
+\end{split}
+\end{equation}
+
+\item Suppose $k$ is a positive integer that is not prime. Then $2^k - 1$ is not prime.
+
+\begin{equation}
+\begin{split}
+k \text{ is not}&\text{ prime} \Longleftrightarrow \\
+\exists m, n \in \mathbb{Z}^+: k &= m \cdot n \Longleftrightarrow \\
+\exists m, n \in \mathbb{Z}^+: 2^k - 1 &= 2^{m\cdot n} - 1\Longleftrightarrow\\
+\exists m, n \in \mathbb{Z}^+: 2^k - 1 &= (2^n - 1)\cdot \sum^{m-1}_{i=0}2^{i \cdot n} \text{ using (\ref{2nmminus1})}\Longleftrightarrow\\
+\exists n \in \mathbb{Z}^+: 2^n - 1 &| 2^k - 1 \Longleftrightarrow\\
+2^k \text{ is not}&\text{ prime as required}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Prove that
+
+\begin{equation}
+\begin{split}
+\forall n \in \mathbb{N}: \forall x \in \mathbb{R}: x \geq -1 &\Longrightarrow (1 + x)^n \geq 1 + n \cdot x\\
+\end{split}
+\end{equation}
+
+At $n = 0$
+\begin{equation}
+\begin{split}
+ & (1 + x)^n\\
+=& 1\\
+\geq& 1 + 0\cdot x\\
+\end{split}
+\end{equation}
+So the expression holds true at $n = 0$.
+
+Assume the expression holds at $n = k$. So $(1 + x)^k \geq 1 + k \cdot x$
+\begin{equation}
+\begin{split}
+(1 + x)^{k + 1} &= (1 + x) \cdot (1 + x)^k\\
+				&\geq (1 + x)  \cdot ( 1 + k\cdot x)\\
+				&= 1 + k\cdot x + x + k\cdot x^2\\
+				&= 1 + (k + 1)\cdot x + x^2\\
+				&\geq 1 + (k + 1)\cdot x\text{ since }\forall x \in \mathbb{Z}: x^2\geq 0\\
+\end{split}
+\end{equation}
+So if the expression holds at $n = k$ then by it also holds at $n = k + 1$.
+Since the expression holds for $n = 0$, by induction, it must also hold 
+for all $n \in \mathbb{N}$. As required.
+
+\item Recall that the Fibonacci numbers $F_n$ for $n \in \mathbb{N}$ are defined recursively by 
+$F_0 = 0$, $F_1 = 1$, and $F_{n+2}=F_n + F_{n+1}$ for $n \in \mathbb{N}$.
+
+\begin{enumerate}
+
+\item Provve Cassani's Identity: for all $n \in \mathbb{N}$,
+
+\begin{equation}
+\begin{split}
+F_n \cdot F_{n + 2} &= F_{n + 1}^2 + (-1)^{n + 1}\\
+\end{split}
+\end{equation}
+
+At $n = 0$:
+\begin{equation}
+\begin{split}
+ & F_n \cdot F_{n + 2}\\
+=& 0 \cdot 1\\
+=& 0\\
+=& 1 - 1\\
+=& F_2^2 + (-1)^{n + 1}\\
+\end{split}
+\end{equation}
+So the expression holds true for $n = 0$.
+
+Assume that the expression holds true for $n = k$.
+\begin{equation}
+\begin{split}
+F_k \cdot F_{k + 2} &= F_{k + 1}^2 + (-1)^{k + 1}\Longleftrightarrow\\
+(F_{k + 2} - F_{k + 1}) \cdot (F_{k + 3} - F_{k + 1}) &= F_{k + 1}^2 + (-1)^{k + 1}\Longleftrightarrow\\
+F_{k+2}\cdot F_{k+3} - F_{k+2}\cdot F_{k+1} - F_{k + 1} \cdot F_{k + 3} + F_{k + 1}^2 &= F_{k + 1}^2 + (-1)^{k + 1}\Longleftrightarrow\\
+F_{k + 2}\cdot (F_{k + 3} - F_{k + 1})- F_{k + 1} \cdot F_{k + 3} &= (-1)^{k + 1}\Longleftrightarrow\\
+F_{k+2}^2 - F_{k + 1}\cdot F_{k + 3} &= (-1)^{k + 1}\Longleftrightarrow\\
+- F_{k + 1}\cdot F_{k + 3} &= - F_{k + 2}^2 + (-1)^{k + 1}\Longleftrightarrow\\
+F_{k + 1}\cdot F_{k + 3} &= F_{k + 2}^2 + (-1)^{k + 2}\\
+\end{split}
+\end{equation}
+So if the expression is true at $n = k$ then it is also true at $n = k + 1$. Since the expression is 
+true for $n = 0$, by induction it must also be true for all $n \in \mathbb{N}$.
+
+\item Prove that for all natural numbers $k$ and $n$,
+
+\begin{equation}\label{fnpluskplus1}
+\begin{split}
+F_{n + k + 1} &= F_{n + 1}\cdot F_{k + 1} + F_n \cdot F_k\\
+\end{split}
+\end{equation}
+
+At $n = 0$:
+\begin{equation}
+\begin{split}
+ & F_{n + k + 1}\\
+=& F_{k + 1}\\
+ & F_{n + 1} \cdot F_{k + 1} + F_n\cdot F_k\\
+=& F_1 \cdot F_{k + 1} + F_0\cdot F_k\\
+=& 1 \cdot F_{k + 1} + 0 \cdot F_k\\
+=& F_{k + 1}\\
+\end{split}
+\end{equation}
+So the statement is true for $n = 0$.
+
+At $n = 1$.
+\begin{equation}
+\begin{split}
+ & F_{n + k + 1}\\
+=& F_{k + 2}\\
+ & F_{n + 1} \cdot F_{k + 1} + F_n\cdot F_k\\
+ & F_2 \cdot F_{k + 1} + F_1\cdot F_k\\
+=& 1 \cdot F_{k + 1} + 1 \cdot F_k\\
+=& F_{k + 1} + F_k\\
+=& F_{k + 2}\\
+\end{split}
+\end{equation}
+So the statement is true for $n = 1$.
+
+Assume that it is also true for arbitrary $k$ at $n = i$ and $n = i - 1$.
+\begin{equation}
+\begin{split}
+\text{Assume: } F_{i + k} &= F_{i} \cdot F_{k + 1} + F_{i - 1} \cdot F_k\\
+\text{Assume: } F_{i + k + 1} &= F_{i + 1} \cdot F_{k + 1} + F_i \cdot F_k\\
+F_{i + k + 1} + F_{i + k} &= F_{i + 1}\cdot F_{k + 1} + F_{i}\cdot F_{k + 1} + F_i\cdot F_k + F_{i - 1}F_k\Longleftrightarrow\\
+F_{i + k + 2} &= (F_{i + 1} + F_i)\cdot F_{k + 1} + (F_i + F_{i - 1})\cdot F_k\Longleftrightarrow\\
+F_{i + k + 2} &= F_{i + 2}\cdot F_{k + 1} + F_{i + 1}\cdot F_k\Longleftrightarrow\\
+F_{(i + 1) + k + 1} &= F_{(i + 1) + 1}\cdot F_{k + 1} + F_{(i + 1)}\cdot F_k\\
+\end{split}
+\end{equation}
+So if the statement holds for $n = i$ and $n = i - 1$ at arbitrary $k$ then it also holds for arbitrary $k$ and $n = i + 1$.
+
+An analagous proof can be made for $k$.
+
+Since the statement is true for $n, k \in \{0, 1\}$ and the truth of the statement at $n = i - 1$ and $n = i$ 
+implies the proof of the statement at $n = i + 1$ and the truth of the statement at $k = j - 1$ and $k = j$ 
+implies the proof of the statement at $k = j + 1$ we can conclude by multivariate induction that the statement is 
+true for all $n, k \in \mathbb{N}$.
+
+\item Deduce that $F_n | F_{l \cdot n}$ for all natural numbers $n$ and $l$.
+
+\begin{equation}
+\begin{split}
+F_{n \cdot l} &= F_n \cdot F_{n + l} \Longleftrightarrow \\
+\end{split}
+\end{equation}
+
+At $n = 0$ for constant $l$:
+\begin{equation}
+\begin{split}
+F_n &= 0 \wedge F_{l\cdot n} = F_0 = 0\Longleftrightarrow\\
+0 &| 0\Longleftrightarrow\\
+F_n &| F_{l \cdot n}\\
+\end{split}
+\end{equation}
+
+Assume that the identity also holds at $n = k$:
+\begin{equation}
+\begin{split}
+\text{Assume: }F_k &| F_{l \cdot k} \Longleftrightarrow \\
+\exists a \in \mathbb{Z}: a \cdot F_k &= F_{l\cdot k}\\
+\text{Using }&\text{(\ref{fnpluskplus1}):}\\
+F_{l \cdot (k + 1)} &= F_{l \cdot k}\cdot F_{k + 1} + F_{l \cdot k - 1} \cdot F_k \Longleftrightarrow\\
+\exists a \in \mathbb{Z}: F_{l \cdot (k + 1)} &= a \cdot F_k \cdot F_{k + 1} + F_{l \cdot k - 1} \cdot F_k \Longleftrightarrow\\
+\exists a \in \mathbb{Z}: F_{l \cdot (k + 1)} &= F_k (a \cdot F_{k + 1} + F_{l \cdot k - 1}) \Longleftrightarrow\\
+F_k &| F_{l \cdot (k + 1)}\\
+\end{split}
+\end{equation}
+So if the expression holds at $n = k$ then it also holds at $n = k + 1$. Since the expression holds at $n = 0$; 
+by induction it must also hold for all $n \in \mathbb{N}$. As required.
+
+\item Prove that gcd$(F_{n + 2}, F_{n + 1})$ terminates with output 1 in $n$ steps for all positive integers 
+$n$.
+
+At $n = 0$:
+\begin{equation}
+\begin{split}
+ & \text{gcd}(F_2, F_1)\\
+=& \text{gcd}(1, 1)\\
+=& 1\\
+\end{split}
+\end{equation}
+So the expression holds at $n = 1$
+
+Assume it also holds for $n = k$.
+\begin{equation}
+\begin{split}
+\text{Assume: } \text{gcd}(F_{k + 2}, F_{k + 1}) &= 1 \Longleftrightarrow \\
+\text{gcd}(F_{k + 2}, F_{k + 1} + F_{k + 2}) &= 1 \Longleftrightarrow \\
+\text{gcd}(F_{k + 2}, F_{k + 3}) &= 1 \Longleftrightarrow \\
+\text{gcd}(F_{k + 3}, F_{k + 2}) &= 1
+\end{split}
+\end{equation}
+So if the expression for $n = k$ then it also holds for $n = k + 1$. Since 
+gcd$(F_2, F_1) = 1$, by induction it must also hold for all $n \in \mathbb{Z}^+$.
+
+Let \# signify the number of steps until termination.
+
+At $n = 0$:
+\begin{equation}
+\begin{split}
+\#\text{gcd}(F_2, F_1) &= \#\text{gcd}(1, 1)\\
+					   &= 0\\
+\end{split}
+\end{equation}
+So it terminates in 0 steps. So the algorithm terminates in $n$ steps for $n = 0$.
+
+Assume that it terminates in $k$ steps for $n = k$:
+\begin{equation}
+\begin{split}
+\text{Assume: } \#\text{gcd}(F_{k + 2}, F_{k + 1}) &= k\\
+\#\text{gcd}(F_{(k + 1) + 2}, F_{(k + 1) + 1}) &= \#\text{gcd}(F_{k + 3}, F_{k + 2}) \Longleftrightarrow\\
+\#\text{gcd}(F_{(k + 1) + 2}, F_{(k + 1) + 1}) &= \#\text{gcd}(F_{k + 2}, F_{k + 3} - F_{k + 2}) + 1\Longleftrightarrow\\
+\#\text{gcd}(F_{(k + 1) + 2}, F_{(k + 1) + 1}) &= \#\text{gcd}(F_{k + 2}, F_{k + 1}) + 1\Longleftrightarrow\\
+\#\text{gcd}(F_{(k + 1) + 2}, F_{(k + 1) + 1}) &= (k + 1) \Longleftrightarrow\\
+\end{split}
+\end{equation}
+
+So if \#gcd$(F_{k + 2}, F_{k + 1}) = k$ then \#gcd$(F_{k + 3}, F_{k + 2}) = k + 1$.
+Since \#gcd$(F_2, F_1) = 0$, by induction the algorithm must terminate in $n$ steps 
+for all $n \in \mathbb{N}$.
+
+\begin{equation}\label{gcdn2n1}
+\text{So gcd$(F_{n + 2}, F_{n + 1})$ terminates with output 1 in $n$ steps for all positive integers 
+$n$ as required.}
+\end{equation}
+
+\item Deduce also that:
+
+\begin{enumerate}[label=(\roman*)]
+
+\item For all positive integers $n < m$, gcd$(F_m, F_n) = \text{gcd}(F_{m - n}, F_n)$,
+
+\begin{equation}
+\begin{split}
+\text{Using (\ref{fnpluskplus1}): } F_m &= F_{n + 1} \cdot F_{m - n} + F_{n} \cdot F_{m - n - 1} \Longleftrightarrow\\
+\text{gcd}(F_m, F_n) &= \text{gcd}(F_{n + 1} \cdot F_{m - n} + F_{n} \cdot F_{m - n - 1}, F_n)\Longleftrightarrow\\
+\text{gcd}(F_m, F_n) &= \text{gcd}(F_{n + 1} \cdot F_{m - n}, F_n)\Longleftrightarrow\\
+(\text{Using (\ref{gcdn2n1}): gcd}(F_{n + 1}, F_n) &= 1) \wedge (\text{gcd}(a, c) = 1 \Longrightarrow \text{gcd}(a\cdot b, c) = \text{gcd}(b, c))\Longleftrightarrow\\
+\text{gcd}(F_m, F_n) &= \text{gcd}(F_{m - n}, F_n) \text{ as required}\\
+\end{split}
+\end{equation}
+
+and hence that:
+
+\item for all positive integers $m$ and $n$, gcd$(F_m, F_n) = F_{\text{gcd}(m, n)}$.
+
+If initially we start with $F_{m_0}$ and $F_{n_0}$ then at the next stage we will have $F_{m_1}$ and 
+$F_{n_1}$ where $m_1$ and $n_1$ are the next stages in gcd0. Since we know that gcd0 will terminate when 
+$m = n = \text{gcd}(m, n)$: we know that gcd$(F_m, F_n)$ will terminate when $m = n = \text{gcd}(m, n)$. 
+So gcd$(F_n, F_m) = F_{\text{gcd}(n, m)}$ as required.
+
+\end{enumerate}
+
+\item Show that for all positive integers $m$ and $n$, $(F_m \cdot F_n) | F_{m \cdot n}$ if gcd$(m, n) = 1$
+
+\begin{equation}
+\begin{split}
+\text{gcd}(m, n) &= 1 \Longleftrightarrow\\
+\text{gcd}(F_m, F_n) &= 1 \text{ by (e)(ii)} \Longleftrightarrow\\
+(F_m \cdot F_n) &| F_{m \cdot n} \Longrightarrow\\
+F_m &| F_{m \cdot n} \wedge F_n | F_{m\cdot n}\\
+\end{split}
+\end{equation}
+
+\item Conjecture and prove theorems concerning the following sums for any natural number $n$:
+
+\begin{enumerate}[label = (\roman*)]
+
+\item $\sum^n_{i = 0} F_{2\cdot i}$
+
+Prove:
+\begin{equation}\label{sumfevens}
+\begin{split}
+\sum^n_{i = 0} F_{2 \cdot i} &= F_{2 \cdot n + 1} - 1\\
+\end{split}
+\end{equation}
+
+At $n = 0$:
+\begin{equation}
+\begin{split}
+\sum^n_{i = 0} F_{2 \cdot i} &= 0 \Longleftrightarrow\\
+\sum^n_{i = 0} F_{2 \cdot i} &= 1 - 1 \Longleftrightarrow\\
+\sum^n_{i = 0} F_{2 \cdot i} &= F_1 - 1 \Longleftrightarrow\\
+\sum^n_{i = 0} F_{2 \cdot i} &= F_{2 \cdot n + 1} - 1 \\
+\end{split}
+\end{equation}
+So the expression is true at $n = 0$.
+
+Assume that it is also true at $n = k$:
+\begin{equation}
+\begin{split}
+\sum^k_{i = 0} F_{2 \cdot i} &= F_{2 \cdot k + 1} - 1\Longleftrightarrow\\
+\sum^k_{i = 0} F_{2 \cdot i} + F_{2 \cdot (k + 1)} &= F_{2 \cdot k + 1} + F_{2 \cdot k + 2} - 1\Longleftrightarrow\\
+\sum^k_{i = 0} F_{2 \cdot i} + F_{2 \cdot (k + 1)} &= F_{2 \cdot k + 1} + F_{2 \cdot k + 2} - 1\Longleftrightarrow\\
+\sum^{k + 1}_{i = 0} F_{2 \cdot i} &= F_{2 \cdot k + 3} - 1\Longleftrightarrow\\
+\sum^{k + 1}_{i = 0} F_{2 \cdot i} &= F_{2 \cdot (k + 1) + 1} - 1 \\
+\end{split}
+\end{equation}
+So if the expression holds at $n = k$ then it also holds at $n = k + 1$. Since the expression holds at $n = 0$ then 
+by induction it must also hold for all $n \in \mathbb{N}$ as required.
+
+\item $\sum^n_{i = 0}F_{2 \cdot i + 1}$
+
+Prove:
+\begin{equation}\label{sumfodds}
+\begin{split}
+\sum^n_{i = 0} F_{2 \cdot i + 1} &= F_{2 \cdot n + 2} - 1\\
+\end{split}
+\end{equation}
+
+At $n = 0$:
+\begin{equation}
+\begin{split}
+\sum^n_{i = 0} F_{2 \cdot i + 1} &= 1 \Longleftrightarrow\\
+\sum^n_{i = 0} F_{2 \cdot i + 1} &= F_2 \Longleftrightarrow\\
+\sum^n_{i = 0} F_{2 \cdot i + 1} &= F_{2\cdot n + 2} \\
+\end{split}
+\end{equation}
+So the expression is true at $n = 0$.
+
+Assume that it is also true at $n = k$:
+\begin{equation}
+\begin{split}
+\sum^k_{i = 0} F_{2 \cdot i + 1} &= F_{2 \cdot k + 2} \Longleftrightarrow\\
+\sum^k_{i = 0} F_{2 \cdot i + 1} + F_{2\cdot (k + 1) + 1} &= F_{2 \cdot k + 2} + F_{2\cdot (k + 1) + 1}\Longleftrightarrow\\
+\sum^{k + 1}_{i = 0} F_{2 \cdot i + 1} &= F_{2 \cdot (k + 1) + 2}\\
+\end{split}
+\end{equation}
+So if the expression holds at $n = k$ then it also holds at $n = k + 1$. Since the expression holds at $n = 0$ then 
+by induction it must also hold for all $n \in \mathbb{N}$ as required.
+
+\item $\sum^n_{i = 0} F_i$
+
+Prove:
+\begin{equation}
+\begin{split}
+\sum^n_{i = 0} F_i &= F_{2\cdot n + 3} - 1\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\sum^n_{i = 0} F_i &= \sum^n_{i = 0} F_{2 \cdot i} + \sum^n_{i = 0} F_{2 \cdot i + 1} \Longleftrightarrow\\
+\sum^n_{i = 0} F_i &= (F_{2 \cdot n + 1} - 1) + F_{2 \cdot n + 2} \text{ using (\ref{sumfevens}), (\ref{sumfodds})}\Longleftrightarrow\\
+\sum^n_{i = 0} F_i &= (F_{2 \cdot n + 1} + F_{2 \cdot n + 2}) - 1 \Longleftrightarrow\\
+\sum^n_{i = 0} F_i &= F_{2 \cdot n + 3} - 1 \Longleftrightarrow\\
+\end{split}
+\end{equation}
+As required.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{4.3 Optional exercises}
+
+\begin{enumerate}
+
+\item Use the Principle of Mathematical Induction from basis 2 to formally establish the following 
+correctness property of the algorithm:
+\begin{center}
+For all natural numbers $l \geq 2$, we have that for all positive\\
+integers $m$, $n$, if $m + n \leq l$ then gcd0$(m, n)$ terminates.
+\end{center}
+
+At $l = 2$:
+\begin{equation}
+\begin{split}
+m, n \in \mathbb{Z}^+ \wedge m + n \leq 2 \Longrightarrow\\
+m, n &= 1 \Longrightarrow\\
+\text{gcd0}(m, n) &= 1\\
+\end{split}
+\end{equation}
+So the property is correct for $l = 2$
+
+Assume that the property is also correct for $l = k$:
+\begin{equation}
+\begin{split}
+\text{Assume: }\forall m, n \in \mathbb{Z}^+: m + n \leq k \Longrightarrow
+\exists g \in \mathbb{Z}: \text{gcd0}(m, n) = g\\
+\end{split}
+\end{equation}
+So for $l = k + 1$:
+\begin{equation}
+\begin{split}
+m + n &< k + 1 \vee m + n = k + 1\Longleftrightarrow\\
+m + n &\leq k \vee m + n = k + 1\\
+\end{split}
+\end{equation}
+From the assumption we know that if $m + n \leq k$ then gcd0 terminates.\\
+So we need only consider the case where $m + n = k + 1$.
+
+We can divide this into two cases: $m = n \vee m \neq n$.
+
+Case $m = n$:
+\begin{equation}
+\begin{split}
+m = n \Longrightarrow \text{gcd0}(m, n) = m\\
+\end{split}
+\end{equation}
+So in the first case the algorithm terminates.
+
+Case $m \neq n$:\\
+Without loss of generality assume that $m > n$.
+\begin{equation}
+\begin{split}
+\text{gcd0}(m, n) &= \text{gcd0}(n, m - n)\\
+\end{split}
+\end{equation}
+However, since $n \geq 1$: $n + m - n \leq k$ and so by assumption gcd0 must terminate for this input.
+
+So if gcd0 terminates for $m + n \leq k$ then it must also terminate for $m + n \leq k + 1$.
+Since gcd0 terminates for $l = 2$, by induction it must terminate for all $l \geq 2$ as required.
+
+\item The set of \textit{univariate polynomials} (over the rationals) on a variable $x$ is defined as that 
+of arithmetic expressions equal to those of the form $\sum^n_{i=0}a_i\cdot x^i$, for some $n \in \mathbb{N}$ 
+and some coefficients $a_0,a_1,\cdots,a_n \in \mathbb{Q}$.
+
+\begin{enumerate}
+
+\item Show that if $p(x)$ and $q(x)$ are polynomials then so are $p(x) + q(x)$ and $p(x)\cdot q(x)$.
+
+Let $p(x)$ have degree $m$ such that $p(x) = \sum^{m}_{i=0}c_i \cdot x^i$ and $q(x)$ have degree $n$ such that $q(x) = \sum^{n}_{i=0}d_i \cdot x^i$.\\
+Without loss of generality, assume that $m \geq n$.\\
+Let $q'(x) = \sum^{m}_{i=0}e_i\cdot x^i$ such that $(e_i \leq n \Longrightarrow e_i = d_i) \wedge (e_i > n \Longrightarrow c_i = 0)$.\\
+Therefore $q'(x)$ is the same as $q(x)$.
+\begin{equation}\label{linearcomb}
+\begin{split}
+ & p(x) + q(x)\\
+=& p(x) + q'(x)\\
+=& \sum^{m}_{i=0}c_i\cdot x^i + \sum^{m}_{i=0}e_i\cdot x^i\\
+=& \sum^{m}_{i=0}(c_i + e_i)\cdot x^i\\
+\end{split}
+\end{equation}
+Which is the formula for a univariate polynomial where $a_i = c_i + e_i$. So if $p(x)$ and $q(x)$ are univariate polynomials, then 
+$p(x) + q(x)$ is also a univariate polynomial. As required.
+
+\begin{equation}
+\begin{split}
+p(x)\cdot q(x) &= \sum^{m}_{i=0}c_i \cdot x^i \cdot \sum^{n}_{j=0}d_j \cdot x^j \Longleftrightarrow\\
+p(x)\cdot q(x) &= \sum^{m}_{i=0}\sum^{n}_{j=0}c_i \cdot d_j \cdot x^{i + j} \Longleftrightarrow\\
+p(x)\cdot q(x) &= \sum^m_{i = 0} f_i(x)\text{ where }f_i(x)\text{ is a univariate polynomial}\\
+\end{split}
+\end{equation}
+Using (\ref{linearcomb}) we know that the sum of univariate polynomials is also a univariate polynomial. 
+Hence $p(x)\cdot q(x)$ is also a univariate polynomial. As required.
+
+\item Deduce as a corollary that, for all $a, b \in \mathbb{Q}$, the linear combination $a \cdot p(x) + b \cdot q(x)$ 
+of two polynomials $p(x)$ and $q(x)$ is a polynomial.
+
+Let $p(x)$ have degree $m$ such that $p(x) = \sum^{m}_{i=0}c_i \cdot x^i$ and $q(x)$ have degree $n$ such that $q(x) = \sum^{n}_{i=0}d_i \cdot x^i$.\\
+Without loss of generality, assume that $m \geq n$.\\
+Let $q'(x) = \sum^{m}_{i=0}e_i\cdot x^i$ such that $(e_i \leq n \Longrightarrow e_i = d_i) \wedge (e_i > n \Longrightarrow c_i = 0)$.\\
+Therefore $q'(x)$ is the same as $q(x)$.
+\begin{equation}
+\begin{split}
+ & a \cdot p(x) + b \cdot q(x)\\
+=& a \cdot p(x) + b \cdot q'(x)\\
+=& a \cdot \sum^{m}_{i=0}c_i\cdot x^i + b \cdot \sum^{m}_{i=0}e_i\cdot x^i\\
+=& \sum^{m}_{i=0}a \cdot c_i\cdot x^i + \sum^{m}_{i=0}b \cdot e_i\cdot x^i\\
+=& \sum^{m}_{i=0}(a \cdot c_i + b \cdot e_i)\cdot x^i\\
+\end{split}
+\end{equation}
+Which is the formula for a univariate polynomial where $a_i = a\cdot c_i + b\cdot e_i$. So if $p(x)$ and $q(x)$ are univariate polynomials, then 
+$a \cdot p(x) + b \cdot q(x)$ is also a univariate polynomial. As required.
+
+
+\item Show that there exists a polynomial $p_2(x)$ such that $p_2(n) = \sum^n_{i=0}i^2 = 0^2 + 1^ + \cdots + n^2$ 
+for every $n \in \mathbb{N}$.
+
+Prove $\sum^{n}_{i = 0}i^2 = \frac{n}{6}(n + 1)(2 \cdot n + 1)$.
+
+At $n = 0$:
+\begin{equation}
+\begin{split}
+ & \frac{n}{6}(n + 1)(2 \cdot n + 1)\\
+=& \frac{0}{6}\cdot 1 \cdot 1\\
+=& 0\\
+ & \sum^{0}_{i = 0}i^2\\
+=& 0\\
+\end{split}
+\end{equation}
+So the expression holds true at $n = 0$.
+
+Assume that the expression also holds true at $n = k$.
+\begin{equation}
+\begin{split}
+\sum^{k}_{i = 0}i^2 &= \frac{k}{6}(k + 1)\cdot(2 \cdot k + 1)\\
+\sum^{k+1}_{i = 0}i^2 &= \frac{k}{6}(k + 1)\cdot(2 \cdot k + 1) + (k + 1)^2\\
+\sum^{k+1}_{i = 0}i^2 &= \frac{1}{6}(k + 1)\cdot(k \cdot (2 \cdot k + 1) + 6 \cdot (k + 1))\\
+\sum^{k+1}_{i = 0}i^2 &= \frac{1}{6}(k + 1)\cdot(2 \cdot k^2 + k + 6 \cdot k + 6)\\
+\sum^{k+1}_{i = 0}i^2 &= \frac{1}{6}(k + 1)\cdot(2 \cdot k^2 + 7 \cdot k + 6)\\
+\sum^{k+1}_{i = 0}i^2 &= \frac{1}{6}(k + 1)\cdot(2 \cdot k + 3)\cdot(k + 2)\\
+\sum^{k+1}_{i = 0}i^2 &= \frac{k+1}{6}(k + 2)\cdot(2 \cdot k + 3)\\
+\sum^{k+1}_{i = 0}i^2 &= \frac{k+1}{6}((k + 1) + 1)\cdot(2 \cdot (k + 1) + 1)\\
+\end{split}
+\end{equation}
+So if the expression is true at $n = k$ then by induction it is also true at $n = k + 1$. Since the expression 
+is also true at $n = 0$, by induction it must be true for all $n \in \mathbb{N}$. So there exists a polynomial 
+$p_2(x)$ such that $p_2(n) = \sum^n_{i=0} i^2$.
+
+Since $\sum^{n}_{i = 0}i^2 = \frac{n}{6}(n + 1)(2 \cdot n + 1)$ is a polynomial that satisfies 
+$p_2(n) = \sum^n_{i = 0}i^2$ -- there must be a polynomial that satisfies $p_2(n) = \sum^n_{i = 0}i^2$
+
+\item Show that, for every $k \in \mathbb{N}$, there exists a polynomial $p_k(x)$ such that, for all $n \in \mathbb{N}$, 
+$p_k(n) = \sum^n_{i=0}i^k = 0^k + 1^k + \cdots + n^k$.
+
+\textit{Hint}: Generalise the hint above, and the similar identity
+\begin{equation}
+\begin{split}
+(n + 1)^2 &= \sum^n_{i = 0}(i + 1)^2 - \sum^n_{i = 0}i^2\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+(n + 1)^k &= \sum^n_{i = 0} (i + 1)^k - \sum^n_{i = 0} i^k\\
+\end{split}
+\end{equation}
+
+So if $p_k(n)$ is a polynomial, then $p_k(n + 1)$ is also s polynomial.
+
+Hence there exists a polynomial $p_k(x)$ such that for all $n \in \mathbb{N}: p_k(n) = \sum^(n)_{i = 0} i^k$.
+
+I'm fully aware that this does not constitute a proper proof -- I just didn't know how to prove it formally.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,323 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2001}{6}{3}
+
+\begin{enumerate}
+
+\item Define the terms \textit{circuit} and \textit{packet} in the context
+of communications systems.
+
+A packet is a small ($\sim$ 1kb) collection of bytes which are transmitted
+together. Packets consist of headers and payload. There will be many headers
+appended onto the packet -- one for each layer of the stack.
+
+A circuit is an dedicated link from one node to another on a network. This
+link is only used by the sender. If the sender does not send any data then
+the link remains idle.
+
+\item What sort of guarantee does circuit switching provide?
+
+Circuit switching guarantees performance -- since the circuit is dedicated
+to a given conversation, no other nodes will attempt to communicate over it.
+So if a circuit capable of sending $n$ bytes per second is setup, then there
+is guaranteed to be sufficient bandwidth to send $n$ bytes per second even
+if other nodes are trying to send across the network. Furthermore, since the
+circuit is dedicated to a given conversation, there will be no packet
+collisions.
+
+\item What advantages does packet switching provide over circuit switching?
+
+Packet switching allows better bandwidth utilisation via statistical
+multiplexing. Often, communication is bursty. Using circuit switching, nodes
+must request their maximum possible usage (which is often significantly
+above their average usage), while under packet switching the network makes
+more realistic assumptions allowing for more than
+$\frac{\text{bandwidth}}{\text{max node usage}}$ nodes to use the network.
+
+Packet switching also better resilience to failure -- packets can take
+multiple routes and easily be re-routed in the case of failure. However, if
+a circuit fails then the sender and receiver must notice and establish a new
+link before transmitting any more data.
+
+Packet switching has no setup cost -- circuit switching requires the sender
+and receiver to setup a circuit, which takes time. Packet switching does not
+suffer from this initial overhead. However, note there is higher continued
+overhead with routing packets.
+
+\item Which of \textit{frequency division multiplexing}, \textit{time
+division multiplexing} and \textit{code division multiplexing} lend
+themselves to circuit switching? Which to packet switching? Explain why or
+why not in each case.
+
+\begin{itemize}
+
+\item
+
+\textbf{Frequency Division Multiplexing}
+
+In FDM, signals are sent at different frequencies. Each conversation has a
+frequency band on which messages are transmitted. If a conversation does not
+transmit, then the frequency band (capacity) is wasted.
+
+FDM lends itself to circuit switching -- it allows multiple conversations to
+take place simultaneously without impeding each other. This is highly
+beneficial. It complies perfectly to the circuit switching paradigm.
+
+\item
+
+\textbf{Time Division Multiplexing}
+
+The bandwidth is split into timeslots. Each conversation is allocated a
+specific timeslot which it can use. If a timeslot is unused, then that
+capacity is wasted. Timeslots are allocated during circuit setup and
+deallocated during circuit teardown.
+
+TDM lends itself to circuit switching since it allows multiple
+simultaneous conversations without overhead.
+
+\item
+
+\textbf{Code Division Multiplexing}
+
+In Code Division Multiplexing, each sender/receiver pair is allocated a
+unique code $n$-bit code. In this application, we view 0s as -1. The sender
+then XORs their code with the bit they wish to transmit and adds this onto
+the signal it is forwarding. The receiver takes the dot-product between its
+code and the signal, then divides by $n$ to get the original bit. This
+allows multiple senders to transmit over the same wire.
+
+These codes can be pseudorandom, but are more commonly Walsh codes. Walsh
+codes are the columns of the set of matrices generated inductively by
+$H_1 = (0)$, $H_{2n} \begin{pmatrix}H_n & H_n \\ H_n & \overline{H_n} \end{pmatrix}$.
+
+\textbf{Does CDMA waste bandwidth?}
+
+Given $n$-bit codes and $n$-senders, we need $n+1$ states. To represent
+$n+1$ possible states, we need $\lceil\lg(n+1)\rceil$ bits per state. So to
+transmit $n$ bits, we have to send $n\lceil\lg(n+1)\rceil$ symbols.
+If this is correct, CDMA would waste \\
+$100 - \frac{100}{\lceil\lg(n+1)\rceil}\%$ of the bandwidth -- in
+real applications this translates to around $90\%$ of the bandwidth. I'd think
+this would be a massive drawback, however it's not mentioned anywhere. The
+only brief mentions I've found are ambiguous as to whether they mean
+``symbols per receiver'' is high or ``symbols per bit in transit'' is high.
+
+CDM is bad for circuit switching -- for the reason explained above, it's highly
+inefficient and wastes vast quantities of bandwidth. It is always beneficial
+to use any other form of multiplexing, rather than one which burns 90\% of
+bandwidth.
+
+\end{itemize}
+
+None of these multiplexing methods are useful for packet switching -- the
+premise of packet switching is to allow more communication by exploiting
+statistical multiplexing and the bursty nature of data transmission without
+ever setting up a circuit. Therefore, there is no need to allow multiple
+circuits to multiplex over the same wire -- the concept of a circuit does
+not exist in packet switching.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2001}{5}{3}
+
+Information is to be conveyed from $A$ to $B$ using automatic repeat request
+(ARQ), forward error correction (FEC), and lossless compression.
+
+\begin{enumerate}
+
+\item Explain the terms ARQ, FEC and \textit{lossless compression}.
+
+\begin{itemize}
+
+\item
+
+\textbf{Forward Error Correction}
+
+Forward Error Correction is a type of error correction wherein an Error
+Correcting Code (ECC) as appended to the end of each packet. The ECC is
+``redundant'' data and a function (often a simple hash) of the rest of the
+data. On receipt, the receiver will apply the function used to calculate
+the ECC and compare the value to the ECC. If they are different, there has
+been an error. In FEC, the receiver then tries to establish the most likely
+error that occurred. This is often nontrivial since bit flips are unlikely
+to be independent. If the recipient is unable to determine the error with high
+certainty, it will send a NACK to the sender, requesting retransmission of
+the corrupted packet.
+
+\item
+
+\textbf{Automatic Repeat Request}
+
+Automatic Repeat Request is the strategy of using acknowledgements and
+timeouts to implement reliable delivery. Sliding Window ARQ is one of the
+most common implementations.
+
+In the sliding window protocol:
+
+\begin{itemize}
+
+\item The sender maintains three integers: $sws$ (send window size -- a
+constant), $lar$ (last acknowledgement received) and $lfs$ (last frame
+sent). The invariant is maintained that $lfs - lar \leq sws$. The sender
+will send frames $i$ for $lar < i \leq lar + sws$. If a frame times out
+then it will retransmit it. On receiving an acknowledgement for frame $i$,
+it sets $lar = i$ -- all frames with id $< i$ have been seen by the receiver.
+
+\item The receiver maintains three integers: $laf$ (largest acceptable frame),
+$lfr$ (last frame received) and $rws$ (receive window size). All frames
+$\leq$ last frame received have been received and acknowledged. The receiver
+buffers any frames $i$ such that $lfr < i \leq lfr + rws$. On receiving all
+frames $\leq lfr + z$ for $1 \leq z \leq rws$, the receiver sends an
+acknowledgement. If the receiver receives frames smaller than its last
+acknowledged frame, it should retransmit acknowledgements for the last
+acknowledged frame.
+
+\end{itemize}
+
+Frames in ARQ should have a sequence number -- this sequence number should
+be $> \lceil \lg (rws + sws)\rceil$ bits to ensure the receiver does not mix
+up the frames. This also aids with the order in which frames are delivered
+-- unlike in C\&Ds, packets do not need monotonically increasing integers.
+
+Furthermore, ARQ with a well-chosen sliding window size and timeout will
+implement flow control. If the receiver gets overwhelmed, then it will not
+acknowledge frames. So the senders window will not slide, the sender will
+not be able to send new frames until the timeout for the original frame
+triggers.
+
+\item
+
+\textbf{Lossless Compression}
+
+Lossless compression is the strategy of changing the encoding of data into a
+compressed format without losing any data. In good situations, lossless
+compression can decrease the size of data transmitted by a factor of 10.
+However, lossless compression adds overhead with encoding and decoding the
+messages. This means that in many situations, best performance is not gained
+by maximal compression.
+
+The best type of Lossless compression to use is highly application-specific
+-- text is well-suited to encodings such as huffman coding (which compresses
+symbols to the entropy limit), code is well-suited to dictionary encoding
+(which creates compressed special representations for common phrases),
+while FAXs benefit from run-length-encoding (which records the number of
+consecutive symbols -- FAXs have a lot of whitespace).
+
+\end{itemize}
+
+\item If we consider ech of these functions to be operating at different
+protocol layers, what would be the most sensible ordering of the layers, and
+why?
+
+FEC is implemented on the physical layer. The types of errors which occur
+(bit errors vs burst errors) and error rates depend on the physical medium.
+It therefore makes the most sense to determine and implement error
+correction on the physical layer, where appropriate ECCs can be chosen to
+deal with the types of errors which occur.
+
+ARQ is implemented on the Data-Link Layer. The Data-Link Layer transmits
+data between nodes over the physical layer. ARQ resolves transmission issues
+and manages flow control (flow control being a data-link protocol). It's
+rational to implement ARQ on the Data-Link Layer.
+
+Lossless compression is highly application-specific -- the right choice can
+yield 10x compression, while the wrong choice can increase the size of the
+message. It is therefore rational for lossless compression to be implemented
+on the application layer.
+
+\item Suppose:
+
+\begin{itemize}
+
+\item The underlying bit channel has a capacity of $B$, a delay $\tau$ and
+error rate $\epsilon_0$.
+
+\item The compression rate is $C < 1$
+
+\item The FEC has rate $R < 1$ and given an error rate $\epsilon_0$ provides
+an error rate $\epsilon_1$ (which is detected).
+
+\item The ARQ protocol has a window size of $W$.
+
+\end{itemize}
+
+At what rate can information be conveyed?
+
+I assume that the variant of ARQ we use is
+
+The FEC rate is given by $\frac{\text{useful data per packet}}{\text{packet
+size}}$.
+
+The ARQ window size is the number of packets the sender will try to send at
+once.
+
+The compression rate is given by $\frac{\text{Compressed
+size}}{\text{Uncompressed size}}$.
+
+Therefore, the information rate is given by:
+\[
+\text{InfoRate} = \frac{R \cdot \text{DataRate}}{C}
+\]
+
+The data rate is the number of packets received per second.
+
+For the purposes of this question, I assume that the delay before ARQ will
+resend the message is $2\tau$ -- ARQ will only retransmit if the data has
+been corrupted and will do so at the instant it would have expected to see
+the data were it not corrupted.
+
+The expected delay for a packet is given by:
+\begin{align*}
+\text{Delay} &= 2\tau \cdot (1 - \epsilon_1) + 4\tau \cdot (1 - \epsilon_1)
+\epsilon_1 + \cdots \\
+&= 2\tau \cdot (1 - \epsilon_1) \cdot \sum^{\infty}_{i=0} (i+1) \cdot
+\epsilon^i \\
+&= 2\tau \cdot (1 - \epsilon_1) \cdot \left(
+\sum^{\infty}_{i=0} \epsilon_1^i +
+\sum^{\infty}_{i=0} i \cdot
+\epsilon^i \right) \\
+&= 2\tau \cdot (1 - \epsilon_1) \cdot \left( \frac{1}{1 - \epsilon_1} + \frac{
+\epsilon_1}{(1 - \epsilon_1)^2} \right) \\
+&= \frac{2\tau}{1 - \epsilon_1} \\
+\end{align*}
+The number of packets which can be sent serially in one second is the
+inverse of this:
+\[
+\frac{1 - \epsilon_1}{2\tau}
+\]
+Since the window size is $W$, we can send $W$ packets at once and so the
+total throughput is $W$ times this.
+\[
+\frac{W(1 - \epsilon_1)}{2\tau}
+\]
+However, this is capped by the bandwidth of the channel. The number of
+messages sent per packet is given by:
+\begin{align*}
+ & 1 + \epsilon_1 + \epsilon_1^2 \\
+=& \frac{1}{1 - \epsilon_1}
+\end{align*}
+So the maximum number of packets which can be correctly sent along the
+channel is given by:
+\[
+B\cdot(1 - \epsilon_1)
+\]
+Therefore the data rate is given by the minimum of these two quantities.
+Substituting this into the equation for the information rate gives:
+\[
+\text{InfoRate} \approx \frac{R \cdot \min\left( B\cdot(1 - \epsilon_1),
+\frac{W(1 - \epsilon_1)}{2\tau}\right)}{C}
+\]
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

@@ -1,0 +1,31 @@
+You can "divide" by numbers only if you are modulo a prime number.
+This is essentilaly the same as multiplying by an inverse of the number you're dividing by.
+ie 5k = 5m (mod 7) <=> 3x5k =3x5m (mod 7) <=> k = m (mod 7)
+It otherwise only works if you've got a multiplicative inverse
+
+Which happens iff you have numbers which are comprime
+
+ab  = 1modm
+ab = km + 1 -> ab and m are coprime
+
+If m and k are coprime then in general; 
+a = b(mod m)
+a = d(mod k)
+means you can find the value of 
+a(mod km)
+"chinese remainder theorem"
+
+cleaner solutions to remainder functions and to associativity
+work to make it in a nicer km + c solution
+do remainder and quotient functions. You take the thing inside the remainder and repeatedly apply the quo(m, k) + rem(m, k) = m
+
+\equiv (mod m) is one operator.
+For supervisions you can write it as \equiv_m
+
+prove that repunits are 3 (mod 4) and that hence it's impossible to have a square number that is 3 (mod 4)
+
+Write things out to be explicit so it's clear where things came from. IE "from inspection of the multiplication table modulo 10"
+
+k^2 = 1 (mod p) => k = +-1 (mod p)
+
+equivalence classes are transitive, symmetric and reflexive.

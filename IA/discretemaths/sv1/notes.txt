@@ -1,0 +1,15 @@
+make clear the logical steps between lines of maths
+add implication symbols and include existential and forall symbols
+natural numbers include 0
+state all assumptions -- ie sum of a and b is defined when a =/= 0 and b =/= 0
+learn uniqueness of prime number decomposition. If you don't then ask the lecturer if you can use it in the questions
+
+keep track of variable scope
+so know when you do need new vairables and when you don't need new variables
+
+an extra challenge
+some that you answer by counterexample
+Don't answer them by counterexample. Prove them properly.
+Describe infinitely many counterexamples
+or see what assumptions you'd need to add to make the statement true
+or find minimal counterexamples (expose the falseness of the statement in the simplest way)

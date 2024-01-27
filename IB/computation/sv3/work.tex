@@ -1,0 +1,867 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\usepackage{ebproof}
+\usepackage{relsize}
+
+\begin{document}
+
+\section{Question 1}
+\begin{enumerate}[label=(\alph*)]
+
+\item Let $M$ be the $\lambda$-term $\lambda xy.x(\lambda z.zu)y$. What is
+the $\beta$-normal form of the term $N = M(\lambda vw.v(wb))(\lambda xy.yaz)$ ?
+
+\begin{align*}
+N =& M(\lambda vw.v(wb))(\lambda xy.yaz) \\
+=& (\lambda xy.x(\lambda z.zu)y)(\lambda vw.v(wb))(\lambda xy.yaz) \\
+\twoheadrightarrow& (\lambda y.(\lambda vw.v(wb))(\lambda z.zu)y)(\lambda
+xy.yaz) \\
+\twoheadrightarrow& (\lambda y.(\lambda w.v(wb))[\lambda z.zu/v]y)
+(\lambda xy.yaz) \\
+=& (\lambda y.(\lambda w.(\lambda z.zu)(wb))y)(\lambda xy.yaz) \\
+\twoheadrightarrow& (\lambda y.(\lambda w.wbu)y)(\lambda xy.yaz) \\
+\twoheadrightarrow& (\lambda w.wbu)(\lambda xy.yaz) \\
+\twoheadrightarrow& (\lambda xy.yaz)bu \\
+\twoheadrightarrow& (\lambda y. yaz)u \\
+\twoheadrightarrow& uaz \\
+\not\twoheadrightarrow&
+\end{align*}
+So the $\beta-NF$ of $N$ is $uaz$
+\item Apply the simultaneous substitution $\sigma = [x/y, (\lambda xy.zy)/u]$
+to $M$ and $N$ and find the $\beta$-normal form of $N[\sigma]$
+
+\begin{align*}
+M[\sigma]
+&= (\lambda xy.x(\lambda z.zu)y)[x/y, (\lambda xy.zy)/u] \\
+&= (\lambda xy.x(\lambda w.wu)y)[(\lambda xy.zy)/u] \\
+&= (\lambda xy.x(\lambda w.w(\lambda xy.zy))y)\\
+N[\sigma]
+&= uaz[x/y, (\lambda xy.zy)/u] \\
+&= (\lambda xy.zy)az \\
+&\twoheadrightarrow (zy)[a/x. z/y] \\
+&= zz
+\end{align*}
+
+\item Give 2 terms $\alpha$-equivalent to $M$. Give 2 other terms
+$\beta$-equivalent to $M$.
+
+\begin{align*}
+M &
+=_{\alpha} \lambda yz.y(\lambda z.zu)z
+=_{\alpha} \lambda xy.x(\lambda x. xu)y \\
+M &
+=_{\beta} (\lambda fxy. xfy)(\lambda z. zu)
+=_{\beta} (\lambda x. x)(\lambda xy. x(\lambda z. zu)y)
+\end{align*}
+
+\item We define $\eta$-equivalence as: $M=_\eta \lambda x.Mx$ for any
+$\lambda$-term $M$. Give a shorter and a longer term $\eta$-equivalent to M\@.
+\begin{align*}
+M &=_{\eta} M \\
+M &=_{\eta} \lambda xyz. ((M x)y)z
+\end{align*}
+
+\item What is the use of $\eta$-equivalence in functional programming?
+
+This enables compiler optimisations. At any point, we can replace an
+expression with any expression which is $\eta$-equivalent to it.
+
+\end{enumerate}
+
+\section{Question 2}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Give a complete proof of the correctness of Church addition from
+Slide 119.
+\[
+\mathit{Plus}(m, n) =_\beta \langle m + n \rangle
+\]
+
+\newcommand{\un}[1]{\ensuremath{\underline{#1}}}
+
+We are required to prove that for all church numerals $\un{n}$, $\un{m}$
+the following holds:
+\[
+\un{m + n} =_\beta \lambda\ f\ x. \un{m}\ f\ (\un{n}\ f\ x)
+\]
+I will prove this by assuming arbitrary $n$ and perform mathematical
+induction over $m$. Since the proof assumes $n$ is arbitrary, it holds for
+all $n$. By induction over $m$, we will prove it holds for all $m$.
+
+\begin{itemize}
+
+\item Case $m = 0$
+\begin{align*}
+& \lambda\ f\ x.\ \underline{0}\ f\ (\underline{n}\ f\ x) \\
+=_{\beta}& \lambda\ f\ x.\ (\lambda\ f\ x.\ x)\ f\ (\underline{n}\ f\ x) \\
+=_{\beta}& \lambda\ f\ x.\ \underline{n}\ f\ x \\
+=_{\beta}& \underline{n} \\
+=_{\beta}& \underline{n + 0} \\
+\end{align*}
+Therefore, the proof holds in the case $m = 0$.
+
+\item The inductive step.
+
+Assume the lemma holds for $m = k$ and prove it
+holds for $m = k + 1$:
+\begin{align*}
+&
+\lambda\ f\ x.\ \underline{k + 1}\ f\ (\underline{n}\ f\ x) \\
+=_{\beta}&
+\lambda\ f\ x.\ \underline{k + 1}\ f\ (f^n\ x) \\
+=_{\beta}&
+\lambda\ f\ x.\ f(f^k(f^n\ x)) \\
+=_{\beta}& \lambda\ f\ x.\ f(\underline{n + k}\ f\  x) \\
+=_{\beta}& \mathop{Succ}\ \underline{n + k} \\
+=_{\beta}& \underline{n + k + 1} \\
+\end{align*}
+
+Therefore, if the lemma holds for $m = k$ then it also holds for $m = k + 1$.
+Since it held for $m = 0$, by mathematical induction, we have proved it
+holds for all $m \in \mathbb{N}$. Since $n$ was arbitrary in the proof,
+this statement holds for all $n$. Therefore:
+\[
+\forall n\forall m. \un{m + n} =_\beta \lambda\ f\ x. \un{m}\ f\ (\un{n}\ f\ x)
+\]
+As required.
+
+\end{itemize}
+
+\item Define the $\lambda$-terms Times and Exp representing multiplication
+and exponentiation of Church numerals respectively. Prove the correctness
+of your definitions.
+\begin{align*}
+\mathit{Times}(m, n) &=_\beta \langle m * n \rangle \\
+\mathit{Exp}(m, n) &=_\beta \langle m^n \rangle
+\end{align*}
+\begin{align*}
+\mathop{Times}(m, n) &= n\ (\mathop{Add}\ m)\ 0 \\
+\mathop{Exp}(m, n) &= n\ (\mathop{Times}\ m)\ 1
+\end{align*}
+\begin{align*}
+\mathop{Times}(m, n) &= m\ (\mathop{Add}\ n)\ 0 \\
+&= \underbrace{m + \dots + m}_{n\ \text{times}} + 0 \text{\ using correctness
+ of $\mathop{Add}$} \\
+&= \langle m \times n \rangle \text{\ as required}\\\\
+\mathop{Exp}(m, n) &= m\ (\mathop{Times}\ n)\ 1 \\
+&= \underbrace{m \times \dots \times m}_{n\ \text{times}} \times 1 \text{\
+using correctness of $\mathop{Times}$} \\
+&= \langle m^n \rangle \text{\ as required}
+\end{align*}
+
+\end{enumerate}
+
+\section{Question 3}
+
+\begin{enumerate}[label=\arabic*.]
+
+\setcounter{enumii}{10}
+
+\item If you are \textit{still} not fed up with Ackermann's function
+$\mathop{ack} \in \mathbb{N}^2 \to \mathbb{N}$, show that the $\lambda$-term
+$\mathop{ack} \triangleq \lambda x. x(\lambda f y. y f(f \underline{1}))
+\mathop{Succ}$ represents $\mathop{ack}$ (where $\mathop{Succ}$ is as on slide 123).
+
+The Ackermann function has three rules:
+\begin{align*}
+\mathop{ack}(0, x_2) &\triangleq x_2 + 1 \\
+\mathop{ack}(x_1 + 1, 0) &\triangleq \mathop{ack}(x_1, 1) \\
+\mathop{ack}(x_1 + 1, x_2 + 1) &\triangleq
+\mathop{ack}(x_1, \mathop{ack}(x_1 + 1, x_2))
+\end{align*}
+
+To prove that the $\lambda$-term above is computes Ackermann's function, I
+will perform case analysis.
+
+\begin{itemize}
+
+\item Case $\mathop{ack}(0, x_2)$
+\begin{align*}
+(\lambda x. x(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\underline{0}\ \underline{x_2}
+&=_{\beta}
+(\underline{0}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\underline{x_2} \\
+&=_{\beta}
+\mathop{Succ}\  \underline{x_2} \\
+&=_{\beta}
+\underline{x_2 + 1} \\
+&=_{\beta} \mathop{ack}(0, x_2)
+\end{align*}
+
+\item Case $\mathop{ack}(x_1 + 1, 0)$
+I will prove this by induction. Start by proving the base case $x_1 = 0$:
+\begin{align*}
+& (\lambda x. x(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\underline{1}\ \underline{0} \\
+\twoheadrightarrow &
+(\underline{1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\underline{0} \\
+\twoheadrightarrow &
+(\lambda f y. y f(f \underline{1})
+\mathop{Succ})\underline{0} \\
+\twoheadrightarrow &
+(\lambda y. y \mathop{Succ} (\mathop{Succ} \underline{1}))\underline{0} \\
+\twoheadrightarrow &
+\underline{0} \mathop{Succ} (\mathop{Succ} \underline{1}) \\
+\twoheadrightarrow &
+\mathop{Succ} \underline{1} \\
+\twoheadrightarrow &
+\underline{2} \\
+\end{align*}
+
+Since $Ack(1, 0) = 2$, this proves that the $\lambda$-term $\mathop{ack}$
+computes Ackermann's function in the case $x_1 = 0$, $x_2=0$.
+
+Consider now the inductive step. Assume that the $\lambda$-term
+$\mathop{ack}$ computes Ackermann's function for $x_1 = k$ and prove it
+computes the function for $k + 1$:
+\begin{align*}
+& (\lambda x. x(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\underline{k+1}\ \underline{0} \\
+\twoheadrightarrow &
+\underline{k+1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ}\underline{0} \\
+\twoheadrightarrow &
+(\lambda f y. y f(f \underline{1}))(\underline{k}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\underline{0} \\
+\twoheadrightarrow &
+\underline{0} (\underline{k}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})((\underline{k}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ}) \underline{1}) \\
+\twoheadrightarrow &
+((\underline{k}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ}) \underline{1}) \\
+\end{align*}
+
+\item Case $\mathop{ack}(x_1 + 1, x_2 + 1)$
+\begin{align*}
+&(\lambda x. x(\lambda f y. y f(f \underline{1}))\mathop{Succ})\
+\underline{x_1 + 1}\ \underline{x_2 + 1} \\
+=_{\beta}& \underline{x_1 + 1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ}\ \underline{x_2 + 1} \\
+=_{\beta}& (\lambda f y. y f(f \underline{1}))
+(\underline{x_1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\ \underline{x_2 + 1} \\
+=_{\beta}&
+\underline{x_2 + 1}\ (\underline{x_1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})\ ((\underline{x_1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ}) \underline{1}) \\
+=_{\beta}&
+(\underline{x_1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})
+(\underline{x_2}\ (\underline{x_1}(\lambda f y. y f(f
+\underline{1}))
+\mathop{Succ})\ ((\underline{x_1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ}) \underline{1})) \\
+=_{\beta}&
+(\underline{x_1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})
+\underbrace{(\lambda fy. y f(f\underline{1})\underline{x_1 + 1}\
+\underline{x_2})}_{\mathop{ack}(x_1 + 1, x_2)} \\
+=_{\beta}&
+(\underline{x_1}(\lambda f y. y f(f \underline{1}))
+\mathop{Succ})
+\mathop{ack}(x_1 + 1, x_2) \\
+=_{\beta}&
+(\lambda yf. yf(f\underline{1}))\underline{x_1}
+\ \mathop{ack}(x_1 + 1, x_2) \\
+&=_{\beta} \mathop{ack}(x_1, \mathop{ack}(x_1 + 1, x_2))
+\end{align*}
+Therefore, the $\lambda$-term computes Ackermann's function for
+
+\end{itemize}
+
+\item Let $I$ be the $\lambda$-term $\lambda x. x$. Show that
+$\underline{n}\ I =_\beta I$ holds for every Church numeral $\underline{n}$.
+\begin{align*}
+\underline{n}\ I &=
+(\lambda fx. f^n x) I \\
+&= \lambda x. I^n x \\
+&= \lambda x. x \\
+&= I
+\end{align*}
+Now consider
+\[
+B \triangleq \lambda\ f\ g\ x.\ g\ x\ I\ (f\ (g\ x))
+\]
+Assuming the fact about normal order reduction mentioned on slide 115, show
+that if partial functions $f, g \in \mathbb{N} \rightharpoonup \mathbb{N} $
+are represented by closed $\lambda$-terms $F$ and $G$ respectively, then
+their composition $(f \circ g)(x) \equiv f(g(x))$ is represented by
+$B\ F\ G$.
+
+$B$ is required to ensure that $g$ is defined. I provide a proof by case
+analysis below:
+
+\begin{itemize}
+
+\item Case $g(x)\uparrow$
+\begin{align*}
+(B\ F\ G)x &\triangleq (\lambda\ f\ g\ x.\ g\ x\ I\ (f\ (g\ x)))\ F\ G\ x \\
+&\twoheadrightarrow G\ x\ I\ (F\ (G\ x))
+\end{align*}
+By assumption, $g(x)\uparrow$. So the $\lambda$-term $G\ x$ contains an
+infinite reduction sequence and has no normal form. Using the fact on slide
+115, since $G\ x$ is the left-most $\lambda$-term we can conclude that the
+$\lambda$-term contains no normal form. Therefore, in this case of $(B\ F\
+G)\ x$ undefined -- as required.
+
+\item Case $g(x)\downarrow$
+\begin{align*}
+(B\ F\ G)x &\triangleq (\lambda\ f\ g\ x.\ g\ x\ I\ (f\ (g\ x)))\ F\ G\ x && \\
+&\twoheadrightarrow G\ x\ I\ (F\ (G\ x)) &&\\
+&\twoheadrightarrow \underline{g(x)}\ I\ (F\ (G\ x)) &&\text{ since $g
+\subseteq \mathbb{N} \times \mathbb{N}$} \\
+&\twoheadrightarrow (F\ (G\ x)) &&\text{ using }\ \underline{n}\ I =_\beta
+I \\
+&\twoheadrightarrow F\ \underline{g(x)} && \\
+&\twoheadrightarrow \underline{f(g(x))} &&
+\end{align*}
+
+\end{itemize}
+
+\end{enumerate}
+
+\section{Question 4}
+
+In this question you may use all of the $\lambda$-definable functions
+presented in the notes, as well as the terms you define as part of this 
+exercise. You should explain your answers (possibly using some examples), 
+but don't need to prove their correctness.\\
+
+\begin{enumerate}[label=(\alph*)]
+
+\item ``Not'', i.e boolean negation
+\[
+\mathop{Not}(f) \triangleq \lambda\ x\ y. f\ y\ x
+\]
+
+Not inverts the result -- in $\lambda$ calculus this is achieved by swapping
+the order in which the $\lambda$-terms are passed to the boolean.
+
+\item ``And'' and ``Or'', i.e boolean conjunction and disjunction
+\begin{align*}
+\mathop{And}(f, g) &\triangleq \lambda\ x\ y. f\ (g\ x\ y)\ y \\
+\mathop{Or}(f, g) &\triangleq \lambda\ x\ y. f\ x\ (g\ x\ y)
+\end{align*}
+
+\item ``Minus'', i.e truncated subtraction
+\[
+\mathop{Minus} \triangleq \lambda\ n\ m.\ m\ (\mathop{Pred})\ n
+\]
+
+$\mathop{Pred}$ performs truncated subtraction for 1. So applying
+$\mathop{Pred}$ $m$ times has the same effect as truncated subtraction of
+$m$ from $n$.
+
+\item Numeric comparison operators $=, \neq, <, \leq , >, \geq$. You can
+define them in any order you find most convenient.
+\begin{align*}
+\geq &\triangleq \lambda\ m\ n. \mathop{Eq_0} (\mathop{Minus}\ n\ m) \\
+< &\triangleq \lambda\ m\ n. \mathop{Not}(\geq m\ n)\\
+\leq &\triangleq \lambda\ m\ n. \mathop{Eq_0} (\mathop{Minus}\ m\ n) \\
+> &\triangleq \lambda\ m\ n. \mathop{Not}(\leq m\ n)\\
+= &\triangleq \lambda\ m\ n. \mathop{And} (\geq m\ n) (\leq m\ n) \\
+\neq &\triangleq \lambda\ m\ n. \mathop{Not} (= m\ n) \\
+\end{align*}
+
+$m \geq n$ is the same as testing whether the truncated subtraction of $m$
+from $n$ is equal to zero. So we do this.
+
+$m < n$ is equivalent to $\neg(m \geq n)$, so I use this equivalence.
+
+Similar logic applies to $\leq$ and $>$.
+
+$=$ is equivalent to $(m \geq n) \wedge (m \leq n)$.
+
+$m \neq n$ is logically equivalent to $\neg (m = n)$.
+
+\item A $\lambda$-term ``MapPair'', i.e a function that applies a function
+to both elements of the pair.
+\[
+\mathop{MapPair} \triangleq \lambda\ f\ p. \mathop{Pair}\ (f\ (\mathop{fst}\ n))
+(f\ (\mathop{snd}\ n))
+\]
+
+This destructs the pair, applies the function $f$ to both halves and
+reconstructs the pair. This has the desired effect of ``MapPair''.
+
+\item ``SquareSum'', i.e a function representing $(m, n) \mapsto m^2 + n^2$
+\[
+\mathop{SquareSum} \triangleq \lambda p. \mathop{Add}\ (\mathop{Times}\
+(\mathop{fst}\ p)\ (\mathop{fst}\ p))\ (\mathop{Times}\ (\mathop{snd}\ p)\
+(\mathop{snd}\ p))
+\]
+
+This $\lambda$-term destructs the pair, squares each and adds them.
+
+\item Explain why Curry's $\mathbf{Y}$ combinator is needed and how it works.
+
+Curry's $\mathbf{Y}$ combinator has the effect of passing a function to
+itself as argument. This allows recursion. Recursion is necessary to
+implement partial recursive functions; so the usage of Curry's $\mathbf{Y}$
+combinator is an important part in the proof that any
+computable function is $\lambda$-computable.
+
+\item Give a $\lambda$-term which is $\beta$-equivalent to the $\mathbf{Y}$
+combinator, but only uses its $f$ argument once.
+\[
+\mathbf{Y}' \triangleq \lambda\ f. (\lambda\ y.\ y\ y)\ (\lambda\ x.\ f\ (x\ x))
+\]
+
+\end{enumerate}
+
+\begin{examquestion}{2009}{6}{6}
+
+\begin{enumerate}
+
+\item Define what it means for a $\lambda$-calculus term to be in normal
+form. Is it possible for a $\lambda$-term to have two normal forms that are
+not $\alpha$-equivalent? Provide justification for your answer?
+
+A $\lambda$-calculus term is in normal form if there do not exist any
+$\beta$-reductions.
+
+A $\beta$-reduction is defined as follows:
+
+\begin{gather*}
+\dfrac{}{(\lambda\ x. M)N \to M[N/x]}
+\quad
+\dfrac{M \to M'}{(\lambda x.M)N\to (\lambda\ x.M')N}
+\quad
+\dfrac{N \to N'}{(\lambda\ x. M)N'}\\
+\dfrac{M \to M'}{M\ N \to M'\ N}
+\quad
+\dfrac{N \to N'}{M\ N \to M\ N'}
+\end{gather*}
+
+It's not possible for a $\lambda$-term to have two normal forms which are
+not $\alpha$-equivalent.
+
+\begin{gather}
+\dfrac{M =_\alpha M'}{M \twoheadrightarrow M'}
+\quad
+\dfrac{M \to M'}{M \twoheadrightarrow M'}
+\quad
+\dfrac{M \twoheadrightarrow M'\quad M' \to M''}{M \twoheadrightarrow M''}
+\end{gather}
+
+Many-step $\beta$-reduction is confluent. Formally,
+\[
+M \twoheadrightarrow M' \wedge M \twoheadrightarrow M'' \Longrightarrow
+\exists M'''. M' \twoheadrightarrow M''' \wedge M'' \twoheadrightarrow M'''
+\]
+This also applies to many-step $\beta$-reduction. So if there was a
+$\lambda$-term which had multiple $\beta$ normal forms which were not
+$\alpha$ then confluence for many-step $\beta$-reduction \textit{could not}
+be true. Which is a contradiction. Therefore, the assumption that there
+exists a $\lambda$-term which has multiple $\beta$ normal forms.
+
+\item For each of the following, give an example of a $\lambda$-term that
+
+\begin{enumerate}
+
+\item is in normal form
+\[
+\lambda\ x.\ x
+\]
+
+\item is not in normal form but has a normal form
+\[
+(\lambda\ x.\ x)y
+\]
+The normal form for this expression is:
+\[
+y
+\]
+
+\item does not have a normal form
+\[
+\Omega = (\lambda\ x.\ x\ x)(\lambda\ x.\ x\ x)
+\]
+
+\end{enumerate}
+
+\item We define a $\lambda$-term $N$ to be \textit{non-trivial} iff there
+exist $A$ and $B$ such that $N\ A \to^* \mathbf{true}$ and $N\ B \to^*
+\mathbf{false}$, where $\mathbf{true}$ and $\mathbf{false}$ encode the
+Booleans.
+
+Give an example of a $\lambda$-term that is non-trivial and show that it is
+non-trivial.
+
+\[
+N = \lambda\ x.\ x
+\]
+
+$N$ is \textit{non-trivial} because $N\ \mathbf{true} = \mathbf{true}$ and
+$N\ \mathbf{false} = \mathbf{false}$.
+
+\item We define a $\lambda$-term $N$ as \textit{total} iff for each
+$\lambda$-term $M$, either $N\ M \to^* \mathbf{true}$ or $N\ M \to^*
+\mathbf{false}$.
+
+Give an example of a $\lambda$-term that is total, and show that it is total.
+
+\[
+\lambda\ x. \mathbf{true}
+\]
+
+Clearly, $\forall M. (\lambda\ x. \mathbf{true}) M \to \mathbf{true}$. So
+the criteria is fulfilled.
+
+\item Prove that there is no non-trivial and total $\lambda$-term.
+
+Consider a \textit{non-trivial} $\lambda$-term $N$ and without loss of
+generality let $A$, $B$ be $\lambda$-terms such that $N\ A \to^*
+\mathbf{true}$ and $N\ B to^* \mathbf{false}$.
+
+Firstly, use the identity:
+\[
+N(\mathbf{Y}L) =_{\beta} N(\mathbf{if}\ (N\ (\mathbf{Y}\ L)) B\ A)
+\]
+
+I show that $N(\mathbf{Y}\ L)$ can evaluate to neither $\mathbf{true}$ nor
+$\mathbf{false}$ -- providing an arbitrary counterexample to the existence
+of a \textit{non-trivial} and \textit{total} $\lambda$-term.
+
+\begin{itemize}
+
+\item Case $N(\mathbf{Y}\ L) \to^* \mathbf{false}$
+\begin{align*}
+N(\mathbf{Y}\ L) &\to^* \mathbf{false} \Longrightarrow \\
+N(\mathbf{if}\ (N\ (\mathbf{Y}\ L)) B\ A) &\to^* \mathbf{false}
+\Longrightarrow \\
+N(\mathbf{if}\ \mathbf{false}\ B\ A) &\to^* \mathbf{false}
+\Longrightarrow \\
+N\ A &\to^* \mathbf{false} \Longrightarrow \\
+\mathbf{true} &\to^* \mathbf{false}
+\end{align*}
+Since a contradiction has been reached, we can conclude that
+$N(\mathbf{Y}\ L) \not\to^* \mathbf{false}$
+
+\item Case $N(\mathbf{Y}\ L) \to^* \mathbf{true}$
+\begin{align*}
+N(\mathbf{Y}\ L) &\to^* \mathbf{true} \Longrightarrow \\
+N(\mathbf{if}\ (N\ (\mathbf{Y}\ L)) B\ A) &\to^* \mathbf{true}
+\Longrightarrow \\
+N(\mathbf{if}\ \mathbf{true}\ B\ A) &\to^* \mathbf{true}
+\Longrightarrow \\
+N\ B &\to^* \mathbf{true} \Longrightarrow \\
+\mathbf{false} &\to^* \mathbf{true}
+\end{align*}
+Since a contradiction has been reached, we can conclude that
+$N(\mathbf{Y}\ L) \not\to^* \mathbf{true}$
+
+\end{itemize}
+Therefore, $N(\mathbf{Y}\ L)$ reduces to neither $\mathbf{true}$ nor
+$\mathbf{false}$. So $N(\mathbf{Y}\ L)$ is not total. So there can exist no
+$\lambda$-term which is both \textit{non-trivial} and total.
+
+\item What consequences does this have for defining a general equality
+$\lambda$-term such that
+\begin{align*}
+\mathop{\text{equal}}\ A\ B & \to^* \mathbf{true} & & \mathop{\text{if}}\ A
+ = B\\
+\mathop{\text{equal}}\ A\ B & \to^* \mathbf{true} && \mathop{\text{otherwise}}
+\end{align*}
+
+This shows that there can exist no general equality $\lambda$-term. If
+there was a general equality $\lambda$-term, it would be both
+\textit{non-trivial} and \textit{total}. By the proof above, there exists
+no such term and therefore there exists no general equality $\lambda$-term.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2019}{6}{6}
+
+\begin{enumerate}
+
+\item \begin{enumerate}
+
+\item Give an inductive definition of the relation $M =_\beta N$ of
+$\beta$-\textit{conversion} between $\lambda$-terms $M$ and $N$.
+\[
+\dfrac{}{x =_\alpha x}
+\quad
+\dfrac{Z\#(M\ N) M[z/x] =_\alpha N[z/y]}{
+\lambda x. M =_\alpha \lambda y. N
+}
+\quad
+\dfrac{M =_\alpha N \quad M' =_\alpha N'}{M N =_\alpha M' N'}
+\]
+
+\begin{gather*}
+\dfrac{}{(\lambda x. M)N \to M[N/x]}
+\quad
+\dfrac{M \to M'}{\lambda x. M \to \lambda x. M'}
+\quad
+\dfrac{M \to M'}{M N \to M' N}
+\\
+\dfrac{N \to N'}{M N \to M N'}
+\quad
+\dfrac{
+M =_\alpha N \quad M \to M' \quad M' =_\alpha N
+}{
+N \to N'
+}
+\end{gather*}
+
+\iffalse
+\[
+\dfrac{M =_\alpha N}{M \twoheadrightarrow N}
+\quad
+\dfrac{M \to M'}{M \twoheadrightarrow M'}
+\quad
+\dfrac{M \twoheadrightarrow M'\quad M' \to M''}{
+M \twoheadrightarrow M''
+}
+\]
+\fi
+
+\begin{gather*}
+\dfrac{M =_\alpha N}{M =_\beta N}
+\quad
+\dfrac{
+M \to N
+}{
+M =_\beta N
+}
+\quad
+\dfrac{M =_\beta M'}{M' =_\beta M}
+\quad
+\dfrac{M =_\beta M' \quad M' =_\beta M''}{M =_\beta M''}
+\\
+\dfrac{M =_\beta M'}{\lambda x. M =_\beta \lambda x. M'}
+\quad
+\dfrac{M =_\beta M' \quad N =_\beta N'}{
+M\ N =_\beta M'\ N'
+}
+\end{gather*}
+
+\item What is meant by a term in $\beta$-\textit{normal form}?
+
+A $\lambda$-term $M$ is in $\beta$-\textit{normal form} if and only if
+there does not exist any $\lambda$-term such that $M \to N$ and
+$\neg(M =_\alpha N)$.
+
+\item If $M$ and $N$ are in $\beta$-normal form, explain why $M =_\beta N$
+implies that $M$ and $N$ are $\alpha$-equivalent $\lambda$-terms.
+
+Assume $M =_\beta N$ for $M, N$ in $\beta$-normal form.
+\begin{align*}
+\Longrightarrow &\exists M'. M \twoheadrightarrow M' \twoheadleftarrow N &
+& \text{by definition} \\
+\intertext{By definition of $\beta$-normal form, the only reduction which
+either can be made is an $\alpha$-renaming}
+\Longrightarrow& \exists M'. M =_\alpha M' =_\alpha N &
+& \\
+\Longrightarrow& M =_{\alpha} N & & \text{since $=_\alpha$ is an equivalence}
+\end{align*}
+
+\end{enumerate}
+
+\item Show that there are $\lambda$-terms $\mathbf{True}$, $\mathbf{False}$
+and $\mathbf{If}$ satisfying $\mathbf{If}\ \mathbf{True}\ M\ N =_\beta M$
+and $\mathbf{If}\ \mathbf{False}\ M\ N =_\beta N$ and with $\mathbf{True}
+\neq \mathbf{False}$.
+
+Define the $\lambda$-terms as follows:
+\begin{align*}
+\mathbf{If} &\triangleq \lambda fxy. fxy \\
+\mathbf{True} &\triangleq \lambda xy. x \\
+\mathbf{False} &\triangleq \lambda xy. y
+\end{align*}
+
+\[
+\begin{prooftree}
+\hypo{\mathbf{If}\ \mathbf{True}\ M\ N \to \mathbf{True}\ M\ N}
+\infer1{
+\mathbf{If}\ \mathbf{True}\ M\ N =_\beta \mathbf{True}\ M\ N
+}
+\hypo{\mathbf{True}\ M\ N \to M}
+\infer1{
+\mathbf{True}\ M\ N =_\beta M
+}
+\infer2{
+\mathbf{If}\ \mathbf{True}\ M\ N =_\beta M
+}
+\end{prooftree}
+\]
+
+\[
+\begin{prooftree}
+\hypo{\mathbf{If}\ \mathbf{False}\ M\ N \to \mathbf{False}\ M\ N}
+\infer1{
+\mathbf{If}\ \mathbf{False}\ M\ N =_\beta \mathbf{False}\ M\ N
+}
+\hypo{\mathbf{False}\ M\ N \to N}
+\infer1{
+\mathbf{False}\ M\ N =_\beta N
+}
+\infer2{
+\mathbf{If}\ \mathbf{False}\ M\ N =_\beta N
+}
+\end{prooftree}
+\]
+
+\item Define \textit{Curry's fixed point combinator} $\mathbf{Y}$ and prove
+its fixed-point property.
+
+\[
+\mathbf{Y} \triangleq \lambda f. (\lambda x. f (x\ x))(\lambda x. f (x\ x))
+\]
+
+The fixed-point property is that for any $\lambda$-term $M$: $\mathbf{Y}M
+=_\beta M(\mathbf{Y}M)$. A derivation that the fixed-point property holds for
+any arbitrary $\lambda$-term $M$ is given below:
+\[
+\mathlarger{\nabla} =
+\begin{prooftree}
+\hypo{\mathbf{Y}M \to (\lambda x. M(x\ x))(\lambda x. M(x\ x))}
+\infer1{
+\mathbf{Y}M =_\beta (\lambda x. M(x\ x))(\lambda x. M(x\ x))
+}
+\hypo{(\lambda x. M(x\ x))(\lambda x. M(x\ x)) \to M((\lambda x. M(x\ x))(\lambda x. M(x\ x)))}
+\infer1{
+(\lambda x. M(x\ x))(\lambda x. M(x\ x)) =_\beta M((\lambda x. M(x\ x))(\lambda x. M(x\ x)))
+}
+\infer2{
+\mathbf{Y}M =_\beta M((\lambda x. M(x\ x))(\lambda x. M(x\ x)))
+}
+\end{prooftree}
+\]
+\[
+\begin{prooftree}
+\hypo{\mathlarger{\nabla}}
+\hypo{M(\mathbf{Y}M) \to M((\lambda x. M(x\ x))(\lambda x. M(x\ x)))}
+\infer1{
+M(\mathbf{Y}M) =_\beta M((\lambda x. M(x\ x))(\lambda x. M(x\ x)))
+}
+\infer2{
+\mathbf{Y}M =_\beta M(\mathbf{Y}M)
+}
+\end{prooftree}
+\]
+
+\item Consider the following two properties of $\lambda$-term $M$:
+\begin{enumerate}[label=(\Roman*)]
+
+\item there exist $\lambda$-terms $A$ and $B$ with $M\ A =_\beta
+\mathbf{True}$ and $M\ B =_\alpha \mathbf{False}$.
+
+\item for all $\lambda$-terms $N$, either $M\ N =_\beta \mathbf{True}$ or
+$M\ N =_\beta \mathbf{False}$.
+
+\end{enumerate}
+
+Prove that $M$ cannot have both properties (I) and (II).
+
+I will assume property (I) holds and perform case analysis to prove that
+property (II) cannot hold by contradiction, using the
+identity below:
+\[
+\mathbf{Y}(\lambda. x \mathbf{If}\ (M\ x)B\ A) =_{\beta} \mathbf{If}\ (M(\mathbf{Y}(\lambda. x \mathbf{If}\ (M\ x)B\ A)))B\ A
+\]
+\begin{itemize}
+
+
+\item Case $M (\mathbf{Y}(\lambda. x \mathbf{If}\ (M\ x)B\ A)) =_\beta
+\mathbf{True}$
+\begin{align*}
+\mathbf{True} &=_\beta
+M (\mathbf{Y}(\lambda. x \mathbf{If}\ (M\ x)B\ A)) \Longrightarrow \\
+\mathbf{True} &=_\beta
+M (\mathbf{If}\ \mathbf{True}\ B\ A) \Longrightarrow \\
+&=_{\beta} M B \Longrightarrow \\
+&=_{\beta} \mathbf{False} \text{\ by definition of $M$}
+\end{align*}
+A contradiction has been reached. Therefore, this case cannot hold!
+
+\item Case $M (\mathbf{Y}(\lambda. x \mathbf{If}\ (M\ x)B\ A)) =_\beta
+\mathbf{False}$
+\begin{align*}
+\mathbf{False} &=_\beta
+M (\mathbf{Y}(\lambda. x \mathbf{If}\ (M\ x)B\ A)) \Longrightarrow \\
+\mathbf{True} &=_\beta
+M (\mathbf{If}\ \mathbf{False}\ B\ A) \Longrightarrow \\
+&=_{\beta} M A \Longrightarrow \\
+&=_{\beta} \mathbf{True} \text{\ by definition of $M$}
+\end{align*}
+A contradiction has been reached. Therefore, this case cannot hold!
+
+\end{itemize}
+
+Therefore $M (\mathbf{Y}(\lambda. x \mathbf{If}\ (M\ x)B\ A))$ is not
+$\beta$-equivalent to either $\mathbf{True}$ \textit{or} $\mathbf{False}$.
+So if $M$ has property (I) then it cannot have property (II). So there
+exists no $\lambda$-term $M$ which has both property (I) and property (II).
+
+\item Deduce that there is no $\lambda$-term $E$ such that for all
+$\lambda$-terms $M$ and $N$
+\[
+E\ M\ N =_{\beta}
+\begin{cases}
+\mathbf{True} & \quad \text{if}\ M =_{\beta} N \\
+\mathbf{False} & \quad \text{otherwise}
+\end{cases}
+\]
+
+If such an $E$ existed, it would have both property (I) and property (II).
+Therefore, no such $E$ can exist using the proof above.
+
+Clearly $(E M)\ M = \mathbf{true}$, and there exist $\lambda$-terms $N$
+which are not $\beta$-equivalent to $M$ -- so $(E M)\ N = \mathbf{false}$.
+So $EM$ is totally defined and takes the value $\mathbf{true}$ on some
+inputs and $\mathbf{false}$ on others. By the proof above, $EM$ cannot
+exist. $M$ was an arbitrary $\lambda$-term and so must exist.
+We can therefore conclude that $E$ cannot exist.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\section{Question 8}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Define the $\lambda$-term $\mathop{Fact}$ that computes the factorial
+of a Church numeral.
+
+For this question and the next, I implement recursion by explicitly
+passing the $\lambda$-term a reference to itself using Curry's $\mathbf{Y}$
+combinator.
+
+\[
+\mathop{Fact} \triangleq
+\mathbf{Y}(\lambda \ f\  n. \mathop{if}\ (\mathop{Eq_0}\ n)\ 1\
+(\mathop{Times}\ n\ (\mathbf{Y}\ f\ (\mathop{Pred}\ n))))
+\]
+
+\item Define the $\lambda$-term $\mathop{Fib}$ such that
+$\mathop{Fib} n =_\beta \mathop{Fib}_n$ where $F_n$ is the $n$-th Fibonacci
+number defined recursively as $F_0 = 0, F_1=1, F_n = F_{n-1} + F_{n-2}$.
+\[
+\mathop{Fib} \triangleq \mathbf{Y} (
+\lambda\ f\ n.\ \mathop{if}\ (\mathop{Eq_0}\ n)\ 0\
+(
+	\mathop{if}\ (\mathop{Eq_0}\ (\mathop{Pred}\ n))\ 1\
+	(\mathop{Add}\
+		(\mathbf{Y}\ f\ (\mathop{Pred}\ n))
+		(\mathbf{Y}\ f\ (\mathop{Pred}\ (\mathop{Pred}\ n)))
+	)
+)
+)
+\]
+
+\end{enumerate}
+
+\end{document}

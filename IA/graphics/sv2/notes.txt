@@ -1,0 +1,36 @@
+model transform
+Changing the object in object coordinates to the object in world coordinates -- scaling, rotating and translating etc
+The time you need to use object coordinates are texture mapping.
+finding the intersection of a ray with an object.
+In world coordinates the camera can be anywhere. In world coordinates you are just constructing the scene and converting everything into the same coordiante system so that you can say where everything is.
+one model transform per object.
+
+view transform
+This transforms everything from the world coordinates so that the camera is at the origin in these coordinates and everything moves respective to the camera.
+This is just so that you make the maths easier.
+one transform per camera
+
+projection transform
+Projecting the 3D coordinates onto a 2D plane.
+Perspective projection is the most common, however there are other projections such as ones which just go "first in the z-axis"
+one transform per camera
+
+You can precompute the view and projection transformations.
+
+LEARN VIEW AND PROJECTION TRANSFORMATIONS and the matrices for them
+
+Perspective transformations scale down the vector to the point so that they are just all on the same plane but that the unit vector in their direction is unchanged.
+
+With perspective transformations you don't map the z onto the plane -- you map it to 1/z so that you can know which order things should be in.
+
+To try and figure out what a complicated matrix does is to throw in some arbitrary points, see what happens.
+After that's done, throw in the corners of a unit square etc and get an intuition for roughly what the matrix is doing.
+
+In graphics, dividing by a basis vector almost always means projection.
+
+bilinear interpolation is in the x-y axis.
+trilinear interpolation is bilinear interpolation between two layers of a MIPmap on each being bilinearly interpolated.
+
+MIPmap is precomputing downsampled values.
+
+If a question asks how do you do a thing -- you do need to say manually how to do it.

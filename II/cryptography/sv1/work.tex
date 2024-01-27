@@ -1,0 +1,378 @@
+\input{./infofile}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\usepackage{../../template/supervision}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{most}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Ex}
+\tcolorboxenvironment{ex}{
+    boxrule=0pt,
+    boxsep=0pt,
+    blanker,
+    borderline west={2pt}{0pt}{cyan!80!white},
+    before skip=10pt,
+    after skip=10pt,
+    left=12pt,
+    right=12pt,
+    breakable,
+}
+\newtcolorbox{questionbox}{
+    boxrule=0pt,
+    boxsep=0pt,
+    blanker,
+    borderline west={2pt}{0pt}{cyan!80!white},
+    before skip=10pt,
+    after skip=10pt,
+    left=12pt,
+    right=12pt,
+    breakable,
+}
+\newenvironment{qlist}[1][]{\begin{enumerate}[#1, labelsep=20pt]}{\end{enumerate}}
+\newenvironment{question}{\begin{questionbox} \item}{\end{questionbox}}
+
+\begin{document}
+
+\section{Examples Sheet Questions}
+
+\subsection{Historic Ciphers}
+
+\begin{ex}
+
+    Decipher the shift cipher text \\
+    LUXDZNUAMNDODJUDTUZDGYQDLUXDGOJDCKDTKKJDOZ
+
+\end{ex}
+
+There are two critical observations:
+\begin{enumerate}
+
+    \item We do now know distribution of the source (although we can make guesses)
+
+    \item The key space is only 26 (25 excluding identity)
+
+\end{enumerate}
+
+In light of these two observations, I brute force the decryption by writing a program which outputs all 26 candidate plaintext messages and by inspection select the one which is most likely.
+\begin{lstlisting}[language=Python]
+["".join(chr((ord(c) + i - 65) % 26 + 65) for c in s) for i in range(26)]
+\end{lstlisting}
+\todo{Get a better listing environment (or get pdftex working locally)}
+
+By inspection, the most likely plaintext is FORXTHOUGHXIXDOXNOTXASKXFORXAIDXWEXNEEDXIT.
+
+\begin{ex}
+
+    How can you break the any transposition cipher with $\lceil \log_a n\rceil$ chosen plaintexts, if $a$ is the size of the alphabet and $n$ is the size of the permutation block length?
+
+\end{ex}
+
+Send the base-$a$ representation of each of each index. This requires $\lceil \log_a n\rceil$ messages. Then we can reinterpret the characters received at index $j$ as integers to read off the index $i$ which maps to it.
+
+\subsection{Perfect Secrecy}
+
+\begin{ex}
+
+    Show that the shift cipher provides unconditional security if $\forall K \in \Z_{26}: \prob(K) = 26^{-1}$ for plaintexts $M \in \Z_{26}$.
+
+\end{ex}
+
+A cipher provides ``perfect secrecy'' if receiving ciphertext gives the interceptor \emph{no information} about the plaintext, \emph{even if they have infinite compute}. More formally, we have that:
+\[
+    \forall M \in \mathcal M, C \in \mathcal C\ldotp \prob(M \mid C) = \prob(M)
+\]
+where
+\[
+    P(M \mid C) = \frac{\prob(M) \cdot \sum_{\{K \mid M = \dec_K(C)\}} \prob(K)}{\sum_K \prob(K) \cdot \prob(\dec_K(C))}
+\]
+
+I prove that the LHS of this expression is equal to the RHS for a shift-cipher:
+\begin{align*}
+    P(M \mid C)
+    &= \frac{\prob(M) \cdot \sum_{\{K \mid M = \dec_K(C)\}} \prob(K)}{\sum_K \prob(K) \cdot \prob(\dec_K(C))} \why{Bayes Rule} \\
+    &= \frac{\prob(M) \cdot \sum_{\{K \mid M = \dec_K(C)\}} \frac{1}{26}}{\frac{1}{26} \cdot \sum_K \prob(\dec_K(C))} \why{$\forall K \in \Z_{26}: \prob(K) = 26^{-1}$} \\
+    &= \frac{\prob(M) \cdot \frac{1}{26}}{\frac{1}{26} \cdot \sum_M \prob(M)} \why{shift cipher a bijection}\\
+    &= \frac{\prob(M) \cdot \frac{1}{26}}{\frac{1}{26} \cdot 1} \why{probabilities sum to 1}\\
+    &= \prob(M) \why{as required}
+\end{align*}
+
+\begin{ex}
+
+    Show that if an encryption scheme $(\gen, \enc, \dec)$ over a message space $\mathcal M$ is \emph{perfectly secret} if and only if
+
+    \begin{enumerate}[label=(\textit{\alph*})]
+
+        \item for every probability distribution over $\mathcal M$, every message $M \in \mathcal M$, and every ciphertext $C \in \mathcal C$ with $\prob(C) > 0$ we have
+        \[
+            \prob(C \mid M) = \prob(C)
+        \]
+
+        \item for every probability distribution over $\mathcal M$, every message pair $M_0, M_1 \in \mathcal M$, and every ciphertext $C \in \mathcal C$ with $\prob(C) > 0$ we have
+        \[
+            \prob(C \mid M_0) = \prob(C \mid M_1)
+        \]
+
+    \end{enumerate}
+
+\end{ex}
+
+\begin{enumerate}[label=(\textit{\alph*})]
+
+    \item This is proved by a simple rearrangement of the condition for perfect secrecy:
+    \begin{align*}
+        \forall M \in \mathcal M, C \in \mathcal C\ldotp \prob(M \mid C) &= \prob(M) \why{definition of perfect secrecy} \\
+        \forall M \in \mathcal M, C \in \mathcal C\ldotp \frac{\prob(C \mid M) \cdot \prob(M)}{\prob(C)} &= \prob(M) \why{Bayes Rule} \\
+        \forall M \in \mathcal M, C \in \mathcal C\ldotp \prob(C \mid M) \cdot \prob(M) &= \prob(C) \cdot \prob(M) \why{multiplying by $\prob(C)$} \\
+        \forall M \in \mathcal M, C \in \mathcal C\ldotp \prob(C \mid M) &= \prob(C) \why{dividing by $\prob(M)$}
+    \end{align*}
+
+    \item This is proved by direct application of the above property:
+    \begin{align*}
+        \forall M, C\ldotp \prob(C \mid M) &= \prob(C) \why{proved above} \\
+        \forall C\ldotp \prob(C \mid M_1) &= \prob(C) \why{universal generalisation} \\
+        \forall C\ldotp \prob(C \mid M_0) &= \prob(C) \why{universal generalisation} \\
+        \forall C\ldotp \prob(C \mid M_0) &= \prob(C \mid M_1) \why{transitivity of $=$}
+    \end{align*}
+
+\end{enumerate}
+
+\subsection{Semantic Security}
+
+\subsection{Block Ciphers}
+
+\begin{ex}
+
+    If the round function $f$ in a Feistel construction is a pseudo-random function, how many rounds $r$ are at least necessary to build a pseudo-random permutation? What test can you apply to distinguish a Feistel structure with $r - 1$ rounds (with high probability) from a random permutation?
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    Using a given pseudo-random function $F: \{0, 1\}^{100} \to \{0, 1\}^{100}$, construct a pseudo-random permutation $P: \{0, 1\}^{300} \to \{0, 1\}^{300}$ by extending the Feistel princigle appropriately.
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    What happens to the ciphertext block if all bits in both the key and plaintext block of DES are inverted?
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    given a hardware implementation of the DES encryption function, what has to be modified to make it decrypt?
+
+\end{ex}
+
+\todo{Do this!}
+
+\subsection{Modes of Operation}
+
+\begin{ex}
+
+    In the CBC mode of operation, the initial vector (IV) chosen uniformly at random, using a secure source of random bits. Show that the CBC would not be CPA secure if the initial vector could be anticipated by the adversary, for example because it is generated instaed of using a counter or a time-stamp.
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    Explain for each of the discused modes of operation (ECB, CBC, CFB, OFB, CTR) of a block cipher how decryption works.
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    A sequence of plaintext blocks $M_1, \ldots, M_8$ is encrypted using DES into a sequence of ciphertext blocks. Where an IV is used, it is numbered $C_0$. A transmission error occurs and one bit in ciphertext block $C_3$ changes its value. As a consequence, the receiver obtains after decryption a corrupted plaintext block sequence $M_1', \ldots, M_8'$. For the discused modes of operation (ECB, CBC, CFB, OFB, CTR), how many bits do you expect to be wrong in each block $M_i''$?
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    Your opponent has invented a new stream-cipher mode of operation for 128-bit key AES. He thinks that OFB could be improved by feeding back into the key port rather than the data prot of the ASE chip. He therefore sets $R_0 = K$ and generates the key stream by $R_{i + 1} = E_{R_i}(R_0)$. Is this better or worse than OFB?
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    A programmer wants to use CBC in order to protect both the integrity and confidentiality of network packets. She attaches a blcok of zero bits $M_{n + 1}$ to the end of the plaintext $M_1 \parallel \ldots \parallel M_n$ as redundancy, then encrypts with CBC. At the receiving end, she verifes that the added redundant bits are still all zero after CBC decryption. Does this test ensure the integrity of the transferred message?
+
+\end{ex}
+
+\todo{Do this!}
+
+\subsection{Message Authenticity}
+
+\begin{ex}
+
+    Show that CTR mode is not CCA secure.
+
+\end{ex}
+
+\todo{Do this!}
+
+\subsection{Authenticated Encryption}
+
+\begin{ex}
+
+    Your colleagues have inented a new authenticated encryption scheme that they call AES-CBC+CMAC. Their key generating function outputs a 128-bit AES key $K$, adn their encryption function outputs $C\parallel T = \enc_C(M)\parallel\mac_C(M)$, where $\enc_K(M)$ shall be the AES-CBC encryption of $M$ with key $K$ (with random IV each time), and $\mac_C(M)$ shall be the AES-CMAC of $M$ with key $K$. Show that this construct lacks CPA security.
+
+\end{ex}
+
+\todo{Do this!}
+
+\subsection{Secure Hash Functions}
+
+\begin{ex}
+
+    Explain the purpose of the collision-resistance requirement for the hash function used in a digital signature scheme.
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    Your colleagues urgently need a collision-resistant hash function. Their code contains already an existing implementation of ECBC-MAC, using a block cipher with 256-bit block size. Therefore, they suggest to use ECBC-MAC with fixed keys $K_1 = K_2 = 0^\ell$ as a hash function. Show that this construction is not even pre-image resistant.
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{ex}
+
+    Show how the DES block cipher can be used to build a 64-bit hash function. How difficult is it to find collisions for your construct?
+
+\end{ex}
+
+\todo{Do this!}
+
+\begin{examquestion}{2014}{8}{11}
+
+\begin{qlist}[label=(\textit{\alph*})]
+
+    \begin{question}
+
+        Let $\Pi = (\gen, \enc, \dec)$ be a private-key encryption scheme that operates on fixed-length messages from $\mathcal M = \{0, 1\}^m$. Briefly explain a game that a user $\mathcal U$ of $\Pi$ must be ble to win against any polynomial-time adversary $\mathcal A$ with probability $\frac12 - \epsilon$ (where $\epsilon$ is ``negligible'' with growing key length) for $\Pi$ to be able to claim to offer ``indistinguishable multiple encryptions under chosen-plaintext attack'' (CPA security).
+
+    \end{question}
+
+    \todo{Do this!}
+
+    \begin{question}
+
+        Let $\Pi = (\gen, \enc, \dec)$ be a private-key encryption scheme that offers CPA security and operates on fixed-length messages $M \in \mathcal M = \{0, 1\}^m$ with keys $K \in \mathcal K = \{0, 1\}^\ell$. We use it to construct a new encryption scheme $\Pi' = (\gen, \enc', \dec')$. In which of the following cases is $\Pi'$ also CPA secure? Explain your answer.
+
+    \end{question}
+
+    \begin{qlist}[label=(\textit{\roman*})]
+
+        \begin{question}
+
+            $\enc'_K(M) = \enc_K(M \oplus 1^m)$
+
+        \end{question}
+
+        \todo{Do this!}
+
+        \begin{question}
+
+            $\enc_K'(M) = \enc_K(M) \parallel \mathrm{LSB}(M)$
+
+        \end{question}
+
+        \todo{Do this!}
+
+        \begin{question}
+
+            $\enc_K'(M) = \enc_K(M) \parallel \mathrm{LSB}(K)$
+
+        \end{question}
+
+        \todo{Do this!}
+
+        \begin{question}
+
+            $\enc_K'(M) = \enc_{0^\ell}(M)$
+
+        \end{question}
+
+        \todo{Do this!}
+
+    \end{qlist}
+
+    \begin{question}
+
+        While reviewing an implementation of AES-CBC, you discover that it simply uses the last ciphertext block from the previously encrypted message as the IV value $C_0$ for encrypting the message. The implementation's author argues that as long as the IV of the very first message was chosen uniformly at random, all resulting subsequent ciphertext blocks will also be distributed uniformly at random, and therefore make good IVs. Why is this construction nevertheless not CPA secure?
+
+    \end{question}
+
+    \todo{Do this!}
+
+\end{qlist}
+
+\end{examquestion}
+
+\begin{examquestion}{2011}{4}{8}
+
+\begin{qlist}[label=(\textit{\alph*})]
+
+    \setcounter{enumi}{1}
+
+    \begin{question}
+
+        Your colleagues used a pseudo-random function $f: \{0, 1\}^{64} \to \{0, 1\}^{64}$ in order to construct a permutation $g: \{0, 1\}^{192} \to \{0, 1\}^{192}$. The argument and return values of $g$ are split into three 64-bit registers, respectively: $g(X_1, X_2, X_3) = (Y_1, Y_2, Y_3)$. The output of $g$ is calculated as $Y_2 = f(X_1) \oplus X_2 \oplus f(X_3)$, $Y_1 = X_1 \oplus f(Y_2)$, and $Y_3 = X_3 \oplus f(Y_2)$, where $\oplus$ denotes bit-wise exclusive or.
+
+    \end{question}
+
+    \begin{qlist}[label=(\textit{\roman*})]
+
+        \begin{question}
+
+            Show that $g$ is indeed a permutation.
+
+        \end{question}
+
+        \todo{Do this!}
+
+        \begin{question}
+
+            Show how an attacker who does not know $f$ can efficiently distinguish $g$ from most random permutations, after evaluating $g$ on two different inputs.
+
+        \end{question}
+
+        \todo{Do this!}
+
+        \begin{question}
+
+            After you point out this shortcoming to your colleagues, they propose an improved variant $g'(X_1, X_2, X_3) = (Z_1, Z_2, Z_3)$ that adds another round to $g: Z_1 = Y_1$, $Z_2 = f(Y_1) \oplus Y_2 \oplus f(Y_3)$, and $Z_3 = Y_3$.
+
+            Show how this variant still does not fix the problem of efficient distinguishability from most random permutations.
+
+        \end{question}
+
+        \todo{Do this!}
+
+    \end{qlist}
+
+\end{qlist}
+
+\end{examquestion}
+
+\end{document}

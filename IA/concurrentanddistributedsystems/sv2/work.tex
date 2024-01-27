@@ -1,0 +1,94 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2007}{4}{1}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item What is meant by a \textit{serialisable} order for two or more
+transactions?
+
+% TODO
+
+\item Explain how \texit{timestamp ordering} enforces isolation.
+
+% TODO
+
+\item Draw and explain a history graph for two transactions whose invocations
+of a set of conflicting operations are serialisable but who are rejected by
+TSO .
+
+% TODO
+
+\item Considering Optimistic Concurrency Control (OCC):
+
+\begin{enumerate}[label=(\roman*)]
+
+\item State the properties of a transaction's set of shadow copies that must
+be verified at commit time.
+
+% TODO
+
+\item Carefully explain the algorithm used by a single-threaded commit-time
+validator.
+
+% TODO
+
+\end{enumerate}
+
+\item Consider a system in which the transactions cause updates to objects
+which are not all located on a single server but which are distributed
+widely around the Internet. What factors would influence your choice of
+using TSO or OCC to enforce isolation?
+
+% TODO
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2011}{5}{7}
+
+Database concurrency control enables multiple transactions to proceed
+simultaneously against a shared database.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Give an example of \textit{conflicting} and \textit{non-conflicting}
+operations on objects in a database.
+
+% TODO
+
+\item Explain how timestamp ordering (TSO) works, and how it responds to
+conflicts between transactions.
+
+% TODO
+
+\item Explain cascading aborts, and use an example to show how they can
+occur with TSO .
+
+% TODO
+
+\item Why is TSO not subject to deadlock?
+
+% TODO
+
+\item Explain why TSO distributes well, compared with two-phase locking.
+
+% TODO
+
+\item Construct a workload that performs badly under TSO, and explain why it
+does so. What could you do to improve its performance.
+
+% TODO
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

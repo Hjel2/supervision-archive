@@ -1,0 +1,391 @@
+\input{./templatenst/prefs/jkf21.tex}
+\input{./templatenst/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./templatenst/includes.tex}
+\input{./templatenst/template.tex}
+
+\fancyhead[RO,LE]{{\bfseries NST Maths, SV~11}\\16-02-22\ 12:00, Video Link}
+
+\usepackage{physics}
+
+\begin{document}
+
+\begin{enumerate}
+
+\setcounter{enumi}{9}
+
+\item 
+\begin{enumerate}
+
+\item 
+\begin{equation}
+\begin{split}
+y \dd{x} + x \dd{y} \\
+\pdv{y}\left(y\right) &= 1\\
+\pdv{x}\left(x\right) &= 1\\
+\end{split}
+\end{equation}
+Since $\pdv{y}\left(P\right) = \pdv{x}\left(Q\right)$ the differential is exact.
+
+\begin{equation}
+\begin{split}
+y \dd{x} + x \dd{y} &= 0 \\
+xy &= c\\
+y &= \frac{c}{x}\\
+\end{split}
+\end{equation}
+
+\item 
+\begin{equation}
+\begin{split}
+y \dd{x} + x^2 \dd{y} \\
+\pdv{y}\left(y\right) &= 1\\
+\pdv{x}\left(x^2\right) &= 2x \neq 1\\
+\end{split}
+\end{equation}
+$\pdv{y}\left(P\right) \neq \pdv{x}\left(Q\right)$ and so the differential is not exact.
+
+\begin{equation}
+\begin{split}
+\mu(x) &= e^{\int\frac{1}{x^2}\left(\pdv{y}\left(y\right) - \pdv{x}\left(x^2\right) \right)\dd{x}}\\
+	   &= e^{\int \frac{1}{x^2}\left( 1 - 2x\right) \dd{x}}\\
+	   &= e^{\int \frac{1}{x^2} - \frac{2}{x} \dd{x}}\\
+	   &= e^{-\frac{1}{x} - 2\ln x} \\
+	   &= x^{-2}e^{-\frac{1}{x}} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+y \dd{x} + x^2 \dd{y} &= 0 \\
+x^{-2}ye^{-\frac{1}{x}} \dd{x} + e^{-\frac{1}{x}} \dd{y} &= 0 \\
+ye^{-\frac{1}{x}} &= c \\
+y &= ce^{\frac{1}{x}} \\
+\end{split}
+\end{equation}
+
+\item 
+\begin{equation}
+\begin{split}
+(x + y) \dd{x} + (x - y) \dd{y} \\
+\pdv{y}(x + y) &= 1 \\
+\pdv{x}(x - y) &= 1 \\
+\end{split}
+\end{equation}
+$\pdv{y}\left(P\right) = \pdv{x}\left(Q\right)$ and so the differential is exact.
+
+\begin{equation}
+\begin{split}
+(x + y) \dd{x} + (x - y) \dd{y} &= 0 \\
+(x + y) \dd{x} + (x - y) \dd{y} &= 0 \\
+\frac{1}{2}x^2 + xy - \frac{1}{2}y^2 &= c \\
+\end{split}
+\end{equation}
+
+\item 
+\begin{equation*}
+(\cosh x \cos y + \cosh y \cos x) \dd{x} - (\sinh x \sin y - \sinh y \sin x) \dd{y} \\
+\end{equation*}
+\begin{equation}
+\begin{split}
+\pdv{y}\left(\cosh x \cos y + \cosh y \cos x\right) &= -\cosh x \sin y + \sinh y \cos x \\
+\pdv{x}\left(-\sinh x \sin y + \sinh y \sin x\right) &= -\cosh x \sin y + \sinh y \cos x \\
+\end{split}
+\end{equation}
+So $\pdv{y}\left(P\right) = \pdv{x}\left(Q\right)$ and so the differential is exact.
+
+\begin{equation}
+\begin{split}
+(\cosh x \cos y + \cosh y \cos x) \dd{x} - (\sinh x \sin y - \sinh y \sin x) \dd{y} &= 0 \\
+\sinh x \cos y + \cosh y \sin x &= c \\
+\end{split}
+\end{equation}
+
+\item 
+\begin{equation}
+\begin{split}
+(\cos x - \sin x) \dd{x} + (\sin x + \cos x) \dd{y} \\
+\pdv{y}\left(\cos x - \sin x \right) &= 0 \\
+\pdv{x}\left(\sin x + \cos x \right) &= \cos x - \sin x \\
+\end{split}
+\end{equation}
+So $\pdv{y}\left(P\right) \neq \pdv{x}\left(Q\right)$ and so the differential is not exact.
+
+\begin{equation}
+\begin{split}
+\mu(y) &= e^{\int \frac{1}{(\sin x + \cos x)} \left(\pdv{y}\left((\cos x - \sin x)\right) - \pdv{x}\left( \sin x + \cos x \right) \right) \dd{x}} \\
+\mu(y) &= e^{\int \frac{1}{(\sin x + \cos x)} \left(0 - \cos x + \sin x \right) \dd{x}} \\
+\mu(y) &= e^{\int 1 \dd{x}} \\
+\mu(y) &= e^y \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+(\cos x - \sin x) \dd{x} + (\sin x + \cos x) \dd{y} &= 0 \\
+(\cos x - \sin x)e^y \dd{x} + (\sin x + \cos x)e^y \dd{y} &= 0 \\
+(\sin x + \cos x)e^y &= c \\
+e^y &= \frac{c}{\sin x + \cos x} \\
+y &= -\ln A(\sin x + \cos x) \\
+\end{split}
+\end{equation}
+
+\item 
+\begin{equation}
+\begin{split}
+\frac{x}{x^2 + y^2} \dd{y} - \frac{y}{x^2 + y^2} \dd{x} \\
+\pdv{y}\left(-\frac{y}{x^2 + y^2}\right) &= \frac{y^2 - x^2}{x^2 + y^2} \\
+\pdv{x}\left(\frac{x}{x^2 + y^2}\right) &= \frac{y^2 - x^2}{x^2 + y^2} \\
+\end{split}
+\end{equation}
+So $\pdv{y}\left(P\right) = \pdv{x}\left(Q\right)$ and so the differential is exact.
+
+\begin{equation}
+\begin{split}
+\frac{x}{x^2 + y^2} \dd{y} - \frac{y}{x^2 + y^2} \dd{x} &= 0 \\
+\arctan\left(\frac{y}{x}\right) &= c \\
+\frac{y}{x} &= k \\
+y &= kx \\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item 
+
+\begin{enumerate}
+
+\item 
+
+\begin{equation}
+\begin{split}
+H &= U + pV \\
+\dd{H} &= \dd{U} + V\dd{p} + p\dd{V} \\
+\dd{H} &= (\dd{U} + p\dd{V}) + V\dd{p} \\
+\dd{H} &= T\dd{S} + V\dd{p} \\
+\end{split}
+\end{equation}
+
+We know this is an exact differential. So it is of the form 
+\begin{equation}
+\dd{H} = P \dd{S} + Q\dd{p}\\
+\end{equation}
+Where $\left(\pdv{P}{p}\right)_S = \left(\pdv{Q}{S}\right)_p$. Substituting in the actual coefficients 
+of the equation ($P = T$, $Q = V$) gives us:
+\begin{equation}
+\left(\pdv{V}{S}\right)_p = \left(\pdv{T}{p}\right)_S\\
+\end{equation}
+
+As required.
+
+\item 
+
+\begin{equation}
+\begin{split}
+\dd{U} &= T\dd{S} - p\dd{V} \\
+\dd{U} &= T\left(\left(\pdv{S}{p}\right)_V\dd{p} + \left(\pdv{S}{V}\right)_p\dd{V}\right) - p\dd{V} \\
+\dd{U} &= T\left(\pdv{S}{p}\right)_V\dd{p} + \left(T\left(\pdv{S}{V}\right)_p- p\right)\dd{V} \\
+\end{split}
+\end{equation}
+
+We know that $\dd{U}$ is an exact integral -- this implies:
+
+\begin{equation}
+\begin{split}
+\pdv{p}\left(T\left(\pdv{S}{V}\right)_p - p\right) &= \pdv{V}\left(T\left(\pdv{S}{p}\right)_V\right) \\
+\left(\pdv{T}{p}\right)_V\left(\pdv{S}{V}\right)_p +  T\left(\pdv[2]{S}{p}{V}\right) - 1 &= \left(\pdv{T}{V}\right)_p\left(\pdv{S}{p}\right)_V + T\left(\pdv[2]{S}{p}{V}\right) \\
+\left(\pdv{S}{V}\right)_p\left(\pdv{T}{p}\right)_V - 1 &= \left(\pdv{S}{p}\right)_V\left(\pdv{T}{V}\right)_p \\
+\left(\pdv{S}{V}\right)_p\left(\pdv{T}{p}\right)_V - \left(\pdv{S}{p}\right)_V\left(\pdv{T}{V}\right)_p &= 1 \\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item 
+
+\begin{equation}
+\begin{split}
+G &= U + Vp - ST \\
+\dd{G} &=  \dd{U} + \pdv{p}\left(Vp\right)_V\dd{p} + \pdv{V}\left(Vp\right)_p\dd{V} - \pdv{S}\left(ST\right)_T\dd{S} - \pdv{T}\left(ST\right)_S\dd{T} \\
+\dd{G} &= \dd{U} + V\dd{p} + p\dd{V} - T\dd{S} - S\dd{T} \\
+\dd{G} &= T\dd{S} - p\dd{V} + V\dd{p} + p\dd{V} - T\dd{S} - S\dd{T} \\
+\dd{G} &= V\dd{p} - S\dd{T} \\
+\end{split}
+\end{equation}
+
+Since we know that $\dd{G}$ is an exact differential; we know that 
+the partial derivative of $V$ with respect to $T$ is equal to the partial derivative of $-S$ with 
+respect to $p$.
+
+\begin{equation}
+\begin{split}
+\left(\pdv{V}{T}\right)_p &= -\left(\pdv{S}{p}\right)_T \\
+\left(\pdv{S}{p}\right)_T &= -\left(\pdv{V}{T}\right)_p \\
+\end{split}
+\end{equation}
+
+\item 
+
+\begin{enumerate}
+
+\item 
+
+Since $p$ is a function of either $V$ and $T$ or $V$ and $S$; we 
+can express $\dd{p}$ as a function of either also. We can also express 
+any of the variables $V, T, S$ as a function of the other two. I will 
+express $S$ as a function of $V$ and $T$.
+
+\begin{equation}\label{firstpart}
+\dd{p} = \left(\pdv{p}{V}\right)_T\dd{V} + \left(\pdv{p}{T}\right)_V\dd{T} \\
+\end{equation}
+\begin{equation}\label{functionfordp}
+\dd{p} = \left(\pdv{p}{V}\right)_S\dd{V} + \left(\pdv{p}{S}\right)_V\dd{S} \\
+\end{equation}
+\begin{equation}\label{functionfordS}
+\dd{S} = \left(\pdv{S}{V}\right)_T\dd{V} + \left(\pdv{S}{T}\right)_V\dd{T} \\
+\end{equation}
+Substitute (\ref{functionfordS}) into (\ref{functionfordp}).
+\begin{equation}\label{penultimatesection}
+\begin{split}
+\dd{p} &= \left(\pdv{p}{V}\right)_S\dd{V} + \left(\pdv{p}{S}\right)_V\dd{S} \\
+\dd{p} &= \left(\pdv{p}{V}\right)_S\dd{V} + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T\dd{V} + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{T}\right)_V\dd{T} \\
+\dd{p} &= \left(\pdv{p}{V}\right)_S\dd{V} + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T\dd{V} + \left(\pdv{p}{T}\right)_V\dd{T} \\
+\dd{p} &= \left(\left(\pdv{p}{V}\right)_S + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T\right)\dd{V} + \left(\pdv{p}{T}\right)_V\dd{T} \\
+\end{split}
+\end{equation}
+Now subtract (\ref{firstpart}) from (\ref{penultimatesection}).
+\begin{equation}
+\begin{split}
+\dd{p} - \dd{p} &= \left(\left(\pdv{p}{V}\right)_S + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T\right)\dd{V} + \left(\pdv{p}{T}\right)_V\dd{T} - \left(\pdv{p}{V}\right)_T\dd{V} - \left(\pdv{p}{T}\right)_V\dd{T} \\
+0 &= \left(\left(\pdv{p}{V}\right)_S - \left(\pdv{p}{V}\right)_T + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T\right)\dd{V} + \left(\left(\pdv{p}{T}\right)_V - \left(\pdv{p}{T}\right)_V\right)\dd{T} \\
+0 &= \left(\left(\pdv{p}{V}\right)_S - \left(\pdv{p}{V}\right)_T + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T\right)\dd{V} \\
+\end{split}
+\end{equation}
+So the coefficients of $\dd{V}$ must be equal to zero.
+\begin{equation}
+\begin{split}
+0 &= \left(\pdv{p}{V}\right)_S - \left(\pdv{p}{V}\right)_T + \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T \\
+\left(\pdv{p}{V}\right)_T - \left(\pdv{p}{V}\right)_S &= \left(\pdv{p}{S}\right)_V\left(\pdv{S}{V}\right)_T \\
+\left(\pdv{p}{V}\right)_T - \left(\pdv{p}{V}\right)_S &= \frac{\left(\pdv{S}{V}\right)_T}{\left(\pdv{S}{p}\right)_V} \\
+\end{split}
+\end{equation}
+
+\item 
+
+\begin{equation}
+\begin{split}
+T\dd{S} &= \dd{U} + p\dd{V} \\
+T\dd{S} &= \left(\pdv{U}{T}\right)_V\dd{T} + \left(\left(\pdv{U}{V}\right)_T + p\right)\dd{V} \\
+\dd{S} &= \left(\frac{1}{T}\left(\pdv{U}{T}\right)_V\right)\dd{T} + \left(\frac{1}{T}\left(\pdv{U}{V}\right)_T + \frac{p}{T}\right)\dd{V} \\
+\end{split}
+\end{equation}
+$\dd{S}$ is an exact differential. So the right hand side must also be an exact differential.
+\begin{equation}\label{hardpart}
+\begin{split}
+\frac{1}{T}\left(\pdv[2]{U}{T}{V}\right) &= -\frac{1}{T^2}\left(\pdv{U}{V}\right)_T + \frac{1}{T}\left(\pdv[2]{U}{T}{V}\right) - \frac{p}{T^2} + \frac{1}{T}\left(\pdv{p}{T}\right)_V \\
+0 &= -\frac{1}{T^2}\left(\pdv{U}{V}\right)_T - \frac{p}{T^2} + \frac{1}{T}\left(\pdv{p}{T}\right)_V \\
+\frac{T}{p}\left(\pdv{p}{T}\right)_V &= \frac{1}{p}\left(\pdv{U}{V}\right)_T + 1 \\
+\end{split}
+\end{equation}
+
+We can form another relation:
+\begin{equation}
+\begin{split}
+\dd{U} &= T\dd{S} - p\dd{V} \\
+\dd{U} &= T\left(\pdv{S}{T}\right)_V\dd{T} + \left(T\left(\pdv{S}{V}\right)_T - p\right)\dd{V} \\
+\end{split}
+\end{equation}
+Since $\dd{U}$ is an exact differential, we also know the right-hand-side of the equation is exact.
+\begin{equation}
+\begin{split}
+T\left(\pdv[2]{S}{T}{V}\right) &= T\left(\pdv[2]{S}{T}{V}\right) + \left(\pdv{S}{V}\right)_T - \left(\pdv{p}{T}\right)_V \\
+0 &= \left(\pdv{S}{V}\right)_T - \left(\pdv{p}{T}\right)_V \\
+\left(\pdv{p}{T}\right)_V &= \left(\pdv{S}{V}\right)_T \\
+\end{split}
+\end{equation}
+Substituting this into (\ref{hardpart}) gives:
+\begin{equation}
+\begin{split}
+\frac{T}{p}\left(\pdv{p}{T}\right)_V &= \frac{1}{p}\left(\pdv{U}{V}\right)_T + 1 \\
+\frac{T}{p}\left(\pdv{S}{V}\right)_T &= \frac{1}{p}\left(\pdv{U}{V}\right)_T + 1 \\
+\end{split}
+\end{equation}
+
+Returning to the original equation gives:
+\begin{equation}
+\begin{split}
+\dd{U} &= T\dd{S} - p\dd{V} \Longrightarrow \\
+\left(\pdv{U}{S}\right)_V &= T \\
+\end{split}
+\end{equation}
+
+Consider now:
+\begin{equation}
+\begin{split}
+ & \left(\pdv{\ln p}{\ln V}\right)_T - \left(\pdv{\ln p}{\ln V}\right)_S \\
+=& \frac{V}{p}\left(\left(\pdv{p}{V}\right)_T - \left(\pdv{p}{V}\right)_S \right) \\
+=& \frac{V\left(\pdv{S}{V}\right)_T}{p\left(\pdv{S}{p}\right)_V} \\
+=& V\frac{\frac{T}{p}\left(\pdv{S}{V}\right)_T}{T\left(\pdv{S}{p}\right)_V} \\
+=& V\frac{\left(\frac{1}{p}\left(\pdv{U}{V}\right)_T + 1\right)}{\left(\pdv{U}{S}\right)_V\left(\pdv{S}{p}\right)_V} \\
+=& V\frac{\left(\frac{1}{p}\left(\pdv{U}{V}\right)_T + 1\right)}{\left(\pdv{U}{p}\right)_V} \\
+=& V\frac{\left(\frac{1}{p}\left(\pdv{U}{V}\right)_T + 1\right)}{\left(\pdv{U}{T}\right)_V\left(\pdv{T}{p}\right)_V} \\
+=& V\left(\pdv{p}{T}\right)_V\frac{\left(\frac{1}{p}\left(\pdv{U}{V}\right)_T + 1\right)}{\left(\pdv{U}{T}\right)_V} \\
+=& \left(\pdv{(pV)}{T}\right)_V\frac{\left(\frac{1}{p}\left(\pdv{U}{V}\right)_T + 1\right)}{\left(\pdv{U}{T}\right)_V} \\
+\end{split}
+\end{equation}
+
+\item 
+Note that since $pV^\gamma$ depends only on $S$:
+
+\begin{equation}
+\begin{split}
+\left(\pdv{\ln p}{\ln V}\right)_S = 0 \\
+\left(\pdv{\ln p}{\ln V}\right)_T = \dv{\ln p}{\ln V} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+U &= C_vT \\
+\left(\pdv{U}{T}\right)_V &= C_v \\
+\left(\pdv{U}{V}\right)_T &= 0 \\
+pV &= RT \\
+\left(\pdv{(pV)}{T}\right)_V &= R \\
+\end{split}
+\end{equation}
+
+\newpage
+
+In the below equation: $k$ is the constant of integration and $A$ is another constant which is 
+equal to $k^{\frac{R}{C_v}}$.
+\begin{equation}
+\begin{split}
+\left(\pdv{\ln p}{\ln V}\right)_T - \left(\pdv{\ln p}{\ln V}\right)_S &= \left(\pdv{(pV)}{T}\right)_V\frac{\left(\frac{1}{p}\left(\pdv{U}{V}\right)_T + 1\right)}{\left(\pdv{U}{T}\right)_V} \\
+\dv{\ln p}{\ln V} - 0 &= R\frac{(0 + 1)}{C_v} \\
+\dv{\ln p}{\ln V} &= \frac{R}{C_v} \\
+\ln p &= \frac{R}{C_v}\ln kV \\
+\ln p &= \ln k^{\frac{R}{C_v}}V^{-\frac{R}{C_v}} \\
+p &= AV^{\frac{R}{C_v}} \\
+pV^{-\frac{R}{C_v}} &= A \\
+\end{split}
+\end{equation}
+\begin{equation}
+\gamma = -\frac{R}{C_v}
+\end{equation}
+
+\item 
+\begin{equation}
+\begin{split}
+\gamma &= -\frac{R}{C_v} \\
+\gamma &= -\frac{R}{\frac{3}{2}R} \\
+\gamma &= -\frac{2}{3} \\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

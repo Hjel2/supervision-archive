@@ -1,0 +1,125 @@
+cost of living
+generative art
+covid maaaaaybe
+
+you should aim for 600-700 words
+
+20 marks
+better to consider it a 4-part question with 4 marks per part and 2 marks for introduction and 2 for conclusion/stylistic
+
+to understand how to maximise marks, you need to understand alice will get a stack of apper very high and she's not going to have a good time for the next week.
+You want to make it as easy as possible for her to give you marks.
+You therefore need your essay to be interpretable with a single scan through.
+If it's only understandable after 2-3 read-throughs then that's a poor essay.
+
+Start by defining the terms you're working with. IE here there were two main
+keywords -- credit crunch and information goods and services.
+Try not to trip up on definitions -- just define it.
+The definitions are exactly what you define them to be -- the introduction is to limit your scope -- at the end it doesn't really matter as long as you make good points.
+
+The credit crunch refers to the 2008 crash -- expensive money -- high interest
+rate loans. Define those two loans in your first and second sentence.
+Spell out what you're going to talk about.
+
+You're going to be like I think the information goods and services industry is
+pretty diverse. It can't really be categorised as a single unit and so different parts of it will be affected differently and so different parts will be affected differently.
+
+Use a passive term ie these points will be backed up with not we will or I will
+
+ie points for this essay:
+how essential the service is
+whether this service or good is more public sector facing or private sector facing
+generally scalability of technology
+tech cycle ie business tech cycle
+
+Contain paragraphs by writing a paragraph about each point.
+
+Don't try to segment the essay too much. Make a few points in the introduction and then write a paragraph about each of them.
+
+point-proof-comment structure
+how essential a business is, different types of business. How essentiability affects stuff.
+
+Do self-contained paragraph and then it's easy to give marks and you don't have to think about it again and just move on and don't think about it.
+
+Some companies and some services are tailored more to companies ie public and private. Public sector is characterised by long-term contracts.
+A lot of stuff is tailored to private sector -- ie streaming services, video
+games. These have very elastic demand -- they will feel the effects of an
+economic crush worse -- they're not large companies with infinite credit lines.
+
+Scalability:
+The unit cost for scaling up tech is usually zero (near-zero) therefore the supply curve is almost flat and can therefore tailor to any increase in demand. Therefore the profit decrease is proportional to the decrease in demand -- not like manufacturing which has large overheads and can suffer by small decreases in demand.
+
+The tech cycle:
+What you want to do some manufacturing you have to rent some factory space,
+import machines from Japan, Germany etc. You have to request permission from
+the local council and get loans for a large capital investment. A lot of companies in tech don't have offices or have skeleton offices and most of the time you can literally run them off laptops. Therefore a lot of businesses will fade, a lot of new businesses will pop up very quickly.
+
+It's good to have a conclusion to really drive the point home. Basically reiterate the same points.
+
+We have shown in this essay that the information goods and services industry is very diverse, certain parts of it which are more essential or more government oriented may weather this well; but a lot of frivolous companies will fade away but will be replaced quickly due to a fast tech cycle.
+
+There's a specific structure, but since you only have 30 minutes you're not expected to do so much.
+
+In 2009/2010 over half of IT sales were to the public sector in the UK. Government and military contracts are very large -- it's likely 30-40% of all business in the IT sector.
+
+
+
+Pareto efficiency:
+
+Pareto optimal example is you have 4 houses but 1 is empty. So you decrease the price so you end up renting them out.
+
+Other examples are stuff with unlimited resources -- if you're a phone company and you want to make your customers better you can give them 1GB of data and everyones better of.
+
+Utility is a relative measures of value/wellbeing or something pleasant that you receive. It is purely subjective.
+
+"Preferences is convex" means that the utility of consuming two goods at the same time is greater than the maxima of the utility of either of the individual goods.
+
+
+Assumptions of theorems of welfare economics:
+
+Rational actors, complete information, no transaction costs, complete property rights (you can't take away anything by force).
+
+Search engines, comparison websites etc really help with complete information.
+
+Humans are fundamentally irrational. While you can do away with transaction costs and can try to get perfect information, you will never defeat the fact that humans are irrational. Humans are irrational consider prospect theory. You can claim that you're perfectly rational.
+
+The two TYPES of welfare (not to be confused with the two theorems) are classical welfare -- welfare is the sum of welfare. Rawlsian welfare is the least utility.
+
+Classical welfare doesn't care about variance or distribution, while rawlsian cares only about the lowest denominator which isn't always reflective.
+
+The reason the free market won't solve the privacy problem is because people don't care about their own privacy. You can also model privacy as utility -- there will then be some demand for privacy. This will create some businesses. This won't be much of a sector but there will be some.
+
+IE cite apple randomising mac addresses.
+
+There's not too many terms in this course -- shoehorn as many as you can within reason. Consider ie Rawlsian welfare.
+Bring in terms whenever you can.
+
+
+
+Dove and Hawk:
+
+v is value.
+c is cost.
+
+
+Market failure:
+
+Market failure is any situation when the market is allocating any resources inefficiently.
+Market for lemons is the consumers don't know what's good or not.
+Companies are not incentivised to do better as consumers can't discriminate -- the companies are incentivised to match the cheapest product.
+There is a dependency on marketing.
+
+In 1990s, reputation starts to matter. So you don't want to be THAT antivirus company because market share can slip through quickly.
+
+The main thing that changes here in crypto-banking is:
+previously you compromise machines and they don't have much interesting stuff on them. You'd get some machine and use it to DDOS.
+Now, compromised machines have money on them -- banking details. So it's much easier.
+Cryptocurrency means you can be a teenager with script kiddies and get money for free really easy.
+Cryptocurrency is the main reason that ransomware is a thing.
+
+
+PC/laptop to Phones/tablet
+
+People do a lot less banking on their computers. Most people do phone banks and never online banking. Computers themselves don't really pose any banking value. Only incentives for ransomware -- people care about their personal files. Antivirus companies don't get much access to phones and tablets. AV need root access to run stuff. Phones have their own antivirus systems. 
+
+Many companies don't have means to update embedded systems. Many software won't be supported for 20 years etc (the lifetime of a car). Durable goods and software don't really work.

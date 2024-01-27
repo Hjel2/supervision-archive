@@ -1,0 +1,21 @@
+mathhew ireland says "configurable logic block"
+he's never heard of complex logic block or the manufacturer virtex
+
+phased lock loop
+
+start by making a moore machine and then convert it to a mealy machine if it seems appropriate
+identify ambiguity and explain how you've resolved them
+point out the ambiguity's and then say what you will do
+Just say why you're doing things the way you're doing it.
+You can get more credit for comparing two ways and saying why one is inherantly better.
+The purpose of a cambridge exam is to put candidates into order.
+They want you to show you're doing well and understand the application.
+
+make the state names meaningful
+ie waiting, found, ending, missed etc
+
+always write all yoru outputs on all your edges in a mealy machine
+
+Usually an exam question will test a subset of the 9 (10) steps.
+
+"outline the complexity" wanted a rough written description of how to implement it.

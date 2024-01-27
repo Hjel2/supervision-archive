@@ -1,0 +1,89 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+\input{./../prologstyle.tex}
+
+\begin{document}
+
+\begin{examquestion}{1997}{12}{8}
+
+The \textit{next-highest member} of a list of integers is the second-largest 
+member of the list. For example, for the list \texttt{[1, 4, 1, 5, 2]}, the 
+next-highest member is \texttt{4}.
+
+Write a Prolog program to find the next-highest member of a list of integers. 
+For example, the goal \texttt{nexthi([1, 4, 1, 5, 2], X)} should initialise 
+\texttt{X} to \texttt{4}. Your program may assume that the next largest 
+member is not repeated in the list. The goal should fail if the next-highest 
+member does not exist.
+
+\begin{lstlisting}[style=pstyle]
+max(X, Y, X) :- X >= Y.
+max(X, Y, Y) :- Y > X.
+nexthi([X,Y|T], Lo) :- max(X, Y, X), largest2(T, X, Y, _, Lo).
+nexthi([X,Y|T], Lo) :- max(X, Y, Y), largest2(T, Y, X, _, Lo).
+largest2([], H, L, H, L).
+largest2([X|Z], H, L, Hr, Lr) :- max(L, X, L), largest2(Z, H, L, Hr, Lr).
+largest2([X|Z], H, L, Hr, Lr) :- max(L, X, X), max(H, X, H), largest2(Z, H, X, Hr, Lr).
+largest2([X|Z], H, _, Hr, Lr) :- max(H, X, X), largest2(Z, X, H, Hr, Lr).
+\end{lstlisting}
+
+\end{examquestion}
+
+\begin{examquestion}{1996}{5}{7}
+
+An \textit{ordered integer binary search tree} (or OIBS tree) is either
+empty or a tuple $(T, N, U)$, where $T$ and $U$ are also OIBS trees and $N$
+is an integer. Every node in $T$ has a value less than $N$, which in turn
+is less than the value of every node in $U$.
+
+\begin{enumerate}
+
+\item Give two Prolog terms which are suitable for representing an empty
+OIBS tree and a node in the OIBS tree respectively.
+
+\begin{lstlisting}[style=pstyle]
+leaf.
+branch(L, N, R).
+\end{lstlisting}
+
+\item Define a prolog procedure \texttt{insert(Item, T, NT)}, where
+\texttt{Item} is an integer being inserted into OIBS tree \texttt{T},
+producing an OIBS tree \texttt{NT}. If \texttt{Item} is already present in
+\texttt{T}, then \texttt{NT} equals \texttt{T}.
+
+\begin{lstlisting}[style=pstyle]
+insert(Item, leaf, branch(leaf, Item, leaf)).
+insert(Item, branch(L, N, R), branch(L, N, R)) :- Item is N.
+insert(Item, branch(L, N, R), branch(LT, N, R)) :- Item < N, insert(Item, L, LT).
+insert(Item, branch(L, N, R), branch(L, N, RT)) :- Item > N, insert(Item, R, RT).
+\end{lstlisting}
+
+\item Define a Prolog procedure \texttt{lookup(Item, T)}, where
+\texttt{Item} is to be looked for in OIBS tree \texttt{T}. A lookup goal
+will succeed if \texttt{Item} is found, or fail otherwise.
+
+\begin{lstlisting}[style=pstyle]
+lookup(Item, branch(_, N, _)) :- Item is N.
+lookup(Item, branch(L, N, _)) :- Item < N, lookup(Item, L).
+lookup(Item, branch(_, N, R)) :- Item > N, lookup(Item, R).
+\end{lstlisting}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\section{Permutations}
+
+Write a prolog program for generating permutations of a list.
+
+\begin{lstlisting}[style=pstyle]
+take([X|T], X, T).
+take([H|Tl], X, [H|Tr]) :- take(Tl, X, Tr).
+perm([], []).
+perm([H|T], P) :- perm(T, L), take(P, H, L).
+\end{lstlisting}
+
+\end{document}

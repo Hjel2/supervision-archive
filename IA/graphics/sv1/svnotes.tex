@@ -1,0 +1,78 @@
+\documentclass[10pt, a4paper]{article}
+
+\input{./template/template.tex}
+
+\begin{document}
+
+\section*{Graphics Supervision 1}
+
+\subsection*{Exam Advice}
+
+look at the syllabus page
+use the website to see what the structure of the exams is
+the important things on this page are the exam questions
+(this new course is based off the old IB course. Some of the old past paper questions are relevant but ONLY some).
+rendering and ray tracing comes up all the time
+Do past paper questions.
+
+Graphics hardware and OpenGL is the new stuff that's not in the old exams --
+it doesn't come up so much (especially about GPU frameworks and APIs)
+Fundamentals of Computer graphics book for the stuff on colour.
+Read the colour and photometry sections.
+Just read chapters on the things you've got difficulty with.
+The mock exams in January are really hard. They are made purposefully difficult to
+``shock'' you. Do SOME revision over Christmas.
+
+If the question is ambitious then either answer both cases or answer one case very well
+and explain the case that you're answering. If you don't know something then make an
+assumption. If it's something you aren't expected to know then you get the marks.
+If you are expected to know it then you will lose a couple of marks but will still get
+the marks for the rest of the question. Anything more than 6 or so marks and you really
+want to break your solution down into chunks.
+
+\subsection*{Metamers}
+
+We abuse metamers by rather than creating continuous waves of light by having only
+3 discrete lights which appear to have the same colour as the continuous distribution.
+Metamers make things easier by only having to use RGB rather than make a proper
+continuous wave function since the eye cannot tell the difference.
+Review and remember the diagram for the density of the rod and cone cells in the eye
+Also the graph of the sensitivity of the different cone cells to the eye.
+Learn how to read and write answers. You can structure it better with bullet
+points, diagrams etc. That's the biggest challenge.
+VERY low proportion of the cone cells are short cone cells (only 2\% - 5\%).
+Blue cones have a lower intensity response. Blue light is refracted differently in your eye.
+
+\subsection*{Light}
+
+Ambient light is very poor for ambient-only scenes and high-contrast scenes. However you
+could model this with two ambient constants. Ambient illumination is accurate for scenes
+which are relatively uniformly lit. Diffuse illumination is good on FLAT surfaces.
+But if you don't do it on flat surfaces then it is not good (ie crystalline structures or grass).
+Original: ``Specular illumination can be accurate but isn't right by nature since
+there are so many degrees of freedom.'' Specular illumination can be made to correctly
+approximate light since there are so many degrees of freedom (parameters to change).
+But it isn't correct by it's very nature.
+
+\subsection*{Eyes}
+
+Generally regular things should be avoided -- your eyes are used to noise/blurs/static but
+are not used to jagged/regular things so it really stands out in a bad way.
+The more noise you can add the better - such as for soft shadows.
+With motion blur you can more heavily weight things towards the end of the motion.
+Multiple samples are good for: DoF, Anti-Aliasing, Motion-blur and area light source.
+
+\subsection*{Diagrams}
+
+Always include an accompanying explanation about why your diagram is correct.
+It makes it easier for the examiner and makes it less likely for you to forget things.
+You are expected to know the illumination equation.
+Exam questions are meant to demonstrate knowledge. Don't make things more difficult if it
+doesn't demonstrate any new knowledge.
+Include all the detail though.
+
+With reflection (and other algorithms) you should include the termination conditions (either
+maximum depth or ray hits nothing more) and then also include how the light is added back in
+(reflexivity) (how the stack is unwound).
+
+\end{document}

@@ -1,0 +1,462 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2005}{5}{6}
+
+\begin{enumerate}
+
+\item Explain how a parse tree representing an expression can $(i)$ be
+converted into stack-oriented intermediate code and then $(ii)$ be
+translated into simple machine code for a register-oriented architecture
+(e.g.\@ ARM or IA32) on an instruction-by-instruction basis. Also indicate
+how this code might be improved to remove push-pop pairs introduced by
+$(ii)$. Your answer need only consider expression forms encountered in the
+expression:
+\begin{center}
+\texttt{h(a, g(b), c) * 3 + d}
+\end{center}
+
+\begin{enumerate}
+
+\item A parse tree can be converted into stack-oriented intermediate code by
+performing a depth-first-search and appending to the linear code when
+different expressions are seen.
+
+In OCaml-esque pseudocode:
+\begin{lstlisting}[language=Caml]
+type parsetree =
+	| Add of parsetree * parsetree
+	| Mul of parsetree * parsetree
+	| Var of int ref
+	| Call of ('a -> 'b) * parsetree
+	| Args of parsetree * parsetree
+	| Integer of int
+
+let rec gen_code parsetree file parsetree =
+  match parsetree with
+  | Add(x, y) -> mk_code file x; mk_code file y; file.append(Add)
+  | Mul(x, y) -> mk_code file x; mk_code file y; file.append(Mul)
+  | Var(x) -> file.append(Push x); file.append(Deref x)
+  | Call(f, args) -> mk_code file args; file.append(Apply(f))
+  | Args(hd, args) -> mk_code file hd; mk_code file args
+  | Integer(i) -> file.append(Push i)
+\end{lstlisting}
+
+\item \iffalse
+We could convert a stack-oriented intermediate language into a
+register-oriented intermediate language by implementing a stack in memory.
+The program will have a stack pointer in execution. When the program starts
+running, allocate a large block of memory. Next, initialise the code
+pointer to the start of this block. Replace all \texttt{Push x} with
+\texttt{*sp = x; sp += 4;}. Replace \texttt{Pop} with \texttt{sp -= 4;}.
+
+A simple solution would be to consider the stack a finite size and if this
+initially allocated size runs out then the program has run out of memory
+
+This can be optimised by using registers when variables are accessed and
+immediately re-used, only storing on the stack in memory when calling a
+function (to provide ac consistent calling convention) or when the machine
+runs out of registers (the second case would be machine dependent and
+should therefore not be represented in the intermediate code). I assume as
+part of its semantics,  ``call'' pushes all registers in use, the stack
+pointer and the code pointer onto the stack (such that the function can
+return).
+
+\fi
+
+The simplest way to convert a stack-oriented intermediate langauge into a
+register-oriented intermediate language is to simulate a stack. Programs
+would allocate a block of memory onto the heap and then use this as a stack.
+
+This could be implemented by using one of the registers as a stack pointer.
+Every time data is pushed, increment the stack pointer and decrement when
+it is popped.
+
+However, this doesn't exploit temporal locality and would be inefficient in
+a real implementation. A better way would be to use one register as the
+stack pointer, but to use the rest of the registers to simulate the top of
+the stack. The intermediate code would simply assume an infinite number of
+registers and when compiled, would move registers which aren't in use out
+onto the stack (and when functions are called). The optimised semantics
+would be as follows:
+
+\begin{itemize}
+
+\item \texttt{ldimm ri, n}
+
+Set the contents of register \texttt{ri} to \texttt{n}
+
+\item \texttt{call ri, f}
+
+Call the function f with register \texttt{ri} as argument and return value
+-- note arguments with multiple arguments can be implemented by $ri$ being a
+pointer to objects on the heap or by taking a closure.
+
+\item \texttt{ld ri, x}
+
+Dereference \texttt{x} and load its contents into register \texttt{ri}
+
+\item \texttt{add ri, rj, rk}
+
+Add the contents of \texttt{rj} and \texttt{rk} and store them in \texttt{ri}
+
+\item \texttt{set ri, x}
+
+Store the contents of register \texttt{ri} in the variable \texttt{x}
+
+\item \texttt{neg ri, rj}
+
+Negate the value stored in register \texttt{rj} and store its value in the
+register \texttt{ri}.
+
+\item \texttt{sub ri, rj, rk}
+
+Subtract the value stored in register \texttt{rk} from the value stored in
+register \texttt{rj} and store the value in register \texttt{ri}.
+
+\end{itemize}
+
+\end{enumerate}
+
+\item In Java, expressions are evaluated strictly left-t-right. Consider
+compiling the function \texttt{f} in the following Java definition.
+\begin{lstlisting}[language=Java]
+class A{
+	static int a, b;
+	void f() { ... <<C>> ... }
+	int g(int x) { ... a++; ... }
+}
+\end{lstlisting}
+
+Indicate what \textit{both} the intermediate code \textit{and} (improved as
+above) target code might be for \texttt{<<C>>} for the cases where
+\texttt{<<C>>} is:
+
+\begin{enumerate}
+
+\item \texttt{b = g(7) + a;}
+
+In the stack-oriented intermediate language:
+\begin{lstlisting}
+Push 7
+Apply g
+Push a
+Deref a
+Add
+Assign b
+\end{lstlisting}
+
+In the register-oriented intermediate language:
+\begin{lstlisting}
+ldimm r0, 7
+call r0, g
+ld r1, a
+add r0, r0, r1
+set r0, b
+\end{lstlisting}
+
+\item \texttt{b = a + g(7);}
+
+In the stack-oriented intermediate language:
+\begin{lstlisting}
+Push a
+Deref a
+Push 7
+Apply g
+Add
+Assign b
+\end{lstlisting}
+
+In the register-oriented intermediate language:
+\begin{lstlisting}
+ld r0, a
+ldimm r1, 7
+call r1, g
+add r0, r0, r1
+set r0, b
+\end{lstlisting}
+
+\item \texttt{b = (-g(7)) + a;}
+
+In the stack-oriented intermediate language:
+\begin{lstlisting}
+Push 7
+Apply g
+Neg
+Push a
+Deref a
+Add
+Assign b
+\end{lstlisting}
+
+In the register-oriented intermediate language:
+\begin{lstlisting}
+ldimm r0, 7
+call r0, g
+neg r0, r0
+ld r1, a
+add r0, r0, r1
+set r0, b
+\end{lstlisting}
+
+\item \texttt{b = a - g(7);}
+
+In the stack-oriented intermediate language:
+\begin{lstlisting}
+Push a
+Deref a
+Push 7
+Apply g
+Sub
+Assign b
+\end{lstlisting}
+
+In the register-oriented intermediate language:
+\begin{lstlisting}
+ld r0, a
+ldimm r1, 7
+call r1, g
+sub r0, r0, r1
+set r0, b
+\end{lstlisting}
+
+\end{enumerate}
+
+Comment on any inherent differences in efficiency at both the intermediate
+code and target code levels.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2001}{6}{6}
+
+\begin{enumerate}
+
+\item Describe one possible structure (e.g ELF) of an object file.
+Illustrate your answer by considering the form of object file which might
+result from the following C program.
+\begin{lstlisting}[language=C]
+int a = 1, b = -1;
+extern int g(int);
+extern int c;
+int f() { return g(a-b) + c; }
+\end{lstlisting}
+
+It is not necessary to consider the exact instruction sequence, just issues
+concerning its interaction with the object file format.
+
+ELF consists of segments and sections. Sections are used for linking and
+during compilation but are not included in the final executable. Segments
+are included in the final executable.
+
+The ELF file contains:
+\begin{itemize}
+
+\item \texttt{.text}
+
+This segment contains machine instructions. However, in the object file
+these are not directly executable -- we need to link to variables using
+\texttt{.data}.
+
+In the above program, this would contain the machine code instructions for
+\texttt{f} -- however none of the variables would refer to real addresses
+-- they'd be null with the \texttt{.rel.text} containing sufficient
+information to relocate.
+
+\item \texttt{.data}
+
+This segment contains the initial values for all (writeable global)
+variables or static variables.
+
+In the above program, \texttt{.data} would be 8 bytes large and contain 1,
+-1 -- the values of \texttt{a} and \texttt{b}.
+
+\item \texttt{.rodata}
+
+This segment contains the initial values for all read-only global or
+read-only static variables.
+
+The above program has no read-only data of any sort so \texttt{.rodata}
+would be empty.
+
+\item \texttt{.bss}
+
+This contains uninitialised global/static variables. However, since they're
+uninitialised it only contains their sizes in bytes. The compiler will
+initialised this much memory to zero.\footnote{Whether or not these
+variables in \texttt{.bss} are initialised to zero is apparently
+controversial, Windows and Unix-like systems do it; and I was not able to
+find a convincing example of \texttt{.bss} \textit{not} being initialised
+to zero -- the unconvincing examples were from the 1960s.}
+
+The above program has no uninitialised global/static variables and so
+\texttt{.bss} would be empty.
+
+\item \texttt{.rel.text}
+
+This section contains the relocation data required for the \texttt{.text}
+segment to be converted into proper machine code. It is a list of pairs $i$,
+$j$ where $(i, j) \in \texttt{.rel.text}$ means ``the first free operand
+of instruction $i$ points to the variable stored at offset $j$ in the
+\texttt{.data} segment''.
+
+In the above program, the \texttt{.rel.text} segment would contain two
+entries, relating the occurrences of $a$ and $b$ in $f$ to their offsets in
+the data segment.
+
+\textbf{What about c?} There isn't an address in the \texttt{.data} segment
+for \texttt{.rel.text} to point to\ldots Same dilemma for \texttt{.sym}.
+
+\item \texttt{.rel.data}
+
+Some entries on the \texttt{.data} segment are initialised to pointers --
+since memory is not allocated in the object file this is not known when the
+object file is created. The \texttt{.rel.data} segment contains pairs $i,
+j$ where $(i, j) \in \texttt{.rel.data}$ means ``the variable at
+offset $i$ \texttt{.data} is a pointer to the variable referred to at index
+$j$ in \texttt{.sym}''.
+
+No variables in the above program contain pointers, so \texttt{.rel.data}
+would be empty.
+
+\item \texttt{.rel.rodata}
+
+This performs the same function as \texttt{.rel.data} except for \texttt{
+.rodata}.
+
+No read-only variables in the above program contain pointers, so
+\texttt{.rel.rodata} would be empty.
+
+\item \texttt{.sym}
+
+This is a mapping from offset in \texttt{.data} of variables to offsets in
+the \texttt{.strtab} -- a mapping from variable names to locations.
+
+This would contain two pairs: $(a, \ell_a), (b, \ell_b)$ where $\ell_i$ is
+the offset of variable $i$ in the \texttt{.data} segment.
+
+\item \texttt{.strtab}
+
+This is a list of the names of global variables in the \texttt{.data}
+segment -- a \texttt{/0} separated string list.
+
+For the above program this would be ``a/0b/0c/0''.
+
+\item \texttt{.line}
+
+This contains a mapping from source code line to machine code instructions.
+This is useful when throwing exceptions and for debugging.
+
+\item \texttt{.debug}
+
+This contains other debugging information.
+
+\end{itemize}
+
+Additionally, ELF files contain an import list (containing all the
+variables which the program needs to run) and an export list (containing
+all the variables the program allows other programs to import).
+
+\item Describe \textit{how} a linker takes a sequence of such programs and
+produces an executable file.
+
+Linkers concatenate the segments to each other and resolve offsets.
+This produces a second object file. If this object file is closed, it can
+be converted into an executable.
+
+Resolving offsets is simple. If there are two object files $o_1$ and
+$o_2$, where the size of \texttt{.data} in $o_1$ is $n$ bytes, we would
+resolve offsets by increasing every offset in the \texttt{.data} segment
+in $o_2$ by $n$. Similarly for the \texttt{.text},
+\texttt{.rodata}, \texttt{.sym} and \texttt{.strtab} segments.
+
+Note that care must be taken to rename local variables and functions to avoid
+name conflicts.
+
+Linking the object files together forms a ``closed'' object file (which I
+define as an object file which imports no variables). Closed object files
+can be compiled into executable files.
+
+\begin{itemize}
+
+\item Firstly, allocate memory for the \texttt{.text} segment. This is
+stored in the lower memory addresses. Next, allocate the, \texttt{.rodata}
+\texttt{.bss} (initialise the specified number of bytes to zero) then
+\texttt{.data} segments on top of the \texttt{.text} segment.
+
+\item Next, we must use the relocation data stored in
+\texttt{.rel.text}, \texttt{.rel.data} and \texttt{.rel.rodata} to fill in
+values which were not known pre-compile time. This includes pointer
+addresses, variable addresses and more -- for example we don't know at
+compile time whether 64-byte ints must be 4-byte aligned or 8-byte aligned.
+
+Use the sections as specified earlier in the description of ELF\@.
+
+Iterate through \texttt{.rel.rodata} and \texttt{.rel.data} and for each
+pair $(i, j)$, initialise the value of the variable stored at offset $i$
+into the respective segments with the variable pointed to at index $j$ in
+\texttt{.sym}.
+
+Iterate through \texttt{.rel.text} and for each pair $(i, j)$, replace the
+first uninitialised variable in instruction $i$ with a pointer to the
+variable stored at index $j$ in \texttt{.sym}.
+
+\end{itemize}
+
+\item Compare and contrast \textit{static} and \textit{dynamic} linking in a
+system using your object file format.
+
+Static Linking:
+
+\begin{itemize}
+
+\item Code used from other libraries is statically linked at compile time.
+
+\item This means linking is not done at runtime
+
+\item However, code size can be substantially larger since every file needs
+a copy of every library it uses. Although modern static linkers are smart
+and only import the functions the code could use.
+
+\item Updates to libraries will not affect existing code -- which can both
+be good or bad. For example bug fixes will not affect existing code and can
+lead to code with known bugs being left in deployment. Conversely,
+backwards-incompatible changes to libraries will not break existing code.
+
+\end{itemize}
+
+Dynamic Linking:
+
+\begin{itemize}
+
+\item Code from libraries is dynamically linked at runtime.
+
+\item This means only one copy of each library is needed on each computer --
+code is shared.
+
+\item This adds overhead at runtime.
+
+\item This can use less RAM -- if another program is also using the library
+then they can share and don't have to load in separate copies.
+
+\end{itemize}
+
+Many modern programs use a mixture of static and dynamic linking -- it's
+more efficient to statically load small libraries and avoid page faults; while
+it's significantly more efficient to dynamically load larger libraries
+(ie pytorch is $\sim 512GB$ -- statically linking this into every program which
+used it would rapidly use up disk space).
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

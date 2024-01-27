@@ -1,0 +1,358 @@
+\input{./templatenst/prefs/jkf21.tex}
+\input{./templatenst/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./templatenst/includes.tex}
+\input{./templatenst/template.tex}
+
+\fancyhead[RO,LE]{{\bfseries NST Maths, SV~10}\\19/02/2022\ 12:00, Video Link}
+
+\usepackage{physics}
+\usepackage{tikz}
+
+\begin{document}
+
+\begin{enumerate}
+
+\setcounter{enumi}{3}
+
+\item 
+\begin{equation}
+\begin{split}
+\pdv{f}{x} &= \pdv{x}\left(x(y^2 + 2y - 1)\right)\\
+		   &= y^2 + 2y - 1\\
+\pdv{f}{y} &= \pdv{y}\left(x(y^2 + 2y - 1)\right)\\
+		   &= 2xy + 2x\\
+\end{split}
+\end{equation}
+\begin{equation}
+\nabla (f) = (y^2 + 2y - 1, 2xy + 2x)\\
+\end{equation}
+
+\begin{enumerate}
+
+\item At $(-1, 0)$, $\nabla (f) = (-1, -2)$
+
+\begin{center}
+\begin{tikzpicture}
+\draw[help lines, color=gray!30, dashed] (-2, -2) grid (2, 2);
+\draw[->] (-2,0)--(2,0) node[right]{$x$};
+\draw[->] (0,-2)--(0,2) node[above]{$y$};
+\draw [-stealth] (0.5, 1) -- (-0.5, -1);
+\end{tikzpicture}
+\end{center}
+
+\item At $(1, 0)$, $\nabla (f) = (-1, 2)$
+
+\begin{center}
+\begin{tikzpicture}
+\draw[help lines, color=gray!30, dashed] (-2, -2) grid (2, 2);
+\draw[->] (-2,0)--(2,0) node[right]{$x$};
+\draw[->] (0,-2)--(0,2) node[above]{$y$};
+\draw [-stealth] (0.5, -1) -- (-0.5, 1);
+\end{tikzpicture}
+\end{center}
+
+\item At $(-1, 1)$, $\nabla (f) = (2, -4)$
+
+\begin{center}
+\begin{tikzpicture}
+\draw[help lines, color=gray!30, dashed] (-2, -2) grid (2, 2);
+\draw[->] (-2,0)--(2,0) node[right]{$x$};
+\draw[->] (0,-2)--(0,2) node[above]{$y$};
+\draw [-stealth] (-0.5, 1) -- (0.5, -1);
+\end{tikzpicture}
+\end{center}
+
+\item At $(-1, 1)$, $\nabla (f) = (2, 4)$
+
+\begin{center}
+\begin{tikzpicture}
+\draw[help lines, color=gray!30, dashed] (-2, -2) grid (2, 2);
+\draw[->] (-2,0)--(2,0) node[right]{$x$};
+\draw[->] (0,-2)--(0,2) node[above]{$y$};
+\draw [-stealth] (-0.5, -1) -- (0.5, 1);
+\end{tikzpicture}
+\end{center}
+
+\end{enumerate}
+
+\item 
+\begin{equation}
+\begin{split}
+T &= 2\pi\left(\frac{\ell}{g}\right)^{\frac{1}{2}}\\
+\ln T &= \ln \left(2\pi\left(\frac{\ell}{g}\right)^{\frac{1}{2}}\right)\\
+\ln T &= \ln 2\pi + \frac{1}{2} \ln \left(\frac{\ell}{g}\right)\\
+\ln T &= \ln 2\pi + \frac{1}{2} \ln \ell - \frac{1}{2}\ln g\\
+\frac{\dd T}{T} &= \frac{\dd \ell}{2\ell} - \frac{\dd g}{2g}\\
+\frac{\dd g}{g} &= \frac{\dd \ell}{\ell} - \frac{2\dd T}{T}\\
+\end{split}
+\end{equation}
+
+\begin{enumerate}
+
+\item
+\begin{equation}
+\begin{split}
+\frac{\dd g}{g} &= \frac{\dd \ell}{\ell} - \frac{2\dd T}{T}\\
+\frac{\dd g}{g} &= 0.001 + 0\\
+\frac{\dd g}{g} &= 0.001\\
+\end{split}
+\end{equation}
+So a $0.1\%$ error in the measurement of $\ell$ will result in a $0.1\%$ error in $g$.
+
+\item 
+\begin{equation}
+\begin{split}
+\frac{\dd g}{g} &= \frac{\dd \ell}{\ell} - \frac{2\dd T}{T}\\
+\frac{\dd g}{g} &= 0 + 0.002\\
+\frac{\dd g}{g} &= 0.002\\
+\end{split}
+\end{equation}
+So a $0.1\%$ error in the measurement of $T$ will result in a $0.2\%$ error in $g$.
+
+\end{enumerate}
+
+\item
+\begin{enumerate}
+
+Here are some formulae I will use for the following question:
+\begin{equation}
+\begin{split}
+x &= r \cos \phi \\
+\left(\pdv{x}{r}\right)_\phi &= \cos \phi \\
+\left(\pdv{x}{\phi}\right)_r &= -r \sin \phi \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+y &= r \sin \phi \\
+\left(\pdv{y}{r}\right)_\phi &= \sin \phi \\
+\left(\pdv{y}{\phi}\right)_r &= r \cos \phi \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+r^2 &= x^2 + y^2 \\
+2r\left(\pdv{r}{x}\right)_y &= 2x \\
+\left(\pdv{r}{x}\right)_y &= \frac{2r \cos\phi}{2r} \\
+\left(\pdv{r}{x}\right)_y &= \cos\phi \\
+2r\left(\pdv{r}{y}\right)_x &= 2y \\
+\left(\pdv{r}{y}\right)_x &= \frac{2r \sin\phi}{2r} \\
+\left(\pdv{r}{y}\right)_x &= \sin\phi \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\phi &= \arctan\left(\frac{x}{y}\right) \\
+\left(\pdv{\phi}{x}\right)_y &= \frac{y}{x^2 + y^2} \\
+\left(\pdv{\phi}{x}\right)_y &= \frac{r\sin \phi}{r^2} \\
+\left(\pdv{\phi}{x}\right)_y &= \frac{\sin \phi}{r} \\
+\left(\pdv{\phi}{y}\right)_x &= -\frac{x}{x^2 + y^2} \\
+\left(\pdv{\phi}{y}\right)_x &= -\frac{r\cos \phi}{r^2} \\
+\left(\pdv{\phi}{y}\right)_x &= -\frac{\cos \phi}{r} \\
+\end{split}
+\end{equation}
+
+\item Derivation of expressions by differentiating with the chain rule:
+
+\begin{equation}
+\begin{split}
+f(x, y) &= e^{-xy} \\
+\left(\pdv{f}{x}\right)_y &= -ye^{-xy} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+f(x, y) &= e^{-xy} \\
+\left(\pdv{f}{y}\right)_x &= -xe^{-xy} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+f(x, y) &= e^{-xy} \\
+\left(\pdv{f}{r}\right)_\phi &= - xe^{-xy}\left(\pdv{y}{r}\right)_\phi - ye^{-xy}\left(\pdv{x}{r}\right)_\phi \\
+\left(\pdv{f}{r}\right)_\phi &= - xe^{-xy}\sin \phi - ye^{-xy}\cos \phi \\
+\left(\pdv{f}{r}\right)_\phi &= - r \cos \phi \sin \phi e^{-r^2 \sin \phi \cos \phi} - r \cos \phi \sin \phi e^{-r^2 \sin \phi \cos \phi} \\
+\left(\pdv{f}{r}\right)_\phi &= - 2r \cos \phi \sin \phi e^{-r^2 \sin \phi \cos \phi}\\
+\left(\pdv{f}{r}\right)_\phi &= - r \sin 2\phi e^{-\frac{1}{2} r^2 \sin 2\phi}\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+f(x, y) &= e^{-xy} \\
+\left(\pdv{f}{\phi}\right)_r &= - xe^{-xy}\left(\pdv{y}{\phi}\right)_r - ye^{-xy}\left(\pdv{x}{\phi}\right)_r \\
+\left(\pdv{f}{\phi}\right)_r &= - r \cos \phi e^{-\frac{1}{2}r^2 \sin 2 \phi } r \cos \phi + r \sin \phi e^{-\frac{1}{2}r^2 \sin 2 \phi} r \sin \phi \\
+\left(\pdv{f}{\phi}\right)_r &= - r^2 \cos^2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi } + r^2 \sin^2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi}\\
+\left(\pdv{f}{\phi}\right)_r &= - r^2 \cos 2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi }\\
+\end{split}
+\end{equation}
+
+\item Derivation of expressions by expression in polar coordinates followed by differentiation.
+
+\begin{equation}
+\begin{split}
+f(r, \phi) &= e^{-\frac{1}{2}r^2\sin 2 \phi} \\
+\left(\pdv{f}{x}\right)_y &= \left(\pdv{f}{r}\right)_\phi \left(\pdv{r}{x}\right)_y - \frac{\sin\phi}{r} \left(\pdv{f}{\phi}\right)_r \left(\pdv{\phi}{x}\right)_y \\
+\left(\pdv{f}{x}\right)_y &= \left(- r \sin 2 \phi e^{-\frac{1}{2}^2\sin 2 \phi}\right)\cos\phi - \left(- r^2 \cos 2 \phi e^{-\frac{1}{2}r^2 \sin 2\phi}\right)\left(\frac{\sin \phi}{r}\right) \\
+\left(\pdv{f}{x}\right)_y &= \left(r \cos 2 \phi \sin \phi - r \sin 2 \phi \cos \phi\right)e^{-\frac{1}{2}^2\sin 2 \phi} \\
+\left(\pdv{f}{x}\right)_y &= r\left(2 \cos^2 \phi \sin \phi - \sin \phi - 2 \sin \phi \cos^2 \phi\right)e^{-\frac{1}{2}^2\sin 2 \phi} \\
+\left(\pdv{f}{x}\right)_y &= - r\sin \phi e^{-\frac{1}{2}^2\sin 2 \phi} \\
+\left(\pdv{f}{x}\right)_y &= - y e^{-xy} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+f(r, \phi) &= e^{-\frac{1}{2}r^2 \sin 2\phi} \\
+\left(\pdv{f}{y}\right)_x &= \left(\pdv{f}{r}\right)_\phi \left(\pdv{r}{x}\right)_y + \left(\pdv{f}{\phi}\right)_r \left(\pdv{\phi}{x}\right)_y \\
+\left(\pdv{f}{y}\right)_x &= \left(- r \sin 2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi}\right) \sin \phi + \left(- r^2 \cos 2 \phi e^{-\frac{1}{2}r^2\sin 2 \phi}\right)\left(\frac{cos\phi}{r}\right) \\
+\left(\pdv{f}{y}\right)_x &= \left(- r \sin 2 \phi \sin \phi - r \cos 2 \phi \cos \phi \right)e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{y}\right)_x &= -r\left(\sin 2 \phi \sin \phi + \cos 2 \phi \cos \phi \right)e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{y}\right)_x &= -r\left(2\sin^ \phi \cos \phi + \cos \phi - 2 \sin^2 \phi \cos \phi \right)e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{y}\right)_x &= -r\cos \phi e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{y}\right)_x &= -x e^{-xy} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+f(r, \phi) &= e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{r}\right)_\phi &= -r \sin 2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{r}\right)_\phi &= -r \sin 2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+f(r, \phi) &= e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{\phi}\right)_r &= -r \sin 2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\left(\pdv{f}{\phi}\right)_r &= -r^2 \cos 2 \phi e^{-\frac{1}{2}r^2 \sin 2 \phi} \\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item
+\begin{equation}
+\begin{split}
+xyz + x^3 + y^4 + z^5 &= 0 \\
+yz\left(\pdv{x}{y}\right)_z + xz + 3x^2\left(\pdv{x}{y}\right)_z + 4y^3 &= 0 \\
+(yz + 3x^2)\left(\pdv{x}{y}\right)_z &= - xz - 4y^3 \\
+\left(\pdv{x}{y}\right)_z &= -\frac{xz + 4y^3}{yz + 3x^2} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+xyz + x^3 + y^4 + z^5 &= 0 \\
+xz\left(\pdv{y}{z}\right)_x + xy + 4y^3\left(\pdv{y}{z}\right)_x + 5z^4 &= 0 \\
+(xz + 4y^3)\left(\pdv{y}{z}\right)_x &= -xy - 5z^4 \\
+\left(\pdv{y}{z}\right)_x &= -\frac{xy + 5z^4}{xz + 4y^3} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+xyz + x^3 + y^4 + z^5 &= 0 \\
+xy\left(\pdv{z}{x}\right)_y + yz + 3x^2 + 5z^4 \left(\pdv{z}{x}\right)_y &= 0 \\
+(xy + 5z^4)\left(\pdv{z}{x}\right)_y &= -yz - 3x^2 \\
+\left(\pdv{z}{x}\right)_y &= -\frac{yz + 3x^2}{xy + 5z^4} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+ & \left(\pdv{x}{y}\right)_z \times \left(\pdv{y}{z}\right)_x \times \left(\pdv{z}{x}\right)_y \\
+=& -\frac{xz + 4y^3}{yz + 3x^2} \times -\frac{xy + 5z^4}{xz + 4y^3} \times -\frac{yz + 3x^2}{xy + 5z^4} \\
+=& -\frac{(xz + 4y^3)(xy + 5z^4)(yz + 3x^2)}{(yz + 3x^2)(xz + 4y^3)(xy + 5z^4)} \\
+=& -\frac{(xz + 4y^3)(xy + 5z^4)(yz + 3x^2)}{(xz + 4y^3)(xy + 5z^4)(yz + 3x^2)} \\
+=& -1 \\
+\end{split}
+\end{equation}
+
+\item
+
+\begin{equation}
+\begin{split}
+\left(p + \frac{a}{V^2}\right)(V - b) &= RT \\
+p &= \frac{RT}{V - b} - \frac{a}{V^2}\\
+\left(\pdv{p}{V}\right)_T &= -\frac{RT}{(V - b)^2} + \frac{2a}{V^3} \\
+\left(\pdv{p}{V}\right)_T &= -\frac{RTV^3}{V^3(V - b)^2} + \frac{2a(V - b)^2}{V^3(V - b)^2} \\
+\left(\pdv{p}{V}\right)_T &= \frac{- RTV^3 + 2a(V - b)^2}{V^3(V - b)^2} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\left(p + \frac{a}{V^2}\right)(V - b) &= RT \\
+\left(\left(p + \frac{a}{V^2}\right)-\frac{2a}{V^3}(V - b)\right)\left(\pdv{V}{T}\right)_p &= R \\
+\left(\frac{RT}{V - b} - \frac{2a}{V^2} + \frac{2ab}{V^3} \right)\left(\pdv{V}{T}\right)_p &= R \\
+(RTV^3 - 2aV(V - b) + 2ab(V - b) )\left(\pdv{V}{T}\right)_p &= RV^3(V - b) \\
+(RTV^3 - 2a(V - b)^2)\left(\pdv{V}{T}\right)_p &= RV^3(V - b) \\
+\left(\pdv{V}{T}\right)_p &= \frac{RV^3(V - b)}{RTV^3 - 2a(V - b)^2} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+RT &= \left(p + \frac{a}{V^2}\right)(V - b) \\
+R\left(\pdv{T}{p}\right)_V &= (V - b) \\
+\left(\pdv{T}{p}\right)_V &= \frac{(V - b)}{R} \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+ & \left(\pdv{p}{V}\right)_T \cdot \left(\pdv{V}{T}\right)_p \cdot \left(\pdv{T}{p}\right)_V \\
+=& \frac{- RTV^3 + 2a(V - b)^2}{V^3(V - b)^2} \cdot \frac{RV^3(V - b)}{RTV^3 - 2a(V - b)^2} \times \frac{(V - b)}{R} \\
+=& \frac{RV^3(V - b)^2(-RTV^3 + 2a(V - b)^2)}{RV^3(V - b)^2(RTV^3 - 2a(V - b)^2)} \\
+=& -1 \\
+\end{split}
+\end{equation}
+
+\item If $u$ and $v$ are rotated axis of $x$ and $y$ then for some constant angle $\theta$:
+\begin{equation}
+\begin{split}
+\text{Let } x &= u\cos\theta + v\sin\theta \\
+\left(\pdv{x}{u}\right)_v &= \cos\theta \\
+\left(\pdv{x}{v}\right)_u &= \sin\theta \\
+\text{Let } y &= u\sin\theta - v\cos\theta \\
+\left(\pdv{y}{u}\right)_v &= \sin\theta \\
+\left(\pdv{y}{v}\right)_u &= -\cos\theta \\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\left(\pdv{f}{u}\right)_v &= \left(\pdv{f}{x}\right)_y\left(\pdv{x}{u}\right)_v + \left(\pdv{f}{y}\right)_x\left(\pdv{y}{u}\right)_v \\
+\left(\pdv[2]{f}{u}\right)_v &= \left(\pdv[2]{f}{x}\right)_y\left(\pdv{x}{u}\right)^2_v + \left(\pdv{f}{x}\right)_y\left(\pdv[2]{x}{u}\right)_v + \left(\pdv[2]{f}{y}\right)_x\left(\pdv{y}{u}\right)^2_v + \left(\pdv{f}{y}\right)_x\left(\pdv[2]{y}{u}\right)_v\\
+\left(\pdv[2]{f}{u}\right)_v &= \left(\pdv[2]{f}{x}\right)_y\cos^2\theta + 0\left(\pdv{f}{x}\right)_y + \left(\pdv[2]{f}{y}\right)_x\sin^2\theta + 0\left(\pdv{f}{y}\right)_x\\
+\left(\pdv[2]{f}{u}\right)_v &= \left(\pdv[2]{f}{x}\right)_y\cos^2\theta + \left(\pdv[2]{f}{y}\right)_x\sin^2\theta \\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\left(\pdv{f}{v}\right)_u &= \left(\pdv{f}{x}\right)_y\left(\pdv{x}{v}\right)_u + \left(\pdv{f}{y}\right)_x\left(\pdv{y}{v}\right)_u \\
+\left(\pdv[2]{f}{v}\right)_u &= \left(\pdv[2]{f}{x}\right)_y\left(\pdv{x}{v}\right)^2_u + \left(\pdv{f}{x}\right)_y\left(\pdv[2]{x}{v}\right)_u + \left(\pdv[2]{f}{y}\right)_x\left(\pdv{y}{v}\right)^2_u + \left(\pdv{f}{y}\right)_x\left(\pdv[2]{y}{v}\right)_u\\
+\left(\pdv[2]{f}{v}\right)_u &= \left(\pdv[2]{f}{x}\right)_y\sin^2\theta + 0\left(\pdv{f}{x}\right)_y + \left(\pdv[2]{f}{y}\right)_x(-\cos\theta)^2 + 0\left(\pdv{f}{y}\right)_x\\
+\left(\pdv[2]{f}{v}\right)_u &= \left(\pdv[2]{f}{x}\right)_y\sin^2\theta + \left(\pdv[2]{f}{y}\right)_x\cos^2\theta \\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\left(\pdv[2]{f}{u}\right)_v + \left(\pdv[2]{f}{v}\right)_u &= \left(\pdv[2]{f}{x}\right)_y\cos^2\theta + \left(\pdv[2]{f}{y}\right)_x\sin^2\theta + \left(\pdv[2]{f}{x}\right)_y\sin^2\theta + \left(\pdv[2]{f}{y}\right)_x\cos^2\theta \\
+\left(\pdv[2]{f}{u}\right)_v + \left(\pdv[2]{f}{v}\right)_u &= \left(\pdv[2]{f}{x}\right)_y\left(\sin^2\theta + \cos^2\theta\right) + \left(\pdv[2]{f}{y}\right)_x\left(\sin^2\theta + \cos^2\theta\right) \\
+\left(\pdv[2]{f}{u}\right)_v + \left(\pdv[2]{f}{v}\right)_u &= \left(\pdv[2]{f}{x}\right)_y + \left(\pdv[2]{f}{y}\right)_x \text{ as required}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\end{document}

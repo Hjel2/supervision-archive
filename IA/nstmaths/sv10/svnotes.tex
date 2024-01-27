@@ -1,0 +1,128 @@
+\input{./template/prefs/jkf21.tex}
+\input{./template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./template/includes.tex}
+\input{./template/template.tex}
+
+\usepackage{physics}
+
+\begin{document}
+
+Taking the \textbf{differential} (not the derivative) gives:
+\begin{equation}
+\dd{\ln y} = \frac{\dd{y}}{y} \\
+\end{equation}
+This is the differential of $\ln y$ -- not with respect to anything but just taking the differential.
+
+To do S5 we will take differentials of this.
+\begin{equation}
+\begin{split}
+f(x, y, z) &= xyz + x^3 + y^4 + z^5 \\
+\dd{f} &= \dd{xyz} + \dd{x^3} + \dd{y^4} + \dd{z^5} \\
+\dd{f} &= yz\dd{x} + xz\dd{y} + xy\dd{z} + 3x^2\dd{x} + 4y^3\dd{y} + 5z^4\dd{z} \\
+\dd{f} &= (yz + 3x^2)\dd{x} + (xz + 4y^3)\dd{y} + (xy + 5z^4)\dd{z} \\
+\end{split}
+\end{equation}
+
+The partial derivative with some constant kept constant is equal to the normal derivative with the 
+other variable kept constant. It is the exact same. Dividing the differential can give easier methods 
+for finding this:
+
+\begin{equation}
+\begin{split}
+\left(\pdv{x}{y}\right)_y &\equiv \left(\dv{x}{y}\right)_z \\
+0 &= (yz + 3x^2)\dv{x}{y} + (xz + 4y^3) + (xy + 5z^4)\left(\dv{z}{y}\right)_z \\
+0 &= (yz + 3x^2)\dv{x}{y} + (xz + 4y^3) \\
+\left(\dv{x}{y}\right)_z &= -\frac{xz + 4y^3}{yz + 3x^2} \\
+\left(\pdv{x}{y}\right)_z &= -\frac{xz + 4y^3}{yz + 3x^2} \\
+\end{split}
+\end{equation}
+Note that $\dd{z}{y}$ with $z$ held constant is 0.
+
+Consider a function $f = f(x, y, z) = 0$.
+
+\begin{equation}
+\begin{split}
+\dd{f} &= \left(\pdv{f}{x}\right)_{y,z}\dd{x} + \left(\pdv{f}{y}\right)_{x,z}\dd{y} + \left(\pdv{f}{z}\right)_{x,y}\dd{z} \\
+0 &= \left(\pdv{f}{x}\right)_{y,z}\dd{x} + \left(\pdv{f}{y}\right)_{x,z}\dd{y} + \left(\pdv{f}{z}\right)_{x,y}\dd{z} \\
+0 &= \left(\pdv{f}{x}\right)_{y,z}\left(\pdv{x}{y}\right)_z + \left(\pdv{f}{y}\right)_{x,z}\left(\dd{y}{y}\right)_{z} + \left(\pdv{f}{z}\right)_{x,y}\left(\pdv{z}{y}\right)_z \\
+0 &= \left(\pdv{f}{x}\right)_{y,z}\left(\pdv{x}{y}\right)_z + \left(\pdv{f}{y}\right)_{x,z} \times 1 + \left(\pdv{f}{z}\right)_{x,y}\times 0 \\
+-\left(\pdv{f}{y}\right)_{x,z} &= \left(\pdv{f}{x}\right)_{y,z}\left(\pdv{x}{y}\right)_z \\
+\left(\pdv{x}{y}\right)_z &= -\frac{\left(\pdv{f}{y}\right)_{x,z}}{\left(\pdv{f}{x}\right)_{y,z}} \\
+\end{split}
+\end{equation}
+For the other two functions:
+\begin{equation}
+\begin{split}
+\left(\pdv{y}{z}\right)_x &= -\frac{\left(\pdv{f}{z}\right)_{x,y}}{\left(\pdv{f}{y}\right)_{x,z}} \\
+\left(\pdv{z}{x}\right)_y &= -\frac{\left(\pdv{f}{x}\right)_{y,z}}{\left(\pdv{f}{z}\right)_{x,y}} \\
+\end{split}
+\end{equation}
+
+Repeating this for other functions gives similar results. All the denominators and numerators of the functions 
+cancel out. This gives:
+\begin{equation}
+\left(\pdv{x}{y}\right)_x\cdot\left(\pdv{y}{z}\right)_x\cdot\left(\pdv{z}{x}\right)_y = -1 \\
+\end{equation}
+
+This generalises to functions with higher numbers of variables: if you multiply the partial derivatives of a 
+$n$ variable function together then it is equal to $(-1)^n$.\\
+IE for any arbitrary function $f$:
+\begin{equation}
+f = f(x_1, x_2, x_3, x_4, x_5) \\
+\end{equation}
+\begin{equation}
+\begin{split}
+\left(\pdv{x_1}{x_2}\right)_{x_3, x_4, x_5} \times \left(\pdv{x_2}{x_3}\right)_{x_1, x_4, x_5} \times \left(\pdv{x_3}{x_4}\right)_{x_1, x_2, x_5} \times \left(\pdv{x_4}{x_5}\right)_{x_1, x_2, x_3} \times \left(\pdv{x_5}{x_1}\right)_{x_2, x_3, x_4} &= (-1)^5 \\
+\left(\pdv{x_1}{x_2}\right)_{x_3, x_4, x_5} \times \left(\pdv{x_2}{x_3}\right)_{x_1, x_4, x_5} \times \left(\pdv{x_3}{x_4}\right)_{x_1, x_2, x_5} \times \left(\pdv{x_4}{x_5}\right)_{x_1, x_2, x_3} \times \left(\pdv{x_5}{x_1}\right)_{x_2, x_3, x_4} &= -1 \\
+\end{split}
+\end{equation}
+
+Also note that when you partially derive a $n$ variable function then you need to keep $n - 2$ variables constant. 
+
+Ie if $f = f(x_1\dots x_n)$
+
+Then the partial derivative of $x_1$ with respect to $x_2$ is:
+\begin{equation}
+\left(\pdv{x_1}{x_2}\right)_{x_3\dots x_n}
+\end{equation}
+
+Once you have the first derivative of a function then you can use the operator method to find the second 
+derivative very quickly as shown below.
+
+\begin{equation}
+\begin{split}
+x &= u\cos\theta - v\sin\theta \\
+y &= u\sin\theta + v\cos\theta \\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\pdv{f}{u} = \left(\pdv{u}\right) f &= \pdv{f}{x}\pdv{x}{u} + \pdv{f}{y}\pdv{y}{u} \\
+\pdv{f}{u} = \left(\pdv{u}\right) f &= \pdv{f}{x}\cos\theta + \pdv{f}{y}\sin\theta \\
+\pdv{f}{v} \left(\pdv{v}\right) f &= \pdv{f}{x}\pdv{u}{v} + \pdv{f}{y}\pdv{y}{u} \\
+\pdv{f}{v} = \left(\pdv{v}\right) f &= -\pdv{f}{x}\sin\theta + \pdv{f}{y}\cos\theta \\
+\end{split}
+\end{equation}
+
+So we know what the differential operator with respect to $u$ does to a function. This means 
+we can re-apply this to $\pdv{f}{u}$ immediately giving us a function for $\pdv[2]{f}{u}$ 
+without further calculation.
+
+\begin{equation}
+\begin{split}
+\pdv[2]{f}{u} = \left(\pdv{u}\right)\pdv{f}{u} &= \pdv[2]{f}{x}\cos^2\theta + \pdv[2]{f}{y}\sin^2\theta + 2\pdv[2]{f}{x}{y}\sin\theta\cos\theta \\
+\pdv[2]{f}{v} = \left(\pdv{v}\right)\pdv{f}{v} &= \pdv[2]{f}{x}\sin^2\theta + \pdv[2]{f}{y}\cos^2\theta - 2\pdv[2]{f}{x}{y}\sin\theta\cos\theta \\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\pdv[2]{f}{u} + \pdv[2]{f}{v} &= (\sin^2\theta + \cos^2\theta)\pdv[2]{f}{x} + (\sin^2\theta + \cos^2\theta)\pdv[2]{f}{y} \\
+\pdv[2]{f}{u} + \pdv[2]{f}{v} &= \pdv[2]{f}{x} + \pdv[2]{f}{y} \\
+\end{split}
+\end{equation}
+
+\end{document}

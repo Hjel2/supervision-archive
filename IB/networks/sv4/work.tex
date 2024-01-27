@@ -1,0 +1,101 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+\usepackage{pythonhighlight}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{enumerate}
+
+\item Distinguish between switching, forwarding and routing.
+
+\begin{itemize}
+
+\item Switching
+
+Switching is the method Switches use to determine where to send frames.
+
+The switching table is a mapping from MAC addresses to output ports on a
+switch.
+
+The algorithm for switching is as follows:
+\begin{itemize}
+
+\item On receipt of a packet from MAC address $x$ on port $y$ add an entry
+into the switching table to send packets for MAC address $x$ out on port $y$.
+
+\item On receipt of a packet destined for MAC address $x$, search for it in
+the switching table. If there is an entry saying which port it should be
+sent on, send it on that port.
+
+Otherwise, flood the network asking if any nodes \textit{have} MAC address
+$x$ or have an entry for $x$ in their switching table. If no response is
+received, $x$ is not on the network so the packet is dropped. If a response
+is received, the entry is input into the forwarding table and $x$ is sent
+out on the correct link.
+
+\end{itemize}
+
+\item Routing
+
+Routing is a network-wide operation which is done every time the network
+changes. Routing is done in the control plane and is used to construct the
+forwarding table.
+
+\item Forwarding
+
+Forwarding is a per-packet operation performed by Routers in the data plane.
+The Forwarding Table is a mapping from ranges of IP addresses to output
+ports. A copy of this is stored on the Input Linecard. For each packet, the
+Input Linecard finds finds the longest prefix match (the most specific
+destination) in the forwarding table and sends the packet to the
+corresponding output port.
+
+\end{itemize}
+
+\item Describe the Link State and Distance Vector routing algorithms.
+
+\begin{itemize}
+
+\item Link State Routing
+
+In Link State routing, each node is given total information about the whole
+network then computes the shortest path to the destination and stores the
+first-hop in the routing table. Initially, each node knows only its local
+link state (information about links it is directly connected to). Each
+node floods the network with this information (using eager reliable
+broadcast). Every node on the network now has the global link state.
+
+Each node now has a copy of the global link state. Every node then
+independently uses Dijkstra's Algorithm to work out a least-cost path to
+every router.
+
+\item Distance Vector Routing
+
+In Distance Vector Routing, each node maintains a Distance Vector $D$,
+containing a triple of $(\text{address prefix}, \text{subnet mask},
+\text{distance}, \text{router})$ where $(a, s, d, r) \in D$ means the
+subnet $a/s$ can be reached in distance $d$ through router $r$.
+
+Nodes continuously broadcast their distance vector to their neighbours.
+They then update their distance vectors to the elementwise minimum.
+
+\end{itemize}
+
+\item What are RIP, OSPF and BGP?
+
+RIP is ``Router Information Protocol'' -- the most common implementation of
+Distance Vector Routing.
+
+OSPF is ``Open Shortest Path First Protocol'' -- a common implementation of
+link-state routing.
+
+BGP is ``Border Gateway Protocol'' -- an inter-domain routing protocol
+which uses a variant of of Distance Vector Routing and is designed to
+allow border routers to hide what goes on inside their networks.
+
+\end{enumerate}
+
+\end{document}

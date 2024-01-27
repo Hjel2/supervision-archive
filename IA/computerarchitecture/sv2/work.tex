@@ -1,0 +1,131 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\usepackage{float}
+
+\begin{document}
+
+\begin{enumerate}
+
+\item What advantage does a single virtual address space design offer over
+traditional unix-style multiple virtual address spaces?
+
+\iffalse % TODO
+
+You don't need to have different TLBs
+
+You don't need different page tables -- it saves space.
+
+However, you can also access other processes addresses (doesn't offer
+protection)
+
+\fi
+
+\item
+
+\begin{examquestion}{2004}{6}{2}
+
+the ARM processor allows the second operand to be shifted by an arbitrary
+amount. In order to improve the performance, a six-shage pipeline is
+proposed with the following stages:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+instruction & decode and & shift & execute & memory & register \\
+fetch & register fetch & operand 2 & & access & write back \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item What are control hazards and how could they be resolved in the above
+pipeline?
+
+\iffalse % TODO
+
+John went through this in the summer work
+
+\fi
+
+\item What are data hazards and how could they be resolved in the above
+pipeline?
+
+% TODO
+
+\item What are feed-forward paths and where could they be added to the above
+pipeline to improve performance?
+
+% TODO
+
+\item Why might a branch instruction result in pipeline bubbles and how many
+bubbles will appear in the above pipeline as a result of taking a branch
+instruction?
+
+% TODO
+
+\end{enumerate}
+
+\end{examquestion}
+
+\item Using your summer work as a starting point, describe what each of the
+following terms mean and why it is important to CPU cache design (hint: for
+each principle of cache design, give an example use case when it is very
+appropriate and when it is very inappropriate)
+
+\begin{enumerate}[label=(\alph*)]
+
+\item A write-back policy
+
+% TODO
+
+\item A write-through policy
+
+% TODO
+
+\item A write-around policy
+
+% TODO
+
+\item A victim buffer
+
+% TODO
+
+\item write-merging/combining/collapsing/coalescing
+
+% TODO
+
+\item A virtually-addressed cache
+
+% TODO
+
+\item A physically addressed cache
+
+% TODO
+
+\item Cache coherency
+
+% TODO
+
+\item A cacheline dirty bit
+
+% TODO
+
+\item Direct-mapped caching
+
+% TODO
+
+\item Set-associative caching
+
+% TODO
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

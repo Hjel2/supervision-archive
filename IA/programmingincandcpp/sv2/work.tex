@@ -1,0 +1,236 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2008}{3}{3}
+
+A hardware engineer stores a FIFO queue of bits in an int on a platform with
+32-bit ints and 8-bit chars using the following C++ class:
+
+\begin{lstlisting}[language=C++]
+
+class BitQueue{
+	int valid_bits;	// the number of valid bits held in the queue
+	int queue;	// least significant bit is most recent bit added
+public:
+	BitQueue(): valid_bits(0), queue(0) {}
+	void push(int val, int bsize);
+	int pop(int bsize);
+	int size();
+}
+
+\end{lstlisting}
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Write an implementation of BitQueue::size, which should return the
+number of bits currently held in queue.
+
+\begin{lstlisting}[language=C++]
+
+int size(){
+	return valid_bits;
+}
+
+\end{lstlisting}
+
+\item Write an implementation of BitQueue::push, which places the bsize
+least significant bits from val onto queue and updates valid.bits. An
+exception should be thrown in cases where data would otherwise be lost.
+
+% TODO add an exception!
+
+\begin{lstlisting}[language=C++]
+
+void push(int val, int bsize){
+	int j = 1;
+	for (int i = 0; i < bsize; i++){
+		queue |= (j & val) << valid_bits;
+		j *= 2;
+	}
+	valid_bits += bsize;
+}
+
+\end{lstlisting}
+
+\item Write an implementation of BitQueue::pop, which takes bsize bits from
+queue, provides them as the bsize least significant bits in the return
+value, and updates valid.bits. An exception should be thrown when any
+requested data is unavailable.
+
+% TODO add an exception!
+
+\begin{lstlisting}[language=C++]
+
+int pop(int bsize){
+	int ret = 0;
+	int j = 1;
+	for (int i = 0; i < bsize; i++){
+		ret |= (j & queue);
+		j *= 2;
+	}
+	queue >>= bsize;
+	valid_bits -= bsize;
+}
+
+\end{lstlisting}
+
+\item The hardware engineer has built a communication device together with a
+C++ library function send to transmit data with the following declaration.
+
+\begin{lstlisting}[language=C++]
+
+void send(char);
+
+\end{lstlisting}
+
+Use the BitQueue class to write a C++ definition for:
+
+\begin{lstlisting}[language=C++]
+
+void sendmst(const char* msg);
+
+\end{lstlisting}
+
+Each of the characters in msg should be encoded, in index order, using the
+following binary codes: `a'=0, `b'=10, `c'=1100 and `d'=1101. All other
+characters should be ignored. Successive binary codes should be bit-packed
+together and the code 111 should be used to denote the end of the message.
+Chunks of 8-bits should be sent using the send function and any remaining
+bits at the end of a message should be padded with zeros. For example,
+executing sendmst(``abcd'') should call the send function twice, with the
+binary values 01011001 followed by 10111100.
+
+% TODO
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2009}{3}{1}
+
+Explain all of the following C or C++ features. You may use a short
+fragment of code to complement your explanation.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item The declaration of a C++ class illustrating constructor, variable and
+method.
+
+% TODO
+
+\item The use of a virtual destructor
+
+% TODO
+
+\item The difference between malloc() and free(); and new and delete
+
+% TODO
+
+\item Overloading an operator
+
+% TODO
+
+\item Pointer arithmetic
+
+% TODO
+
+\item Catching and throwing exceptions including the passing of a
+user-defined structure
+
+% TODO
+
+\item The meaning of the keywords static and const
+
+% TODO
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2012}{3}{3}
+
+In this question, where appropriate, you may use a short fragment of code to
+complement your explanation.
+
+\begin{enumerate}[label=(alph*)]
+
+\item
+
+\begin{enumerate}[label=(\roman*)]
+
+\item What is the difference between a local and global variable in C?
+(Consider variable scope, storage and initialisation)
+
+% TODO
+
+\item What are the properties of a static member variable in a C++ class?
+
+% TODO
+
+\end{enumerate}
+
+\item
+
+\begin{enumerate}[label=(\roman*)]
+
+\item Briefly explain pointer arithmetic in C. Give an example code snippet
+involving pointers in which it would be \textit{inappropriate} to use
+pointer arithmetic, and explain why.
+
+% TODO
+
+\item Explain how in some respects pointers are equivalent to arrays, and
+give one respect in which they differ.
+
+% TODO
+
+\end{enumerate}
+
+\item Explain why a function might be declared virtual in a C++ superclass.
+
+% TODO
+
+\item
+
+\begin{enumerate}[label=(\roman*)]
+
+\item How does the use of void * pointer in C allow a form of polymorphism?
+Give an example function declaration using the void * pointer.
+
+% TODO
+
+\item What is the main problem with the use of void *, and how does C++
+improve on this? Give the improved function declaration in C++ for your
+example function in part (d)(i).
+
+% TODO
+
+\end{enumerate}
+
+\item
+
+\begin{enumerate}[label=(\roman*)]
+
+\item Why might it be useful to define a copy constructor for a C++ class?
+Give an example of a copy constructor for a simple class.
+
+% TODO
+
+\item Why might it be useful to explicitly define the assignment operator
+(=) for a C++ class? Give an example definition of the assignment operator
+for a simple class.
+
+% TODO
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

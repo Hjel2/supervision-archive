@@ -1,0 +1,725 @@
+\input{./infofile}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template}
+
+\title{Types Supervision 1}
+
+\author{
+    Harry Langford \\
+    hjel2@cam.ac.uk
+}
+
+\usepackage{rotating}
+\usepackage{ebproof}
+
+\begin{document}
+
+\section{Warmup Questions}
+
+\begin{enumerate}
+
+    \item for a strongly-typed programming language, what are the advantages of a type system?
+
+    \begin{itemize}
+
+        \item abstraction
+
+        \item optimization
+
+        \item safety
+
+    \end{itemize}
+
+    \item Describe the concepts of weakening, exchange and substitution.
+
+    \begin{itemize}
+
+        \item Weakening
+
+        Generally: if a term $T$ has property $P$ under context $\Theta, \Theta'$ then $T$ will still have property $P$ in the context $\Theta, \alpha, \Theta'$.
+
+        Concretely, weakening for Simply Typed Lambda Calculus (STLC) is defined as:
+        \[
+            \Theta, \Theta' \vdash e: A \implies \Theta, x: X, \Theta' \vdash e: A
+        \]
+
+        \item Exchange
+
+        Generally: if a term $T$ has property $P$ under context $\Theta, \alpha, \beta, \Theta'$ then $T$ will still have property $P$ in the context $\Theta, \beta, \alpha, \Theta'$.
+        Intuitively, exchange means that the order in which objects occur in the context is not important.
+
+        Concretely, exchange for the STLC is defined as:
+        \[
+            \Theta, x: X, y: X, \Theta' \vdash e: A \implies \Theta, y: Y, x: X, \Theta' \vdash e: A
+        \]
+
+        \item Substitution
+
+        Concretely, substitution for the STLC is defined as:
+        \[
+            \Theta, x: X \vdash e: A \land \Theta \vdash e': X \implies \Theta \vdash [e'/x]e : A
+        \]
+
+    \end{itemize}
+
+    \item Define the two properties of type safety.
+
+    The two properties of Type Safety are Progress and Type Preservation.
+
+    \begin{definition}[Progress]
+
+        If an expression $e$ is well-typed then it is either a value, or there exists some expression $e'$ such that $e \rightsquigarrow e'$.
+
+    \end{definition}
+
+    \begin{definition}[Type Preservation]
+
+        If an expression $e$ has the type $T$ and $e \rightsquigarrow e'$ then $e'$ also has they type $T$.
+
+    \end{definition}
+
+    \item What is the Curry-Howard Correspondence?
+
+    The Curry Howard Correspondence is a correspondence between types systems an proof systems. The exact correspondences are in~Table~\ref{tab:curryhoward}.
+
+    \begin{table}[H]
+
+        \centering
+
+        \begin{tabular}{c|c}
+
+            Type Systems & Proof Systems \\
+
+            \hline
+
+            unit type & truth \\
+
+            null type & falsehood \\
+
+            functions & implication \\
+
+            sum type & logical or \\
+
+            product type & logical and \\
+
+            reduction & normalisation \\
+
+            value & cut-free proof \\
+
+            reduction order & normalisation order \\
+
+        \end{tabular}
+
+        \caption{Correspondences in the Curry Howard Correspendence}
+
+        \label{tab:curryhoward}
+
+    \end{table}
+
+    \item Give the typing rules and operational semantics of TLC for functions, pairs and sums.
+
+    \textbf{Typing Rules:}
+
+    \begin{gather*}
+        \dfrac{
+            \Gamma, x: A \vdash e: B
+        }{
+            \Gamma \vdash \lambda x: A \ldotp e: A \to B
+        }
+        \qquad
+        \dfrac{
+            \Gamma \vdash e: A \to B \qquad \Gamma \vdash e': A
+        }{
+            \Gamma \vdash e\, e': B
+        }
+        \\[2em]
+        \dfrac{
+            \Gamma \vdash e_1: A \qquad \Gamma \vdash e_2: B
+        }{
+            \Gamma \vdash (e_1, e_2): A \times B
+        }
+        \qquad
+        \dfrac{
+            \Gamma \vdash e: A \times B
+        }{
+            \Gamma \vdash \mathrm{fst}\, e: A
+        }
+        \qquad
+        \dfrac{
+            \Gamma \vdash e: A \times B
+        }{
+            \Gamma \vdash \mathrm{snd}\, e: B
+        }
+        \\[2em]
+        \dfrac{
+            \Gamma \vdash e_1: A
+        }{
+            \Gamma \vdash L\, e_1: A + B
+        }
+        \qquad
+        \dfrac{
+            \Gamma \vdash e_2: B
+        }{
+            \Gamma \vdash R\, e_1 + e_2: A + B
+        }
+        \qquad
+        \dfrac{
+            \Gamma \vdash e: A + B
+            \qquad
+            \Gamma, x: A \vdash e_1: C
+            \qquad
+            \Gamma, y: B \vdash e_2: C
+        }{
+            \Gamma \vdash \mathrm{case}(e, L\, x \to e_1, R\, y \to e_2) : C
+        }
+    \end{gather*}
+
+    \textbf{Operational Semantics:}
+
+    \begin{gather*}
+        \dfrac{
+            e \rightsquigarrow e'
+        }{
+            e\, e'' \rightsquigarrow e'\, e''
+        }
+        \qquad
+        \dfrac{
+            e' \rightsquigarrow e''
+        }{
+            v\, e' \rightsquigarrow v\, e''
+        }
+        \qquad
+        \dfrac{
+        }{
+            (\lambda x \ldotp e)\, v \rightsquigarrow [v/x]e
+        }
+        \\[2em]
+        \dfrac{
+            e_1 \rightsquigarrow e_1'
+        }{
+            (e_1, e_2) \rightsquigarrow (e_1', e_2)
+        }
+        \qquad
+        \dfrac{
+            e_2 \rightsquigarrow e_2'
+        }{
+            (v_1, e_2) \rightsquigarrow (v_1, e_2')
+        }
+        \qquad
+        \dfrac{
+            e \rightsquigarrow e'
+        }{
+            \mathrm{fst}\, e \rightsquigarrow e'
+        }
+        \qquad
+        \dfrac{
+            e \rightsquigarrow e'
+        }{
+            \mathrm{snd}\, e \rightsquigarrow e'
+        }
+        \\[2em]
+        \dfrac{
+            e \rightsquigarrow e'
+        }{
+            L\, e \rightsquigarrow L\, e'
+        }
+        \qquad
+        \dfrac{
+            e \rightsquigarrow e'
+        }{
+            R\, e \rightsquigarrow L\, e'
+        }
+        \qquad
+        \dfrac{
+            e \rightsquigarrow e'
+        }{
+            \mathrm{case}(e', L\, x \to e_1, R\, y \to e_2)
+        }
+    \end{gather*}
+
+\end{enumerate}
+
+\section{Regular Questions}
+
+\begin{enumerate}
+
+    \item Extend the type preservation and progress proof to cover AND\@.
+
+    \[
+        \Phi(e, \tau) \triangleq e: \tau \implies e \text{ is a value} \vee \exists e'. e \rightsquigarrow e'
+    \]
+
+    Prove Progress by structural induction on the derivation of $e: \tau$. Let $\Phi(e, \tau)$ be the induction hypothesis:
+
+    \begin{align*}
+        \intertext{Case (AND):}
+        & \dfrac{e_1: \mathrm{bool} \qquad e_2: \mathrm{bool}}{e_1 \land e_2: \mathrm{bool}} & & \text{by assumption} \\
+        \intertext{Case $e_1$ is not a value}
+        & e_1 \rightsquigarrow e_1' & & \text{by induction hypothesis} \\
+        & e_1 \land e_2 \rightsquigarrow e_1' \land e_2 & & \text{by the reduction rules} \\
+        \intertext{Case $e_1$ is a value}
+        \intertext{Case $e_2$ is not a value}
+        & e_2 \rightsquigarrow e_2' & & \text{by induction hypothesis} \\
+        & e_1 \land e_2 \rightsquigarrow e_1 \land e_2' & & \text{by the reduction rules} \\
+        \intertext{Case $e_2$ is a value}
+        & e_1 \land e_2 & & \text{is a value}
+    \end{align*}
+
+    \[
+        \Phi(e, e', \tau) \triangleq e: \tau \land e \rightsquigarrow e' \implies e': \tau
+    \]
+
+    Prove Type Preservation by structural induction on the derivation $e: \tau$. Let $\Phi(e, e', \tau)$ be the induction hypothesis:
+
+    \begin{align*}
+        \intertext{Case (AND):}
+        & e \rightsquigarrow e' & & \text{by assumption} \\
+        & \dfrac{e_1: \mathrm{bool} \qquad e_2: \mathrm{bool}}{e_1 \land e_2: \mathrm{bool}} & & \text{by assumption} \\
+        & e = e_1 \land e_2 & & \text{by assumption} \\
+        \intertext{Case $e_1$ is not a value}
+        & e_1 \rightsquigarrow e_1' & & \text{by Progress} \\
+        & e_1': \mathrm{bool} & & \text{by induction hypothesis} \\
+        & e_1 \land e_2 \rightsquigarrow e_1' \land e_2 & & \text{by the reduction rules} \\
+        & e_1' \land e_2 = e' & & \text{by determinacy} \\
+        & e': \mathrm{bool} & & \text{by (AND)}
+        \intertext{Case $e_1$ is a value}
+        \intertext{Case $e_2$ is not a value}
+        & e_2 \rightsquigarrow e_2' & & \text{by Progress} \\
+        & e_2': \mathrm{bool} & & \text{by induction hypothesis} \\
+        & e_1 \land e_2 \rightsquigarrow e_1 \land e_2' & & \text{by the reduction rules} \\
+        & e_1 \land e_2 = e' & & \text{by determinacy} \\
+        & e': \mathrm{bool} & & \text{by (AND)} \\
+        \intertext{Case $e_1$ is a value}
+        \intertext{$e_1 \land e_2$ is a value. Thus $e$ is a value and $\nexists e'. e \rightsquigarrow e'$: the premise was false in this case so $\Phi$ holds trivially.}
+    \end{align*}
+
+    \item Prove type safety for the unit and function cases of TLC\@.
+
+    \begin{itemize}
+
+        \item Progress
+
+        \[
+            \Phi(\Gamma, e, \tau) \triangleq \Gamma \vdash e: \tau \implies \text{ $e$ is a value } \vee \exists e'\ldotp e \rightsquigarrow e'
+        \]
+
+        I will prove this by structural induction on the derivation $\Gamma \vdash e: \tau$ with the induction hypothesis that for all subexpressions $e$, $\Phi(\Gamma, e, \tau)$. I will prove only the unit and
+        function cases.
+
+        \begin{itemize}
+
+            \item \textbf{Case unit}
+            \begin{align*}
+                \intertext{By assumption, we have:}
+                \dfrac{}{\Gamma \vdash \langle \rangle: 1}
+                \intertext{We have that $\langle \rangle$ is a value. Thus we have $\Phi$ in this case.}
+            \end{align*}
+            \item \textbf{Case abstr}
+            \begin{align*}
+                \intertext{By assumption, we have:}
+                \dfrac{\Gamma, x: A \vdash e: B}{\Gamma \vdash \lambda x: A\ldotp e: A \to B}
+                \intertext{$\lambda x\ldotp e$ is a value. Thus we have $\Phi$ in this case.}
+            \end{align*}
+            \item \textbf{Case app}
+            \begin{align*}
+                \intertext{By assumption, we have:}
+                & \dfrac{\Gamma\vdash e_1: A \to B \qquad \Gamma \vdash e_2: A}{\Gamma \vdash e_1\, e_2: B} \\
+                & \Gamma\vdash e_1: A \to B && \text{subderivation} \\
+                & \Gamma \vdash e_2: A && \text{subderivation} \\
+                \intertext{By the induction hypothesis, we have that $e_1$ is a value or $\exists e_1'\ldotp e_1 \rightsquigarrow e_1'$}
+                \intertext{Case $\exists e_1'\ldotp e_1 \rightsquigarrow e_1'$}
+                & \dfrac{e_1 \rightsquigarrow e_1'}{e_1\, e_2 \rightsquigarrow e_1'\, e_2}
+                \intertext{Thus we have that $e \rightsquigarrow e_1'\, e_2$}
+                \intertext{Case $e_1$ is a value}
+                \intertext{By the induction hypothesis, we have that $e_2$ is a value or $\exists e_2'\ldotp e_2 \rightsquigarrow e_2'$}
+                \intertext{Case $\exists e_2'\ldotp e_2 \rightsquigarrow e_2'$}
+                & \dfrac{e_2 \rightsquigarrow e_2'}{e_1\, e_2 \rightsquigarrow e_1\, e_2'}
+                \intertext{Thus we have that $e \rightsquigarrow e_1\, e_2'$}
+                \intertext{Case $e_2$ is a value $v_2$}
+                \intertext{For $e_1$ to be a value and have type $A \to B$, we have that it must be of the form $\lambda x: A\ldotp e_3$ for some $e_3$}
+                & \dfrac{}{(\lambda x: A \ldotp e_3)\, v_2 \rightsquigarrow [v_2/x]e_3}
+                \intertext{Thus we have that $e \rightsquigarrow [v_2/x]e_3$}
+            \end{align*}
+        \end{itemize}
+
+        \item Type Preservation
+        \[
+            \Phi(\Gamma, e, \tau) \triangleq \Gamma \vdash e: \tau \land e \rightsquigarrow e' \implies \Gamma \vdash e': \tau
+        \]
+        I will prove this by structural induction on the derivation of $e \rightsquigarrow e'$ with the induction hypothesis that for all subexpressions $e$, $\Phi(\Gamma, e, \tau)$. I will prove only the
+        unit and function cases.
+        \begin{itemize}
+
+            \item \textbf{Case Unit}
+
+            There is no reduction rule for any expression of type unit. Therefore, the premise of $\Phi$ is false and so it holds trivially.
+
+            \item \textbf{Case app1}
+            \begin{align*}
+                & \dfrac{e_1 \rightsquigarrow e_1'}{e_1\, e_2 \rightsquigarrow e_1'\, e_2} && \text{by assumption} \\
+                & \Gamma \vdash e_1\, e_2: \tau && \text{by assumption} \\
+                & \dfrac{\Gamma \vdash e_1: \tau' \to \tau \qquad \Gamma \vdash e_2: \tau}{\Gamma \vdash e_1\, e_2: \tau} && \text{by inversion} \\
+                & \Gamma \vdash e_1: \tau' \to \tau && \text{subderivation} \\
+                & \Gamma \vdash e_2: \tau && \text{subderivation} \\
+                & \Gamma \vdash e_1': \tau' \to \tau && \text{by induction hypothesis} \\
+                & \dfrac{\Gamma \vdash e_1': \tau' \to \tau \qquad \Gamma \vdash e_2: \tau}{\Gamma \vdash e_1'\, e_2: \tau}
+                \intertext{Thus, we have proved $\Phi$ in this case!}
+            \end{align*}
+            \item \textbf{Case app2}
+            \begin{align*}
+                & \dfrac{e_2 \rightsquigarrow e_2'}{v\, e_2 \rightsquigarrow v\, e_2'} && \text{by assumption} \\
+                & \Gamma \vdash v\, e_2: \tau && \text{by assumption} \\
+                & \dfrac{\Gamma \vdash v: \tau' \to \tau \qquad \Gamma \vdash e_2: \tau}{\Gamma \vdash v\, e_2: \tau} && \text{by inversion} \\
+                & \Gamma \vdash v: \tau' \to \tau && \text{subderivation} \\
+                & \Gamma \vdash e_2: \tau && \text{subderivation} \\
+                & \Gamma \vdash e_2': \tau' && \text{by induction hypothesis} \\
+                & \dfrac{\Gamma \vdash e_1: \tau' \to \tau \qquad \Gamma \vdash e_2': \tau}{\Gamma \vdash e_1\, e_2': \tau}
+                \intertext{Thus, we have proved $\Phi$ in this case!}
+            \end{align*}
+            \item \textbf{Case sub}
+            \begin{align*}
+                & \dfrac{}{(\lambda x: \tau' \ldotp e)\, v \rightsquigarrow [v/x]e} && \text{by assumption} \\
+                & \Gamma \vdash (\lambda x: \tau' \ldotp e)\, v: \tau && \text{by assumption} \\
+                & \dfrac{\Gamma \vdash \lambda x: \tau' \ldotp e: \tau' \to \tau \qquad \Gamma \vdash e_2: \tau}{\Gamma \vdash v\, e_2: \tau} && \text{by inversion} \\
+                & \Gamma \vdash \lambda x: \tau' \ldotp e: \tau' \to \tau && \text{subderivation} \\
+                & \Gamma \vdash e_2: \tau && \text{subderivation} \\
+                & \dfrac{\Gamma, x: \tau' \vdash e: \tau}{\Gamma \vdash \lambda x\ldotp e: \tau' \to \tau} && \text{by inversion} \\
+                & \Gamma, x: \tau' \vdash e: \tau && \text{subderivation} \\
+                & \Gamma \vdash [v/x]e: \tau && \text{substitution} \\
+                \intertext{Thus, we have proved $\Phi$ in this case!}
+            \end{align*}
+
+        \end{itemize}
+
+    \end{itemize}
+
+    \item In the simply typed $\lambda$-calculus, is there any context $\Gamma$ and type $Y$ for which $\Gamma \vdash x\, x: Y$ (where $x$ is a free variable defined in $\Gamma$)? If so, give $\Gamma$, $Y$ and
+    show a typing derivation, otherwise prove that no such context and type exists.
+
+    No such type exists! Consider the following proof by contradiction.
+
+    Assume that there exists a context $\Gamma$ and type $Y$ such that $\Gamma \vdash x\, x: Y$. Thus the following proof tree must hold.
+
+    \begin{figure}[H]
+
+        \centering
+
+        \begin{prooftree}
+            \Infer0{\Gamma \vdash x: X \to Y}
+            \Infer0{\Gamma \vdash x: X}
+            \Infer2{\Gamma \vdash x\, x: Y}
+        \end{prooftree}
+
+    \end{figure}
+
+    However, this implies that both $x: X \to Y \in \Gamma$ and $x: X \in \Gamma$. Since these are not equal types, we have that $\Gamma$ is an ill-formed typing context. This is a contradiction! Thus there
+    exists no context $\Gamma$ and type $Y$ such that $\Gamma \vdash x\, x: Y$.
+
+    \item Under the Curry-Howard Correspondence (CHC), a proposition $P$ is represented by a type $\pi$. Proving $P$ corresponds to providing a term $t$ such that $\cdot \vdash p: \pi$.
+
+    \begin{enumerate}
+
+        \item We represent the negation $\neg P$ by a type $\pi \to 0$. why is this a reasonable representation?
+
+        By the CHC, we have that $\pi \to 0$ corresponds to the logical expression $P \supset 0$.
+
+        \[
+            P \subset 0 \equiv \neg P \vee 0 \equiv \neg P
+        \]
+
+        Thus, by the CHC, we have that the proposition represented by this type is logically equivalent to the proposition $\neg P$.
+
+        \item Try to prove De Morgan's laws by converting each propositional formula to a type and providing a term of that type in the empty context.
+
+        Let $\pi$ be the type corresponding to the propositional formula $P$, and let $\rho$ be the type corresponding to the propositional formula $Q$.
+
+        \begin{enumerate}
+
+            \item $\neg P \land \neg Q \supset \neg P \vee Q$
+
+            By the CHC we have that $\neg P \land \neg Q \supset \neg P \vee Q$ corresponds to the type $(\pi \to 0) \times (\rho \to 0) \to (\pi + \rho) \to 0$. I will prove that this proposition holds by
+            showing that there exists a term which has that type for arbitrary $\pi$, $\rho$.
+
+            Let $\Gamma = x: (\pi \to 0) \times (\rho \to 0), y: \pi + \rho$
+
+            \begin{sidewaysfigure}
+
+                \centering
+
+                \begin{prooftree}
+                    \Infer0{\Gamma \vdash: \pi + \rho}
+                    \Infer0{\Gamma, a: \pi \vdash x: (\mathrm{\pi} \to 0) \times (\rho \to 0)}
+                    \Infer1{\Gamma, a: \pi \vdash \mathrm{fst}\, x: \mathrm{\pi} \to 0}
+                    \Infer0{\Gamma, a: \pi \vdash a: \pi}
+                    \Infer2{\Gamma, a: \pi \vdash (\mathrm{fst}\, x)\, a: 0}
+                    \Infer0{\Gamma, a: \pi \vdash x: (\mathrm{\pi} \to 0) \times (\rho \to 0)}
+                    \Infer1{\Gamma, a: \pi \vdash \mathrm{snd}\, x: \mathrm{\rho} \to 0}
+                    \Infer0{\Gamma, b: \pi \vdash b: \rho}
+                    \Infer2{\Gamma, a: \pi \vdash (\mathrm{fst}\, x)\, a: 0}
+                    \Infer3{\Gamma \vdash \mathrm{case}(y, L\, a \to (\mathrm{fst}\, x)\, a, R\, b \to (\mathrm{snd}\, x)\, b): 0}
+                    \Infer1{x: (\pi \to 0) \times (\rho \to 0) \vdash \lambda y: \pi + \rho \ldotp \mathrm{case}(y, L\, a \to (\mathrm{fst}\, x)\, a, R\, b \to (\mathrm{snd}\, x)\, b): (\pi + \rho) \to 0}
+                    \Infer1{\cdot \vdash \lambda x: (\pi \to 0) \times (\rho \to 0) \ldotp \lambda y: \pi + \rho \ldotp \mathrm{case}(y, L\, a \to (\mathrm{fst}\, x)\, a, R\, b \to (\mathrm{snd}\, x)\, b):
+                    (\pi \to 0) \times (\rho \to 0) \to (\pi + \rho) \to 0}
+                \end{prooftree}
+
+                \caption{Typing derivation for a term of type $(\pi \to 0) \times (\rho \to 0) \to (\pi + \rho) \to 0$}
+
+            \end{sidewaysfigure}
+
+            \item $\neg (P \vee Q) \supset \neg P \land \neg Q$
+
+            By the CHC we have that $\neg P \land \neg Q \supset \neg P \vee Q$ corresponds to the type $((\pi + \rho) \to 0) \supset (\pi \to 0) \times (\rho \to 0)$. I will prove that this proposition
+            holds by showing that there exists a term which has that type for arbitrary $\pi$, $\rho$.
+
+            Let $\Gamma = x: (\pi + \rho) \to 0$.
+
+            \begin{sidewaysfigure}
+
+                \centering
+
+                \begin{prooftree}
+                    \Infer0{\Gamma, y: \pi \vdash x: (\pi + \rho) \to 0}
+                    \Infer0{\Gamma, y: \pi \vdash y: \pi}
+                    \Infer1{\Gamma, y: \pi \vdash L\, y: (\pi + \rho)}
+                    \Infer2{\Gamma, y: \pi \vdash x\, (L\, y): 0}
+                    \Infer1{\Gamma \vdash \lambda y: \pi \ldotp x\, (L\, y): (\pi \to 0)}
+                    \Infer0{\Gamma, y: \rho \vdash x: (\pi + \rho) \to 0}
+                    \Infer0{\Gamma, y: \rho \vdash y: \rho}
+                    \Infer1{\Gamma, y: \rho \vdash R\, y: (\pi + \rho)}
+                    \Infer2{\Gamma, y: \rho \vdash x\, (R\, y): 0}
+                    \Infer1{\Gamma \vdash \lambda y: \rho \ldotp \, (R\, y): (\rho \to 0)}
+                    \Infer2{\Gamma \vdash (\lambda y: \pi \ldotp x\, (L\, y), \lambda y: \rho \ldotp x\, (R\, y): (\pi \to 0) \times (\rho \to 0)}
+                    \Infer1{\cdot \vdash \lambda x: (\pi + \rho) \to 0 \ldotp (\lambda y: \pi \ldotp x\, (L\, y), \lambda y: \rho \ldotp x\, (R\, y): ((\pi + \rho) \to 0) \to (\pi \to 0) \times (\rho \to 0)}
+                \end{prooftree}
+
+                \caption{Typing derivation for a term of type $((\pi + \rho) \to 0) \supset (\pi \to 0) \times (\rho \to 0)$}
+
+            \end{sidewaysfigure}
+
+            \item $\neg P \vee \neg Q \supset \neg (P \land Q)$
+
+            By the CHC, we have that the type this proposition corresponds to is $((\pi \to 0) + (\rho \to 0)) \to (\pi \times \rho \to 0)$.
+
+            Let $\Gamma = x: (\pi \to 0) + (\rho \to 0), y: \pi \times \rho$
+
+            \begin{sidewaysfigure}
+
+                \centering
+
+                \begin{prooftree}
+                    \Infer0{\Gamma \vdash x: (\pi \to 0) + (\rho \to 0)}
+                    \Infer0{\Gamma, a: \pi \to 0 \vdash a: \pi \to 0}
+                    \Infer0{\Gamma, a: \pi \to 0 \vdash y: \pi \times \rho}
+                    \Infer1{\Gamma, a: \pi \to 0 \vdash \mathrm{fst}\, y: \pi}
+                    \Infer2{\Gamma, a: \pi \to 0 \vdash a\, (\mathrm{fst}\, y): 0}
+                    \Infer0{\Gamma, b: \rho \to 0 \vdash b: \rho \to 0}
+                    \Infer0{\Gamma, b: \rho \to 0 \vdash y: \pi \times \rho}
+                    \Infer1{\Gamma, b: \rho \to 0 \vdash \mathrm{snd}\, y: \rho}
+                    \Infer2{\Gamma, b: \rho \to 0 \vdash b\, (\mathrm{snd}\, y): 0}
+                    \Infer3{\Gamma \vdash \mathrm{case}(x, L\, a \to a\, (\mathrm{fst}\, y), b \to b\, (\mathrm{snd}\, y)): 0}
+                    \Infer1{x: (\pi \to 0) + (\rho \to 0) \vdash \lambda y: \pi \times \rho \ldotp \mathrm{case}(x, L\, a \to a\, (\mathrm{fst}\, y), b \to b\, (\mathrm{snd}\, y)): \pi \times \rho \to 0}
+                    \Infer1{
+                        \cdot \vdash \lambda x: (\pi \to 0) + (\rho \to 0) \ldotp \lambda y: \pi \times \rho \ldotp \mathrm{case}(x, L\, a \to a\, (\mathrm{fst}\, y), b \to b\, (\mathrm{snd}\, y)):
+                        ((\pi \to 0) + (\rho \to 0)) \to (\pi \times \rho \to 0)
+                    }
+                \end{prooftree}
+
+                \caption{Typing derivation for a term of type $((\pi \to 0) + (\rho \to 0)) \to (\pi \times \rho \to 0)$}
+
+            \end{sidewaysfigure}
+
+            \item $\neg (P \land Q) \supset \neg P \vee \neg Q$
+
+            This law does not hold! The type it corresponds to under the CHC is $(\pi \times \rho \to 0) \to (\pi \to 0) \times (\rho \to 0)$. No term can have this type in the empty context. Such a term
+            would take a function $f: (\pi \times \rho) \to 0$ and return functions $g_1: \pi \to 0$, $g_2: \rho \to 0$. Either function individually only takes a term of type $\pi$ or $\rho$ and so cannot call
+            $f$. Thus the only way such a term could exist is if it could make terms of type $0$ -- which would imply the language was unsound.
+
+        \end{enumerate}
+
+        \label{itm:b}
+
+        \item De Morgan's laws all hold in propositional logic. What does~\ref{itm:b} tell you about the STLC in relation to propositional logic?
+
+        The STLC does not correspond to propositional logic.
+
+    \end{enumerate}
+
+    \item Extend logical relation to support products and sums.
+
+    We define a logical relation $\mathrm{Halt}_T$ for all types $T$:
+    \begin{align*}
+        & \mathrm{Halt}_0 = \emptyset \\
+        & \mathrm{Halt}_1 = \{e \mid e\ \mathrm{halts}\} \\
+        & \mathrm{Halt}_{X \to Y} = \{e \mid e\ \mathrm{halts} \land \forall e' \in \mathrm{Halt}_X\ldotp e\ e' \in \mathrm{Halt}_X\} \\
+        & \mathrm{Halt}_{X \times Y} = \{e \mid e\ \mathrm{halts}\} \\
+        & \mathrm{Halt}_{X + Y} = \{L\, e \mid e \in \mathrm{Halt}_X\} \cup \{R\, e \mid e \in \mathrm{Halt}_Y\}
+    \end{align*}
+
+    \item
+
+    \begin{examquestion}{2023}{8}{13}
+
+        Consider G\"odel's T, the Simply-Typed Lambda Calculus with function and natural number types, with zero, successor and iterator term formers for teh natural number type.
+
+        \begin{enumerate}[label=$(\alph*)$]
+
+            \item Define a logical relation suitable for establishing the termination of closed programs in this language.
+
+            I define an intermediate logical relation and use this to define a logical relation which is suitable for establishing termination in the language.
+
+            The definition of the intermediate logical relation is as follows:
+            \begin{align*}
+                \mathrm{Halt}_1 =& \{e \mid e\ \mathrm{halts}\} \\
+                \mathrm{Halt}_{\N_{\le 0}} =& \left\{e \mid e \rightsquigarrow^* z\right\} \\
+                \forall i \in \N \ldotp \mathrm{Halt}_{\N_\le i+1} =& \left\{e \mid e \rightsquigarrow^* s(e') \land e' \in \mathrm{Halt}_{\N \le i}\right\} \\
+                \mathrm{Halt}_{\N} =& \bigcup_{i \in \N} \mathrm{Halt}_{\N_\le i} \\
+                \mathrm{Halt}_{X \to Y} =& \left\{e \mid e\ \mathrm{halts} \land \forall e' \in \mathrm{Halt}_X \ldotp e\, e' \in \mathrm{Halt}_Y\right\} \\
+                &\cup \left\{\mathrm{iter}(e, z \to e_1, s(x) \to e_2) \mid e \in \mathrm{Halt}_\N \land e_1 \in \mathrm{Halt}_{X \to Y} \right. \\
+                &\qquad \left.\land \lambda x: X \to Y \ldotp e_2 \in \mathrm{Halt}_{(X \to Y) \to (X \to Y)}\right\}\\
+            \end{align*}
+
+            \item State the fundamental lemma for this language.
+
+            \[
+                x_1: X_1, x_2: X_2, \ldots, x_n: X_n \vdash e: T \land \forall i \in \{1, \ldots n\}\ldotp \cdot \vdash v_i: X_i \implies [v_1/x_1, \ldots, v_n / x_n]e \in \mathrm{Halt}_T
+            \]
+
+            \item State formally what it means for a set of terms $X$ to he ``closed under reduction''.
+
+            The set of terms $X$ is ``closed under reduction'' if, and only if:
+            \[
+                \forall e \in X. e \rightsquigarrow e' \implies e' \in X
+            \]
+
+            \item Prove the fundamental lemma holds for the iterator case.
+
+            Prove the fundamental lemma for G\"odel's T by structural induction on $x_1: X_1, \ldots, x_n: X_n \vdash e: Z$.
+
+            For brevity, let $\Gamma = x_1: X_1, x_2: X_2, \ldots, x_n: X_n$ and $\gamma = [v_1/x_1, \ldots, v_n / x_n]$
+
+            Case (iter):
+            \begin{align*}
+                & \Gamma \vdash e: Z && \text{by assumption} \\
+                & e = \mathrm{iter}(e_0, z \to e_1, s(x) \to e_2) && \text{by assumption} \\
+                & \dfrac{
+                    \Gamma \vdash e_0: \N \qquad \Gamma: Z \qquad \Gamma, x: Z \vdash e_2 : X
+                }{
+                    \Gamma \vdash \mathrm{iter}(e_0, z \to e_1, s(x) \to e_2): X
+                } && \text{by assumption} \\
+                & \Gamma \vdash e_0: \N && \text{subderivation} \\
+                & \Gamma \vdash e_1: Z && \text{subderivation} \\
+                & \Gamma, x: Z \vdash e_2: Z && \text{subderivation} \\
+                & \forall i \in \{1, \ldots, n\}\ldotp v_i: X_i && \text{by assumption} \\
+                & \gamma e \\
+                =& \gamma\mathrm{iter}(e_0, z \to e_1, s(x) \to e_2) && \text{by assumption} \\
+                =& \mathrm{iter}(\gamma e_0, z \to \gamma e_1, s(x) \to \gamma e_2) && \text{by definition of substitution} \\
+                & \gamma e_0 \in \mathrm{Halt}_{\N} && \text{by the induction hypothesis} \\
+                & \gamma e_1 \in \mathrm{Halt}_Z && \text{by the induction hypothesis} \\
+            \end{align*}
+
+            Notice that since we have $\gamma e_0 \in \mathrm{Halt}_{\N}$, we have $\gamma e_0 \rightsquigarrow^* n$. I will perform structural induction on $n$ for the remainder of the proof (\ie to prove
+            $\gamma \mathrm{iter}(e_0, z \to e_1, s(x) \to e_2) \in \mathrm{Halt}_Z$)
+
+            \begin{align*}
+                \intertext{Case ($z$)}
+                & \quad \gamma e_0 \rightsquigarrow^* z && \text{by assumption} \\
+                & \quad \gamma \mathrm{iter}(e_0, z \to e_1, s(x) \to e_2) \rightsquigarrow \gamma \mathrm{iter}(z, z \to e_1, s(x) \to e_2) && \text{by the reduction
+                rules}\\
+                & \quad \gamma \mathrm{iter}(z, z \to e_1, s(x) \to e_2) \rightsquigarrow \gamma e_1 && \text{by the reduction rules} \\
+                & \quad \gamma e_1 \rightsquigarrow^* v && \text{by assumption, since $\gamma e_1 \in \mathrm{Halt}_Z$} \\
+                & \gamma \mathrm{iter}(z, z \to e_1, s(x) \to e_2) \rightsquigarrow^* v && \text{by transivitity of reduction} \\
+                \intertext{Case ($s(v')$)}
+                & \quad \gamma e_0 \rightsquigarrow^* s(x) && \text{by assumption} \\
+                & \quad \gamma \mathrm{iter}(e_0, z \to e_1, s(x) \to e_2) \rightsquigarrow \gamma \mathrm{iter}(s(v'), z \to e_1, s(x) \to e_2) && \text{by the reduction
+                rules}\\
+                & \quad \gamma \mathrm{iter}(s(v'), z \to e_1, s(x) \to e_2) \rightsquigarrow \gamma [v'/x]e_2 && \text{by the reduction rules} \\
+                & \quad \gamma [v'/x]e_1 \rightsquigarrow^* v && \text{by assumption, since $\gamma [v'/x]e_1 \in \mathrm{Halt}_Z$} \\
+                & \gamma \mathrm{iter}(s(v'), z \to e_1, s(x) \to e_2) \rightsquigarrow^* v && \text{by transivitity of reduction} \\
+            \end{align*}
+
+            We have now proved the fundamental lemma in the iter case!
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+    \begin{examquestion}{2020}{8}{15}
+
+        \begin{enumerate}[label=(\textit{\alph*})]
+
+            \setcounter{enumii}{1}
+
+            \item
+
+            \begin{enumerate}[label=(\roman*)]
+
+                \item Give the typing rules for Peano natural numbers and their eliminator.
+
+                Peano natural numbers can be represented either as $z$ (for zero) or $s(x)$ for the successor of some other natural number $x$. Their eliminator is the \texttt{iter} function -- which can be
+                interpreted as bounded recursion.
+
+                \[
+                    \dfrac{}{\Gamma \vdash z: \N} \qquad \dfrac{\Gamma \vdash x: \N}{\Gamma \vdash s(x): \N} \\
+                    \dfrac{\Gamma \vdash e: \N \qquad \Gamma \vdash e_1: X \qquad \Gamma, x: X \vdash e_2: X \to X}{\mathrm{iter}(e, z \to e_1, s(x) \to e_2): X}
+                \]
+
+                \item Using the rules given above, define the addition function.
+
+                \[
+                    \mathrm{add} \triangleq \lambda m\ldotp \lambda n\ldotp \mathrm{iter}(m, z \to n, s(x) \to s(x))
+                \]
+
+                \item Let a binary tree be either a leaf \texttt{Leaf} or a node \texttt{Node(l, x, r)} where \texttt{l} and \texttt{r} are subtrees, and \texttt{x} is a natural number. Give typing rules for trees
+                corresponding to this prose description, including an eliminator.
+
+                I will consider the eliminator $\mathrm{fold}$ which aggregates the nodes in a tree with a user-defined ternary operation.
+                For example $\mathrm{Fold}(e, \mathrm{Leaf} \to z, \mathrm{Node}(l, x, r) \to \mathrm{add}(l, \mathrm{add}(x, r)))$ would sum all the nodes in the tree.
+
+                \begin{gather*}
+                    \dfrac{}{\Gamma \vdash \mathrm{Leaf}: \mathrm{tree}} \qquad
+                    \dfrac{\Gamma \vdash e_1: \mathrm{tree} \qquad \Gamma \vdash e_2: \mathrm{tree}}{\Gamma \vdash \mathrm{Node}(e_1, x, e_2): \mathrm{tree}} \\[2em]
+                    \dfrac{\Gamma \vdash e: \mathrm{tree} \qquad \Gamma \vdash e_1: X \qquad \Gamma, l: X, x: \N, r: X \vdash e_2: X}{\Gamma \vdash \mathrm{fold}(e, \mathrm{Leaf} \to e_1, \mathrm{Node} \to e_2): X}
+                \end{gather*}
+
+                \item Using the rules given above, define a function \texttt{size} which takes a binary tree and returns the total number of nodes in the tree.
+
+                \[
+                    \mathrm{size} = \lambda x: \mathrm{tree}\ldotp \mathrm{fold}(x, \mathrm{Leaf} \to z, \mathrm{Node}(l, x, r) \to s(\mathrm{add}(l, r))
+                \]
+
+            \end{enumerate}
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+\end{enumerate}
+
+\section{Extension Questions}
+
+\begin{enumerate}
+
+    \item Find a context $\Gamma$ under which the term $f\, x\, y$ has type $\mathrm{Bool}$. \ie $\Gamma \vdash f\, x\, y: \mathrm{Bool}$.
+
+    In the STLC the representation of $\mathrm{Bool}$ is given by $1 + 1$. I will work in this langauge.
+
+    \[
+        \Gamma = f: 1 \to 1 \to 1 + 1, x: 1, y: 1
+    \]
+
+    \item Can you give a simple description of the set of all such contexts?
+
+    \[
+        G = \{(f: X \to Y \to 1 + 1, x: X, y: Y) \mid X, Y \text{ are valid types}\}
+    \]
+
+    \item OCaml has a polymorphic equals-function. That is, $\mathrm{equal}: a \to a \to \mathrm{bool}$ is defined for all types. What are the implications on safety of the type system?
+
+    From computation theory; we have that for the lambda calculus, the existence of an equals function implies that there are expressions which loop infinitely. Applying similar logic here means that the
+    existence of a polymorphic equals function means there is an expression in OCaml which loops infinitely.
+
+\end{enumerate}
+
+\end{document}

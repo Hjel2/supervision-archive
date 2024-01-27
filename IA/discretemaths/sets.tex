@@ -1,0 +1,622 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/includes.tex}
+\input{../../template/template.tex}
+
+\usepackage{multicol}
+
+\begin{document}
+
+\section*{5. On sets}
+
+\subsection*{5.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Prove that $\subseteq$ is a partial order, that is, it is:
+
+\begin{enumerate}
+
+\item reflexive: $\forall$ sets $A$, $A \subseteq A$
+
+I shall prove that every element in $A$ is also in $A$.
+
+\begin{equation}
+\begin{split}
+\forall a \in A: a &\in A \Longleftrightarrow\\
+A &\subseteq A\\
+\end{split}
+\end{equation}
+
+\item transistive: $\forall$ sets $A$, $B$, $C$. $(A \subseteq B \wedge B \subseteq C) \Longrightarrow A \subseteq C$
+
+Assume $A \subseteq B \wedge B \subseteq C$
+\begin{equation}
+\begin{split}
+\text{Take an arbitrary } a &\in A \\
+\text{By assumption } a & \in A \Longrightarrow a \in B\\
+\text{By assumption } a &\in B \Longrightarrow a \in C\\
+\text{So: } \forall a &\in A: a \in C \Longleftrightarrow\\
+A &\subseteq C\\
+\end{split}
+\end{equation}
+
+\item antisymmetric: $\forall$ sets $A$, $B$. $(A \subseteq B \wedge B \subseteq A) \Longleftrightarrow A = B$
+
+$\subseteq$ is antisymmetric. 
+
+So $A \subseteq B \wedge B \subseteq A \Longleftrightarrow A = B$ as required.
+
+\end{enumerate}
+
+\item Prove the following statements:
+
+\begin{enumerate}
+
+\item $\forall$ sets $A$. $\emptyset \subseteq A$
+
+By definition if $S$ is a set:
+\begin{equation}
+S \subseteq A \Longleftrightarrow \forall s \in S: s \in A\\
+\end{equation}
+For $S = \emptyset$ this is vacuously true.
+\begin{equation}
+\begin{split}
+(\emptyset \subseteq A &\Longleftrightarrow \forall s \in \emptyset: s \in A)\Longleftrightarrow\\
+(\emptyset \subseteq A &\Longleftrightarrow \text{true})\Longleftrightarrow\\
+\emptyset &\subseteq A\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item $\forall$ sets $A$. $(\forall x: x \notin A) \Longleftrightarrow A = \emptyset$
+
+By definition $\forall x: x \notin \emptyset$. 
+
+\begin{equation}
+\begin{split}
+A &= \emptyset \wedge \forall x: x \notin \emptyset \text{ by definition} \Longleftrightarrow\\
+\forall x:& x \notin A \text{ as required}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Find the union, and intersection of: 
+
+\begin{enumerate}
+
+\item $\{1, 2, 3, 4, 5\}$ and $\{-1, 1, 3, 5, 7\}$
+
+\begin{equation}
+\begin{split}
+  &\{1, 2, 3, 4, 5\} \cup \{-1, 1, 3, 5, 7\}\\
+= &\{-1, 1, 2, 3, 4, 5, 7\}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+  &\{1, 2, 3, 4, 5\} \cap \{-1, 1, 3, 5, 7\}\\
+= &\{1, 3, 5\}\\
+\end{split}
+\end{equation}
+
+\item $\{x \in \mathbb{R}| x > 7\}$ and $\{ x \in \mathbb{N}: x > 5\}$
+
+\begin{equation}
+\begin{split}
+ & \{x \in \mathbb{R}: x > 7\} \cup \{ x \in \mathbb{N}: x > 5\}\\
+=& \{x \in \mathbb{R}: x > 7 \vee x \in \{6, 7\}\}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+ & \{x \in \mathbb{R}: x > 7\} \cap \{ x \in \mathbb{N}: x > 5\}\\
+=& \{x \in \mathbb{N}: x > 7\}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Find the Cartesian product and disjoint union of $\{1, 2, 3, 4, 5\}$ and $\{-1, 1, 3, 5, 7\}$.
+
+The Cartesian product of two sets $S$ and $T$ is $\{x: \forall s \in S, \forall t \in T: x = (s, t)\}$
+
+For the sets $\{1, 2, 3, 4, 5\}$ and $\{-1, 1, 3, 5, 7\}$ this is equal to:
+\begin{equation}
+\begin{split}
+&\{(1, -1), (1, 1), (1, 3), (1, 5), (1, 7), (2, -1), (2, 1), (2, 3), (2, 5), (2, 7), (3, -1), (3, 1), (3, 3), \\&(3, 5), (3, 7), (4, -1), (4, 1), (4, 3), (4, 5), (4, 7), (5, -1), (5, 1), (5, 3), (5, 5), (5, 7)\}\\
+\end{split}
+\end{equation}
+
+\item Let $I = \{2, 3, 4, 5\}$ and for each $i \in I$, let $A_i = \{i, i + 1, i - 1, 2\cdot i\}$.
+
+\begin{enumerate}
+
+\item List the elements of all sets $A_i$ for $i \in I$
+
+\begin{equation}
+\begin{split}
+A_2 &= \{1, 2, 3, 4\}\\
+A_3 &= \{2, 3, 4, 6\}\\
+A_4 &= \{3, 4, 5, 8\}\\
+A_5 &= \{4, 5, 6, 10\}\\
+\end{split}
+\end{equation}
+
+\item Let $\{A_i| i \in I\}$ stand for $\{A_2, A_3, A_4, A_5\}$. Find $\bigcup\{A_i| i \in I\}$ and $\bigcap\{A_i| i \in I\}$.
+
+\begin{equation}
+\bigcup\{A_i: i \in I\} = \{1, 2, 3, 4, 5, 6, 8, 10\}\\
+\end{equation}
+\begin{equation}
+\bigcap\{A_i:i \in I\} = \{4\}\\
+\end{equation}
+
+\end{enumerate}
+
+\item Let $U$ be a set. For all $A, B \in \mathcal{P}(U)$, prove that:
+
+\begin{enumerate}
+
+\item $A^\mathsf{c} = B \Longleftrightarrow (A \cup B = U \wedge A \cap B = \emptyset)$
+
+\begin{equation}
+\begin{split}
+A^\mathsf{c} &= B \Longleftrightarrow\\
+(\forall b \in U: b \notin A &\Longleftrightarrow b \in B) \Longleftrightarrow\\
+A \cup B &= \forall u \in U: u \in A \vee u \notin A \Longleftrightarrow\\
+A \cup B &= U\\
+\end{split}
+\end{equation}
+
+\item Double complement elimination: $(A^\mathsf{c})^\mathsf{c} = A$
+
+\begin{equation}
+\begin{split}
+A^{\mathsf{c}} &\triangleq \{u | u \in U \wedge u \notin A\}\\
+(A^{\mathsf{c}})^{\mathsf{c}} &= \{u' | u' \in U \wedge u' \notin \{u | u \in U \wedge u \notin A\}\}\\
+							  &= \{u' | u' \in U \wedge \overline{(u' \in U \wedge u' \notin A)}\}\\
+							  &= \{u' | u' \in U \wedge (u' \notin U \vee u' \in A)\}\\
+							  &= \{u' | (u' \in U \wedge u' \notin U) \vee (u' \in U \wedge u' \in A)\}\\
+							  &= \{u' | u' \in U \wedge u' \in A\}\\
+							  &= \{u' | u' \in A\} \text{ (Since } A \subseteq U: u' \in A \Longrightarrow u' \in U)\\
+							  &= A\\
+\end{split}
+\end{equation}
+
+\item The De-Morgan laws: $(A \cup B)^\mathsf{c} = A^\mathsf{c} \cap B^\mathsf{c}$ and $(A \cap B)^\mathsf{c} = A^\mathsf{c}\cup B^\mathsf{c}$
+
+\begin{equation}
+\begin{split}
+(A \cup B)^{\mathsf{c}} &= \{x | x \notin A \cup B\} \\
+						&= \{x | x \notin A \wedge x \notin B\}\\
+						&= \{x | x \notin A\} \cap \{x | x \notin B\}\\
+						&= A^{\mathsf{c}} \cap B^{\mathsf{c}}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+(A \cap B)^{\mathsf{c}} &= \{x | x \notin A \cap B\}\\
+						&= \{x | x \notin A \vee x \notin B\}\\
+						&= \{x | x \notin A\} \cup \{x | x\notin B\}\\
+						&= A^{\mathsf{c}} \cap B^{\mathsf{c}}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{5.2 Core exercises}
+
+\begin{enumerate}
+
+\item Prove that for all sets $U$ and subsets $A, B \subseteq U$:
+
+\begin{enumerate}
+
+\item $\forall X: A \subseteq X \wedge B \subseteq X \Longleftrightarrow (A \cup B) \subseteq X$
+
+\begin{equation}
+\begin{split}
+\forall X : A &\subseteq X \wedge B \subseteq X \Longleftrightarrow\\
+\forall a \in A : a &\in X \wedge \forall b \in B : b \in X \Longleftrightarrow\\
+\forall x \in A \cup B : x &\in X \Longleftrightarrow\\
+A \cup B &\subseteq X\\
+\end{split}
+\end{equation}
+
+\item $\forall Y: Y \subseteq A \wedge Y \subseteq B \Longleftrightarrow Y \subseteq (A \cap B)$
+
+\begin{equation}
+\begin{split}
+\forall Y : Y &\subseteq A \wedge Y \subseteq B \Longleftrightarrow\\
+\forall y \in Y : y &\in A \wedge y \in B \Longleftrightarrow\\
+\forall y \in Y : y &\in A \cap B \Longleftrightarrow\\
+Y &\subseteq A \cap B\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Either prove or disprove that, for all sets $A$ and $B$,
+
+\begin{enumerate}
+
+\item $A \subseteq B \Longrightarrow \mathcal{P}(A) \subseteq \mathcal{P}(B)$
+
+\begin{equation}
+\begin{split}
+\mathcal{P}(A) &\triangleq \{a | a \subseteq A\} \\
+A &\subseteq B \Longleftrightarrow\\
+(\forall a: (a \subseteq A) &\Longrightarrow (a \subseteq B)) \Longleftrightarrow\\
+\{a | a \subseteq A\} &\subseteq \{b | b \subseteq B\} \Longleftrightarrow\\
+\mathcal{P}(A) &\subseteq \mathcal{P}(B)\\
+\end{split}
+\end{equation}
+
+\item $\mathcal{P}(A \cup B) \subseteq \mathcal{P}(A) \cup \mathcal{P}(B)$
+
+Disproof by counter-example:
+\begin{equation}
+\begin{split}
+\text{Let } A &= \{0\} \wedge B = \{1\} \Longleftrightarrow\\
+\mathcal{P}(A \cup B) &= \mathcal{P}(\{0, 1\}) = \{\emptyset, \{0\}, \{1\}, \{0, 1\}\} \wedge\\
+\mathcal{P}(A) \cup \mathcal{P}(B) &= \{\emptyset, \{0\}\} \cup \{\emptyset, \{1\}\} = \{\emptyset, \{0\}, \{1\}\}\\
+\text{In this case: } \mathcal{P}(A \cup B) &\nsubseteq \mathcal{P}(A) \cup \mathcal{P}(B)\\
+\end{split}
+\end{equation}
+
+\item $\mathcal{P}(A) \cup \mathcal{P}(B) \subseteq \mathcal{P}(A \cup B)$
+
+\begin{equation}
+\begin{split}
+\mathcal{P}(S) &\triangleq \{s | s \subseteq S\} \Longrightarrow\\
+\mathcal{P}(A) \cup \mathcal{P}(B) &= \{x | x \subseteq A \vee x \subseteq B\}\\
+\mathcal{P}(A \cup B) &= \{x | x \subseteq A \cup B\}\\
+\forall x: x \subseteq A \vee x \subseteq B &\Longrightarrow x \subseteq A \cup B \Longrightarrow\\
+\{x | x \subseteq A \vee x \subseteq B\} &\subseteq \{x | x \subseteq A \cup B\} \Longleftrightarrow\\
+\mathcal{P}(A) \cup \mathcal{P}(B) &\subseteq \mathcal{P}(A \cup B)\\
+\end{split}
+\end{equation}
+
+\item $\mathcal{P}(A \cap B) \subseteq \mathcal{P}(A) \cap \mathcal{P}(B)$
+
+\begin{equation}\label{powersetunions}
+\begin{split}
+\mathcal{P}(A) \cup \mathcal{P}(B) &= \{a | a \subseteq A \} \cup \{b | b \subseteq B\}\\
+								   &= \{a | a \subseteq A \wedge a \subseteq B\}\\
+								   &= \{a | a \subseteq A \cap B\}\\
+								   &= \mathcal{P}(A \cap B)\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\text{From (\ref{powersetunions}): } \mathcal{P}(A) \cup \mathcal{P}(B) &= \mathcal{P}(A \cap B) \Longleftrightarrow\\
+\mathcal{P}(A \cap B) &\subseteq \mathcal{P}(A) \cap \mathcal{P}(B)\\
+\end{split}
+\end{equation}
+
+\item $\mathcal{P}(A) \cap \mathcal{P}(B) \subseteq \mathcal{P}(A \cap B)$
+
+\begin{equation}
+\begin{split}
+\text{From (\ref{powersetunions}): } \mathcal{P}(A) \cup \mathcal{P}(B) &= \mathcal{P}(A \cap B) \Longleftrightarrow\\
+\mathcal{P}(A) \cap \mathcal{P}(B) &\subseteq \mathcal{P}(A \cap B)\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Let $U$ be a set. For all $A, B \in \mathcal{P}(U)$ prove that the following statements are equivalent.
+
+\begin{multicols}{4}
+
+\begin{enumerate}
+
+\item $A \cup B = B$
+
+\item $A \subseteq B$
+
+\item $A \cap B = A$
+
+\item $B^\mathsf{c} \subseteq A^\mathsf{c}$
+
+\end{enumerate}
+
+\end{multicols}
+
+We will show that all the statements are equivalent to $A \subseteq B$.
+
+\begin{equation}
+\begin{split}
+A \cup B &= B \Longleftrightarrow\\
+(\forall x \in A \cup B \Longleftrightarrow x &\in B) \Longleftrightarrow\\
+(\forall x : (x \in A \vee x &\in B) \Longleftrightarrow x \in B) \Longleftrightarrow\\
+\forall x : x &\in A \Longrightarrow x \in B \Longleftrightarrow\\
+\forall x \in A: x &\in B \Longleftrightarrow\\
+A &\subseteq B\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\text{Trivially: } A \subseteq B \Longleftrightarrow A \subseteq B\\
+\end{equation}
+
+\begin{equation}
+\begin{split}
+A \cap B &= A \Longleftrightarrow\\
+\forall x (x \in A \cap B \Longrightarrow x &\in A) \Longleftrightarrow\\
+\forall x : ((x \in A \wedge x &\in B) \Longleftrightarrow x \in A) \Longleftrightarrow\\
+\forall x: (x \in A &\Longrightarrow x \in B) \Longleftrightarrow\\
+A &\subseteq B\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+B^{\mathsf{c}} &\subseteq A^{\mathsf{c}} \Longleftrightarrow\\
+\forall x \notin B &\Longrightarrow x \notin A \Longleftrightarrow\\
+\forall x \in A &\Longrightarrow x \in B \Longleftrightarrow\\
+A &\subseteq B\\
+\end{split}
+\end{equation}
+
+\item For sets $A, B, C, D$, prove or disprove at least three of the following statements:
+
+\begin{enumerate}
+
+\item $(A \subseteq C \wedge B \subseteq D) \Longrightarrow (A \times B \subseteq C \times D)$
+
+\begin{equation}
+\begin{split}
+\text{Assume: } A \subseteq C &\wedge B \subseteq D \Longleftrightarrow\\
+				(a \in A &\Longrightarrow a \in C) \wedge (b \in B \Longrightarrow b \in D)\\
+A \times B &= \{s| \exists a \in A \wedge \exists b \in B. s = (a, b)\} \Longrightarrow\\
+A \times B &\subseteq \{s| \exists a \in B \wedge \exists b \in D. s = (a, b)\}\Longleftrightarrow\\
+A \times B &\subseteq C \times D\\
+\end{split}
+\end{equation}
+
+\item $(A \cup C) \times (B \cup D) \subseteq (A \times B) \cup (C \times D)$
+
+Proof by counterexample:
+\begin{equation}
+\begin{split}
+\text{Let: } A = \emptyset, B = \{1\}&, C = \{2\}, D = \{3\}\\
+\text{So: } (A \cup C) \times (B \cup D) &= \{2\} \times \{1, 3\} \\
+										 &= \{(2, 1), (2, 3)\}\\
+\text{And: } (A \times B) \cup (C \times D) &= (\emptyset \times \{1\}) \cup (\{2\} \times \{3\})\\
+											&= \emptyset \cup \{(2, 3)\}\\
+											&= \{(2, 3)\}\\
+\text{So in this case: } (A \cup C) &\times (B \cup D) \nsubseteq (A \times B) \cup (C \times D)\\
+\end{split}
+\end{equation}
+
+\item $(A \times C) \cup (B \times D) \subseteq (A \cup B) \times (C \cup D)$
+
+I will prove distributivity of $\times$ and $\cup$ to use in this and subsequent proofs.
+\begin{equation}\label{distributivity}
+\begin{split}
+A \times (B \cup C) =& \{s| \exists a \in A, \exists x \in B \cup C. s = (a, x)\}\\
+=& \{s| \exists a \in A, \exists x. (x \in B \cup x \in C). s = (a, x)\}\\
+=& \{(\exists a \in A \wedge \exists x \in B) \cup (\exists a \in A \wedge \exists x \in C). s = (a, x)\}\\
+=& \{(\exists a \in A \wedge \exists x \in B). s = (a, x)\} \cup \{(\exists a \in A \wedge \exists x \in C). s = (a, x)\}\\
+=& (A \times B) \cup (A \times C)\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+(A \times C) \cup (B \times D) &\subseteq (A \times C) \cup (A \times D) \cup (B \times C) \cup (B \times D)\\
+							   &\subseteq (A \times (C \cup D)) \cup (B \times (C \cup D))\\
+							   &\subseteq (A \cup B) \times (C \cup D)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item $A \times (B \cup C) \subseteq (A \times B) \cup (A \times C)$
+
+\begin{equation}
+\begin{split}
+A \times (B \cup C) &= (A \times B) \cup (A \times C) \Longrightarrow \text{ using (\ref{distributivity})} \\ 
+A \times (B \cup C) &\subseteq (A \times B) \cup (A \times C) \text{ using the antisymmetry of $\subseteq$}\\
+\end{split}
+\end{equation}
+
+\item $(A \times B) \cup (A \times D) \subseteq A \times (B \cup D)$
+
+\begin{equation}
+\begin{split}
+(A \times B) \cup (A \times D) &= A \times (B \cup D) \Longrightarrow \text{ using (\ref{distributivity})} \\ 
+(A \times B) \cup (A \times D) &\subseteq A \times (B \cup D) \text{ using the antisymmetry of $\subseteq$}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item For sets $A, B, C, D$, prove or disprove at least three of the following statements:
+
+\begin{enumerate}
+
+\item $(A \subseteq C \wedge B \subseteq D) \Longrightarrow A \uplus B \subseteq C \uplus D$
+
+\begin{equation}
+\begin{split}
+\text{Assume: } A \subseteq C &\wedge B \subseteq D \Longrightarrow\\
+a \in A \Longrightarrow a \in C &\wedge b \in B \Longrightarrow b \in D\\
+x \in (A \uplus B) &\Longleftrightarrow (\exists a \in A. x = (1, a)) \vee (\exists b \in B. x = (2, b)) \Longrightarrow\\
+x \in (A \uplus B) &\Longrightarrow (\exists a \in C. x = (1, a)) \vee (\exists b \in D. x = (2, b)) \Longleftrightarrow\\
+x \in (A \uplus B) &\Longrightarrow x \in (C \uplus D) \Longleftrightarrow\\
+A \uplus B &\subseteq C \uplus D\\
+\end{split}
+\end{equation}
+
+\item $(A \cup B) \uplus C \subseteq (A \uplus C) \cup (B \uplus C)$
+
+I will prove the distributivity of $\uplus$ and $\cup$.
+\begin{equation}\label{upluscup}
+\begin{split}
+x \in (A \cup B) \uplus C \Longleftrightarrow& (\exists a \in A \cup B. x = (1, a)) \vee (\exists c \in C. x = (2, c)) \Longleftrightarrow\\
+x \in (A \cup B) \uplus C \Longleftrightarrow& (\exists a \in A. x = (1, a)) \vee (\exists b \in B. x = (1, b)) \vee (\exists c \in C. x = (2, c)) \Longleftrightarrow\\
+x \in (A \cup B) \uplus C \Longleftrightarrow& ((\exists a \in A. x = (1, a)) \vee (\exists c \in C. x = (2, c))) \vee \\
+						 &((\exists b \in B. x = (1, b)) \vee (\exists c \in C. x = (2, c))) \Longleftrightarrow\\
+x \in (A \cup B) \uplus C \Longleftrightarrow& x \in (A \uplus C) \vee x \in (B \uplus C)\Longleftrightarrow\\
+x \in (A \cup B) \uplus C \Longleftrightarrow& x \in ((A \uplus C) \cup (B \uplus C)) \Longleftrightarrow\\
+(A \cup B) \uplus C =& (A \uplus C) \cup (B \uplus C)\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+(A \cup B) \uplus C &= (A \uplus C) \cup (B \uplus C) \text{ using (\ref{upluscup})}\Longleftrightarrow\\
+(A \cup B) \uplus C &\subseteq (A \uplus C) \cup (B \uplus C) \text{ using the antisymmetry of $\subseteq$}\\
+\end{split}
+\end{equation}
+
+\item $(A \uplus C) \cup (B \uplus C) \subseteq (A \cup B) \uplus C$
+
+\begin{equation}
+\begin{split}
+(A \uplus C) \cup (B \uplus C) &= (A \cup B) \uplus C \text{ using (\ref{upluscup})}\Longleftrightarrow\\
+(A \uplus C) \cup (B \uplus C) &\subseteq (A \cup B) \uplus C \text{ using the antisymmetry of $\subseteq$}\\
+\end{split}
+\end{equation}
+
+\item $(A \cap B) \uplus C \subseteq (A \uplus C) \cap (B \uplus C)$
+
+I will prove the distributivity of $\uplus$ and $\cap$.
+\begin{equation}\label{upluscap}
+\begin{split}
+x \in (A \cap B) \uplus C \Longleftrightarrow& (\exists a \in A \cap B. x = (1, a)) \vee (\exists c \in C. x = (2, c)) \Longleftrightarrow\\
+x \in (A \cap B) \uplus C \Longleftrightarrow& ((\exists a \in A. x = (1, a)) \wedge (\exists b \in B. x = (1, b))) \vee (\exists c \in C. x = (2, c)) \Longleftrightarrow\\
+x \in (A \cap B) \uplus C \Longleftrightarrow& ((\exists a \in A. x = (1, a)) \vee (\exists c \in C. x = (2, c))) \wedge \\
+											 & ((\exists b \in B. x = (1, b)) \vee (\exists c \in C. x = (2, c))) \Longleftrightarrow\\
+x \in (A \cap B) \uplus C \Longleftrightarrow& x \in (A \uplus C) \cap (B \uplus C) \Longleftrightarrow\\
+(A \cap B) \uplus C &= (A \uplus C) \cap (B \uplus C)\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+(A \cap B) \uplus C &= (A \uplus C) \cap (B \uplus C) \text{ using (\ref{upluscap})} \Longleftrightarrow\\
+(A \cap B) \uplus C &\subseteq (A \uplus C) \cap (B \uplus C) \text{ using the antisymmetry of $\subseteq$}\\
+\end{split}
+\end{equation}
+
+\item $(A \uplus C) \cap (B \uplus C) \subseteq (A \cap B) \uplus C$
+
+\begin{equation}
+\begin{split}
+(A \uplus C) \cap (B \uplus C) &= (A \cap B) \uplus C \text{ using (\ref{upluscap})} \Longleftrightarrow\\
+(A \uplus C) \cap (B \uplus C) &\subseteq (A \cap B) \uplus C \text{ using the antisymmetry of $\subseteq$}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Prove the following properties of the big unions and intersections of a family of sets $\mathcal{F}\subseteq \mathcal{P}(A)$:
+
+\begin{enumerate}
+
+\item $\forall U \subseteq A. (\forall X \in \mathcal{F}. X \subseteq U) \Longleftrightarrow \bigcup \mathcal{F}\subseteq U$
+
+\begin{equation}\label{q6part1}
+\begin{split}
+\forall U \subseteq A.& \bigcup \mathcal{F} \subseteq U \Longleftrightarrow\\
+\forall U \subseteq A.& \nexists X \in \mathcal{F}. X \nsubseteq U \Longleftrightarrow\\
+\forall U \subseteq A.& \forall X \in \mathcal{F}. X \subseteq U\\
+\end{split}
+\end{equation}
+
+\item $\forall L \subseteq A. (\forall X \in \mathcal{F}. L \subseteq X) \Longleftrightarrow L \subseteq \bigcap \mathcal{F}$
+
+\begin{equation}\label{q6part2}
+\begin{split}
+\forall U \subseteq A.& L \subseteq \mathcal{F} \Longleftrightarrow\\
+\forall U \subseteq A.& \nexists X \in \mathcal{F}. L \nsubseteq X \Longleftrightarrow\\
+\forall U \subseteq A.& \forall X \in \mathcal{F}. L \subseteq X\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Let $A$ be a set.
+
+\begin{enumerate}
+
+\item For a family $\mathcal{F} \subseteq \mathcal{P}(A)$, let $\mathcal{U} \triangleq \{ U \subseteq A| \forall S \in \mathcal{F}. S \subseteq U\}$. 
+Prove that $\bigcup\mathcal{F} = \bigcap\mathcal{U}$.
+
+\begin{equation}
+\begin{split}
+\mathcal{U} &\triangleq \{ U \subseteq A| \forall S \in \mathcal{F}. S \subseteq U\} \Longleftrightarrow\\
+\mathcal{U} &= \{ U \subseteq A| \bigcup \mathcal{F} \subseteq U\} \text{ using (\ref{q6part1})}\Longleftrightarrow\\
+\bigcup \mathcal{F} &\subseteq \bigcup \mathcal{F} \Longrightarrow \bigcup \mathcal{F} \in \mathcal{U} \Longleftrightarrow\\
+\forall U \in \mathcal{U}. &\bigcup \mathcal{F} \subseteq U \wedge \mathcal{F} \in U \Longleftrightarrow\\
+\bigcap \mathcal{U} &= \bigcup \mathcal{F}\\
+\end{split}
+\end{equation}
+
+\item Analogously, define the family $\mathcal{L}\subseteq \mathcal{P}(A)$ such that $\bigcap \mathcal{F} = \bigcup \mathcal{L}$. Also prove this statement.
+
+\begin{equation*}
+\mathcal{L} \triangleq \{ L \subseteq A | \forall S \in \mathcal{F} L \subseteq S \}
+\end{equation*}
+
+\begin{equation}
+\begin{split}
+\mathcal{L} &\triangleq \{ L \subseteq A | \forall S \in \mathcal{F} L \subseteq S \} \Longleftrightarrow\\
+\mathcal{L} &= \{ L \subseteq A | L \subseteq \bigcup \mathcal{F} \} \text{ using (\ref{q6part2})} \Longleftrightarrow\\
+\bigcup \mathcal{F} \in \mathcal{L} &\wedge \forall L \in \mathcal{L}: L \subseteq \mathcal{F} \Longleftrightarrow\\
+\bigcup \mathcal{L} &= \bigcap \mathcal{F}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{5.3 Optional advanced exercises}
+
+\begin{enumerate}
+
+\item Prove that for all families of sets $\mathcal{F}_1$ and $\mathcal{F}_2$
+
+\begin{equation}
+(\bigcup\mathcal{F}_1)\cup(\bigcup\mathcal{F}_2) = \bigcup(\mathcal{F}_1\cup\mathcal{F}_2)\\
+\end{equation}
+
+\begin{equation}
+\begin{split}
+(\bigcup\mathcal{F}_1) \cup (\bigcup\mathcal{F}_2) &= \{x| \exists S_1 \in \mathcal{F}_1. x \in S_1\} \cup \{x| \exists S_2 \in \mathcal{F}_2. x \in S_2\} \Longleftrightarrow\\
+(\bigcup\mathcal{F}_1) \cup (\bigcup\mathcal{F}_2) &= \{x| \exists S_1 \in \mathcal{F}_1 \vee \exists S_2 \in \mathcal{F}_2. x \in S_1 \vee x \in S_2\}\Longleftrightarrow\\
+(\bigcup\mathcal{F}_1) \cup (\bigcup\mathcal{F}_2) &= \{x| \exists S \in \mathcal{F}_1 \cup \mathcal{F}_2\. x \in S\} \Longleftrightarrow\\
+(\bigcup\mathcal{F}_1) \cup (\bigcup\mathcal{F}_2) &= \bigcup(\mathcal{F}_1 \cup \mathcal{F}_2)\\
+\end{split}
+\end{equation}
+
+State and prove the analogous property for intersections of non-empty families of sets.
+
+\begin{equation*}
+(\bigcap\mathcal{F}_1) \cap (\bigcap\mathcal{F}_2) = \bigcap(\mathcal{F}_1 \cap \mathcal{F}_2)
+\end{equation*}
+
+\begin{equation}
+\begin{split}
+(\bigcap\mathcal{F}_1) \cap (\bigcap\mathcal{F}_2) &= \{x| \forall S_1 \in \mathcal{F}_1. x \in S_1\} \cap \{x | \forall S_2 \in \mathcal{F}_2. x \in S_2\}\Longleftrightarrow\\
+(\bigcap\mathcal{F}_1) \cap (\bigcap\mathcal{F}_2) &= \{x| \forall S_1 \in \mathcal{F}_1, \forall S_2 \in \mathcal{F}_2. x \in S_1 \wedge x \in S_2\}\Longleftrightarrow\\
+(\bigcap\mathcal{F}_1) \cap (\bigcap\mathcal{F}_2) &= \{x| \forall S \in (\mathcal{F}_1 \cap \mathcal{F}_2). x \in S\}\Longleftrightarrow\\
+(\bigcap\mathcal{F}_1) \cap (\bigcap\mathcal{F}_2) &= \bigcap(\mathcal{F}_1 \cap \mathcal{F}_2)\\
+\end{split}
+\end{equation}
+
+\item For a set $U$, prove that $(\mathcal{P}(U), \subseteq, \cup, \cap, U, \emptyset, (\cdot)^\mathsf{c})$ is a Boolean algebra.
+
+
+
+\end{enumerate}
+
+\end{document}

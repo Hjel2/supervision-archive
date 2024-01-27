@@ -1,0 +1,530 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/includes.tex}
+\input{../../template/template.tex}
+
+\usepackage{oz}
+
+\begin{document}
+
+\section*{6 On relations}
+
+\subsection*{6.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Let $A = \{1, 2, 3, 4\}$, $B = \{a, b, c, d\}$ and $C = \{x, y, z\}$.\\
+Let $R = \{(1, a), (2, d), (3, a), (3, b), (3, d)\}: A \pfun B$\\
+and $S = \{(b, x), (b, y), (c, y), (d, z)\}: B \pfun C$.
+
+Draw the internal diagrams of the relations. What is the composition $S \circ R: A \pfun C$?
+
+
+
+\item Prove that relational composition is associative and has the identity relation as the neutral element.
+
+Let $f: A \pfun B$, $g: B \pfun C$, $h: C \pfun D$.
+
+To prove the associativity of relational composition we must prove for arbitrary sets $f$, $g$, $h$ that 
+$\forall a \in A, d \in D: a (h \circ (g \circ f)) d \Longleftrightarrow  a ((h \circ g) \circ f) d$.
+
+\begin{equation}
+\begin{split}
+&a (h \circ (g \circ f)) d \Longleftrightarrow\\
+\exists c \in C: &a (g \circ f) c \wedge c h d \Longleftrightarrow\\
+\exists b \in B, c \in C: &a f b \wedge b g c \wedge c h d \Longleftrightarrow\\
+\exists b \in B: & a f b \wedge b (h \circ g) d \Longleftrightarrow\\
+&a ((h \circ g) \circ f) d \\
+\end{split}
+\end{equation}
+
+So relational composition is associative as required.
+
+\item For a relation $R: A \pfun B$, let its opposite or dual relation $R^{\text{op}}: B \pfun A$ be defined by:
+\begin{equation}
+b R^{\text{op}} a \Longleftrightarrow a R b
+\end{equation}
+
+For $R, S: A \pfun B$ and $T: B \pfun C$, prove that:
+
+\begin{enumerate}
+
+\item $R \subseteq S \Longrightarrow R^{\text{op}} \subseteq S^{\text{op}}$
+
+\begin{equation}
+\begin{split}
+&\forall a \in A, b \in B:\\
+&b R^{\text{op}} a \Longleftrightarrow\\
+&a R b \Longrightarrow\\
+&a S b \text{ since } R \subseteq S \Longleftrightarrow\\
+&b S^{\text{op}} a\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+b R^{\text{op}} a &\Longrightarrow b S^{\text{op}} a \Longrightarrow \\
+R^{\text{op}} &\subseteq S^{\text{op}} \text{ as required}\\
+\end{split}
+\end{equation}
+
+\item $(R \cap S)^{\text{op}} = R^{\text{op}} \cap S^{\text{op}}$
+
+\begin{center}
+RHS:
+\end{center}
+\begin{equation}\label{q3pb1}
+\begin{split}
+R &\subseteq S \Longleftrightarrow \\
+R \cap S &= R \Longleftrightarrow \\
+(R \cap S)^{\text{op}} &= R^{\text{op}} \\
+\end{split}
+\end{equation}
+\begin{center}
+LHS:
+\end{center}
+\begin{equation}\label{q3pb2}
+\begin{split}
+R^{\text{op}} &\subseteq S^{\text{op}} \Longleftrightarrow \\
+R^{\text{op}} \cap S^{\text{op}} &= R^{\text{op}} \\
+\end{split}
+\end{equation}
+Combining (\ref{q3pb1}) and (\ref{q3pb2}) gives:
+\begin{equation}
+(R \cap S)^{\text{op}} = R^{\text{op}} = (R^{\text{op}} \cap S^{\text{op}}) \Longrightarrow \\
+(R \cap S)^{\text{op}} = (R^{\text{op}} \cap S^{\text{op}}) \text{ as required}\\
+\end{equation}
+
+\item $(R \cup S)^{\text{op}} = R^{\text{op}} \cup S^{\text{op}}$
+
+\begin{center}
+RHS:
+\end{center}
+\begin{equation}\label{q3pcp1}
+\begin{split}
+R &\subseteq S \Longleftrightarrow \\
+R \cup S &= S \Longleftrightarrow \\
+(R \cup S)^{\text{op}} &= S^{\text{op}} \\
+\end{split}
+\end{equation}
+\begin{center}
+LHS:
+\end{center}
+\begin{equation}\label{q3pcp2}
+\begin{split}
+R^{\text{op}} \subseteq S^{\text{op}} \Longleftrightarrow \\
+R^{\text{op}} \cup S^{\text{op}} = S^{\text{op}} \\
+\end{split}
+\end{equation}
+Combining (\ref{q3pcp1}) and (\ref{q3pcp2}) gives:
+\begin{equation}
+(R \cup S)^{\text{op}} = S^{\text{op}} = R^{\text{op}} \cup S^{\text{op}} \Longrightarrow \\
+(R \cup S)^{\text{op}} = R^{\text{op}} \cup S^{\text{op}}\\
+\end{equation}
+
+\item $(T \circ S)^{\text{op}} = S^{\text{op}} \circ T^{\text{op}}$
+
+\begin{center}
+LHS:
+\end{center}
+\begin{equation}
+\begin{split}
+\forall a \in A&, c \in C:
+c (S \circ T)^{\text{op}} a \Longleftrightarrow \\
+a (S \circ T) c \Longleftrightarrow \\
+\exists b \in B: a T b \wedge b S c \Longleftrightarrow \\
+\exists b \in B: b T^{\text{op}} a \wedge c S^{\text{op}} b \Longleftrightarrow \\
+\exists b \in B: c S^{\text{op}} b \wedge b T^{\text{op}} a \Longleftrightarrow \\
+c (S^{\text{op}} \circ T^{\text{op}} a \\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+c (S \circ T)^{\text{op}} a &\Longleftrightarrow c (S^{\text{op}} \circ T^{\text{op}} a \Longleftrightarrow \\
+c (S \circ T)^{\text{op}} a &= c (S^{\text{op}} \circ T^{\text{op}} a \text{ as required} \\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{6.2 Core exercises}
+
+\begin{enumerate}
+
+\item Let $R, R' \subseteq A \times B$ and $S, S' \subseteq B \times C$ be two pairs of relations 
+and assume $R \subseteq R'$ and $S \subseteq S'$.\\
+Prove that $S \circ R \subseteq S' \circ R'$.
+
+\begin{equation}\label{statementofsubsets}
+\begin{split}
+R &\subseteq R' \Longrightarrow\\
+\forall a \in A, b \in B: a R b &\Longrightarrow a R' b\\
+S &\subseteq S' \Longrightarrow\\
+\forall b \in B, c \in C: b S c &\Longrightarrow b S' c\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\forall a \in R&, c \in S:
+a (S &\circ R) c \Longleftrightarrow \\
+\exists b \in B: &a R b \wedge b S c \Longrightarrow \\
+\exists b \in B: &a R' b \wedge b S' c \text{ using (\ref{statementofsubsets})} \Longleftrightarrow \\
+a (S' &\circ R' c) \text{ as required}\\
+\end{split}
+\end{equation}
+
+\item Let $\mathcal{F} \subseteq \mathcal{P}(A \times B)$ and $\mathcal{G} \subseteq \mathcal{P}(B \times C)$ be two 
+collections of relations from $A$ to $B$ and from $B$ to $C$, respectively Prove that
+\begin{equation}
+\left(\bigcup \mathcal{G}\right)\circ\left(\bigcup \mathcal{F}\right) = \bigcup \{S \circ R | R \in \mathcal{F}, S \in \mathcal{G}\}: A \pfun C
+\end{equation}
+
+\begin{equation}\label{part62q2p1}
+\begin{split}
+\forall a \in A&, c \in C: \\
+a (\left(\bigcup \mathcal{G} \right) &\circ \left(\bigcup \mathcal{F} \right))c \Longleftrightarrow \\
+\exists b \in B: \exists R \in \mathcal{F}:& a R b \wedge \exists S \in \mathcal{G}: b S c \Longrightarrow \\
+\left(\left(\bigcup \mathcal{G}\right) \circ \left(\bigcup \mathcal{F}\right)\right) &\subseteq \bigcup\{S \circ R | R \in \mathcal{F}, S \in \mathcal{G}\} \Longleftrightarrow \\
+\left(\bigcup \mathcal{G}\right) \circ \left(\bigcup \mathcal{F}\right) &\subseteq \bigcup\{S \circ R | R \in \mathcal{F}, S \in \mathcal{G}\} \\
+\end{split}
+\end{equation}
+\begin{equation}\label{part62q2p2}
+\begin{split}
+\forall a \in A&, c \in C: \\
+a \bigcup\{S \circ R &| R \in \mathcal{F}, S \in \mathcal{G}\} c \Longleftrightarrow \\
+\exists R \in \mathcal{F}, S \in \mathcal{G}:& a (S \circ R) b \Longleftrightarrow \\
+a (\left(\bigcup \mathcal{G}\right) &\circ \left(\bigcup \mathcal{F}\right) ) b \Longleftrightarrow \\
+\bigcup \{ S \circ R | R \in \mathcal{F}, S \in \mathcal{G}\} &\subseteq \left (\bigcup \mathcal{G} \right ) \circ \left ( \bigcup \mathcal{F} \right ) \\
+\end{split}
+\end{equation}
+Combining (\ref{part62q2p1}) and (\ref{part62q2p2}) using the antisymmetry of $\subseteq$ gives:
+\begin{equation}
+\bigcup\{S \circ R | R \in \mathcal{F}, S \in \mathcal{G}\} = \left(\bigcup \mathcal{G}\right) \circ \left(\bigcup \mathcal{F}\right) \text{ as required}\\
+\end{equation}
+
+Recall that the notation $\{ S \circ R: A \pfun C | R \in \mathcal{F}, S \in \mathcal{G}\}$ is a common syntactic sugar 
+for the formal definition $\{T \in \mathcal{P}(A \times C)| \exists R \in \mathcal{F}: \exists S \in \mathcal{G}: T = S \circ R\}$. Hence,
+\begin{equation}
+T \in \{S \circ R \in A \pfun C | R \in \mathcal{F}, S \in \mathcal{G}\} \Longleftrightarrow \exists R \in \mathcal{F}: \exists S \in \mathcal{G}: T = S \circ R
+\end{equation}
+What happens in the case of big intersections?
+
+
+
+\item Suppose $R$ is a relation on a set $A$. Prove that
+
+\begin{enumerate}
+
+\item $R$ is reflexive iff id$_A \subseteq R$
+
+$R$ is reflexive implies that every element in $A$ is related to itself under $R$.
+
+Assume $R$ is reflexive:
+\begin{equation}
+\begin{split}
+\forall a \in A. &a R a \Longleftrightarrow \\
+\text{ id}_A &\subseteq R \\
+\end{split}
+\end{equation}
+
+\item $R$ is symmetric iff $R = R^{\text{op}}$.
+
+For $R$ to be symmetric, $\forall a_1, a_2 \in A, a_1 R a_2 \Longleftrightarrow a_2 R a_1$.
+
+Assume $R$ is symmetric:
+\begin{equation}
+\begin{split}
+\forall a, b \in A.& a R b \Longleftrightarrow b R a \Longleftrightarrow \\
+\forall a, b \in A.& b R^{\text{op}} a \Longleftrightarrow a R^{\text{op}} b \Longleftrightarrow \\
+\forall a, b \in A.& a R^{\text{op}} b \Longleftrightarrow b R^{\text{op}} a \Longleftrightarrow \\
+R &= R^{\text{op}} \\
+\end{split}
+\end{equation}
+
+\item $R$ is transitive iff $R \circ R \subseteq R$
+
+Assume that $R \circ R \subseteq R$.
+\begin{equation}
+\begin{split}
+R \circ R &\subseteq R \Longleftrightarrow \\
+\forall a, c \in A.& a (R \circ R) c \Longrightarrow a R c \Longleftrightarrow \\
+\forall a, b, c \in A. &a R b \wedge b R c \Longrightarrow a R c \\
+\end{split}
+\end{equation}
+This is the definition of transistivity and so we are done.
+
+\item $R$ is antisymmetric iff $R \cap R^{\text{op}} \subseteq \text{ id}_A$.
+
+$R$ is antisymmetric if $\forall a \in A. a R a$.
+
+Assume $R \cap R^{\text{op}} \subseteq \text{ id}_A$.
+\begin{equation}
+\begin{split}
+R \cap R^{\text{op}} &\subseteq \text{ id}_a \Longleftrightarrow \\
+\forall a_1, a_2 \in A. &a_1 R a_2 \wedge a_1 R^{\text{op}} a_2 \Longrightarrow a_1 = a_2 \Longleftrightarrow \\
+\forall a_1, a_2 \in A. &a_1 R a_2 \wedge a_2 R a_2 \Longrightarrow a_1 = a_2 \\
+\end{split}
+\end{equation}
+Which is the definition of antisymmetric and so we are done.
+
+\end{enumerate}
+
+\item Let $R$ be an arbitrary relation on a set $A$, for example, representing an undirected graph.
+We are interested in constructing the smallest transitive relation (graph) containing $R$, called the 
+transitive closure of $R$.
+
+\begin{enumerate}
+
+\item We define the family of relations which are transitive supersets of $R$:
+\begin{equation}
+\mathcal{T}_R \triangleq \{Q: A \pfun A | R \subseteq Q \text{ and } Q \text{ is transitive}\}
+\end{equation}
+$R$ is not necessarily going to be an element of this family, as it might not be transitive.
+However $R$ is a lower bound for $\mathcal{T}_R$, as it is a subset of every element of the family.
+
+Prove that the set $\bigcap \mathcal{T}_R$ is the transitive closure for $R$.
+
+
+
+\item $\bigcap \mathcal{T}_R$ is the intersection of an infinite number of relations so it's difficult 
+to compute the transitive closure this way. A better approach is to start with $R$, and keep adding the 
+missing connections until we get a transitive graph. This can be done by repeatedly composing $R$ with 
+itself: after $n$ compositions, all paths of length $n$ in the graph represented by $R$ will have a 
+transitive connection between their endpoints.
+
+Prove that the (at least once) iterated composition $R^{\circ +} \triangleq R \circ R^{\circ}*$ is the 
+transitive closure for $R$, i.e. it coincides with the greatest lower bound of $\mathcal{T}_R: R^{\circ +} = \bigcap \mathcal{T}_R$.
+
+Hint: show that $R^{\circ +}$ is both an element and a lower bound of $\mathcal{T}_R$.
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\section*{7 On partial functions}
+
+\subsection*{7.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Let $A_2 = \{1, 2\}$ and $A_3 = \{a, b, c\}$. List the element of the sets PFun$(A_i, A_j)$ for 
+$i, j \in \{2, 3\}$.
+
+Hint: there may be quite a few, so you can think of ways of characterising all of them without giving 
+an explicit listing.
+
+\begin{equation}
+\{\{(1, a), (2, b)\} \vee \{(1, a)\} \vee \{(2, b)\} \vee \emptyset | a, b \in A_3\}
+\end{equation}
+
+\item Prove that a relation $R: A \pfun B$ is a partial function iff $R \circ R^{\text{op}} \subseteq \text{ id}_B$.
+
+$(\Longrightarrow)$
+\begin{equation}
+\begin{split}
+R \circ R^{\text{op}} &\subseteq \text{ id}_B \Longleftrightarrow \\
+\forall b_1, b_2 \in B. b_1 (R \circ R^{\text{op}}) b_2 \Longrightarrow b_1 = b_2 \Longrightarrow \\
+\forall b_1, b_2 \in B. \exists a \in A. b_1 R^{\text{op}} a \wedge a R b_2 \Longrightarrow b_1 = b_2 \Longleftrightarrow \\
+\forall b_1, b_2 \in B. \exists a \in A. a R b_1 \wedge a R b_2 \Longrightarrow b_1 = b_2 \\
+\end{split}
+\end{equation}
+This implies that $R$ is a partial function by definition.
+
+$(\Longleftarrow)$
+Assume $R$ is a partial function and so each $a$ in $R$ is related to at most one $b$.
+This means that by assumption $a R b_1 \wedge a R b_2 \Longrightarrow b_1 = b_2$.
+\begin{equation}
+\begin{split}
+b_1 (R &\circ R^{\text{op}}) b_2 \Longleftrightarrow \\
+\exists a \in A. b_1 R^{\text{op}} a &\wedge a R b_2 \Longleftrightarrow \\
+\exists a \in A. a R^{\text{op}} b_1 &\wedge a R b_2 \Longleftrightarrow \\
+b_1 &= b_2 \text{ since $a$ is related to at most one $b \in B$}\Longleftrightarrow \\
+(R \circ R^{\text{op}}) &\subseteq \text{ id}_B \text{ as required} \\
+\end{split}
+\end{equation}
+
+\item Prove that the identity relation is a partial function, and that the composition of partial functions 
+is a partial function.
+
+The definition of a partial funtion $R: A \pfun B$ is that each $a \in A$ is related to at most one $b \in B$. 
+This means that $\forall a \in A. \forall b_1, b_2 \in B. a R b_1 \wedge a R b_2 \Longrightarrow b_1 = b_2$.
+
+For the identity function, which has domain $A$ and $A$, by definition $\forall a \in A. a \text{ id}_A a 
+\Longrightarrow a = a$. 
+
+Assume $a \text{ id}_A a_1 \wedge a \text{ id}_A a_2$
+\begin{equation}
+\begin{split}
+\forall a \in A. &\forall a_1, a_2 \in A. a R a_1 \wedge a R a_2 \Longleftrightarrow \\
+\forall a \in A. &\forall a_1, a_2 \in A. a R a_1 \wedge a R a_2 \Longleftrightarrow \\
+a = a_1 &\wedge a = a_2 \Longleftrightarrow \\
+a_1 &= a_2 \text{ as required} \\
+\end{split}
+\end{equation}
+
+To prove that the composition of partial functions is a partial function we will start with functions 
+$R: A \pfun B$ and $S: B \pfun C$, will compose them and prove that any $a \in A$ is related to only 
+one $c \in C$ under $S \circ R$.
+
+\begin{equation}
+\begin{split}
+\forall a \in A. \forall b_1, b_2 \in B. a R b_1 \wedge a R b_2 \Longrightarrow b_1 = b_2 \wedge \\
+\forall b \in B. \forall c_1, c_2 \in C. b S c_1 \wedge b S c_2 \Longrightarrow c_1 = c_2 \Longleftrightarrow \\
+\forall a \in A. \forall c_1, c_2 \in C. a (S \circ R) c_1 \wedge a (S \circ R) c_2 \Longrightarrow c_1 = c_2 \\
+\end{split}
+\end{equation}
+This is the expression for a partial function -- and so we can conclude that $S \circ R$ is a partial function. 
+Since both $R$ and $S$ were arbitrary we can conclude that for all partial functions, the composition of two 
+partial functions is a partial function.
+
+\end{enumerate}
+
+\subsection*{7.2 Core exercises}
+
+\begin{enumerate}
+
+\item Show that (PFun$(A, B), \subseteq$) is a partial order. What is its least element, if it exists?
+
+
+
+\item Let $\mathcal{F} \subseteq \text{PFun}(A, B)$ be a non-empty collection of partial functions from $A$ to $B$.
+
+\begin{enumerate}
+
+\item Show that $\bigcap \mathcal{F}$ is a partial function.
+
+
+
+\item Show that $\bigcup \mathcal{F}$ need not be a partial function by defining two partial functions $f, g: A \rightharpoonup B$ 
+such that $f \cup g: A \pfun B$ is a non-functional relation.
+
+
+
+\item Let $h: A \rightharpoonup B$ be a partial function. Show that if every element of $\mathcal{F}$ is below $h$ then $\bigcup \mathcal{F}$ is 
+a partial function.
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\section*{8 On functions}
+
+\subsection*{8.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Let $A_2 = \{1, 2\}$ and $A_3 = \{a, b, c\}$. List the elements of the sets 
+Fun$(A_i, A_j)$ for $i, j \in \{2, 3\}$.
+
+\{\{(1, a), (2, b)\}, \{(1, a), (2, c)\}, \{(1, b), (2, a)\}, \{(1, b), (2, c)\}, \{(1, c), (2, a)\}, \{(1, c), (2, b)\}\}
+
+\item Prove that the identity partial function is a function, and the composition of functions 
+yields a function
+
+
+
+\item Prove or disprove that (Fun$(A, B), \subseteq$) is a partial order.
+
+
+
+\item Find endofunctions $f, g: A \rightarrow A$ such that $f \circ g \neq g \circ f$.
+
+
+
+\end{enumerate}
+
+\subsection*{8.2 Core exercises}
+
+\begin{enumerate}
+
+\item A relation $R: A \pfun B$ is said to be total if $\forall a \in A, \exists  \in B: a R b$. Prove 
+that this is equivalent to id$_A \subseteq R^{\text{op}} \circ R$. Conclude that a relation $R: A \pfun B$ 
+is a function iff $R \circ R^{text{op}} \subseteq \text{ id}_B$ and id$_A \subseteq R^{\text{op}} \circ R$.
+
+
+
+\item Let $\chi: \mathcal{P}(U) \rightarrow (U \Rightarrow [2])$ be the function mapping subsets 
+$S \subseteq U$ to their characteristi functions $\chi_S: U \rightarrow [2]$.
+
+\begin{enumerate}
+
+\item Prove that for all $x \in U$,
+
+\begin{itemize}
+
+\item $\chi_{A \cup B}(x) = (\chi_A(x) \vee \chi_B(x)) = \text{max}(\chi_A(x), \chi_B(x))$
+
+\item $\chi_{A \cap B}(x) = (\chi_A(x) \wedge \chi_B(x)) = \text{min}(\chi_A(x), \chi_B(x))$
+
+\item $\chi_{A^{\mathsf{c}}}(x) = ¬(\chi_A(x)) = (1 - \chi_A(x))$
+
+\end{itemize}
+
+\item For what construction $A ? B$ on sets $A$ and $B$ does it hold that 
+\begin{equation}
+\chi_{A ? B}(x) = (\chi_A(x) \oplus \chi_B(x)) = (\chi_A(x) +_2 \chi_B(x))
+\end{equation}
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{8.3 Optional advanced exercise}
+
+Consider a set $A$ together with an element $a \in A$ and an endofunction $f: A \rightarrow A$.
+
+Say that a relation $R: \mathbb{N} \pfun A$ is $(a, f)$-closed whenever
+\begin{equation}
+R(0, a) \text{ and } \forall n \in \mathbb{N}, x \in A: R(n, x) \Rightarrow R(n + 1, f(x))
+\end{equation}
+Define the relation $F: \mathbb{N} \pfun A$ as
+\begin{equation}
+F \triangleq \bigcap\{R: \mathbb{N} \pfun A | R \text{ is } (a, f)\text{-closed}\}
+\end{equation}
+
+\begin{enumerate}
+
+\item Prove that $F$ is $(a, f$-closed.
+
+
+
+\item Prove that $F$ is total, that is: $\forall n \in \mathbb{N}: \exists y \in A: F(n, y)$.
+
+
+
+\item Prove that $F$ is a function $\mathbb{N} \rightarrow A$, that is: $\forall n \in \mathbb{N} \exists ! y \in A: F(n, y)$.
+
+Hint: Proceed by induction. Observe that, in view of the previous item, to show that $\exists !y \in A: F(k, y)$ it suffices to 
+exibit an $(a, f)$-closed relation $R_k$ such that $\exists ! y \in A: R_k(k, y)$. (Why?)
+
+For instance, as the relation $R_0 = \{(m, y) \in \mathbb{N} \times A | m = 0 \Rightarrow y = a\}$ is $(a, f)$-closed one 
+has that $F(0, y) \Rightarrow R_0(0, y) \Rightarrow y = a$.
+
+
+
+\item Show that if $h$ is a function $\mathbb{N} \rightarrow A$ with $h(0) = a$ and $\forall n \in \mathbb{N}: h(n + 1) = f(h(n))$ then 
+$h = F$.
+
+Thus, for every set $A$ together with an element $a \in A$ and an endofunction $f: A \rightarrow A$ there exists a unique function 
+$F: \mathbb{N} \rightarrow A$, typically said to be inductively defined, satisfying the recurrence relation
+\begin{equation}
+F(n) = 
+\begin{cases}
+a & \text{for } n = 0\\
+f(F(n - 1)) & \text{for } n \geq 1\\
+\end{cases}
+\end{equation}
+
+\end{enumerate}
+
+\end{document}

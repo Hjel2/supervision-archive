@@ -1,0 +1,214 @@
+\input{../../template/prefs/jp738.tex}
+\input{../../template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./infofile.tex}
+\input{../../template/includes.tex}
+\input{../../template/template.tex}
+
+\begin{document}
+
+\section*{9 On bijections}
+
+\subsection*{9.1 Basic exercises}
+
+\begin{enumerate}
+
+\item 
+
+\begin{enumerate}
+
+\item Define a function that has (i) none, (ii) exactly one, and (iii) more than one retraction.
+
+\begin{enumerate}[label=(\roman*)]
+
+\item
+
+
+
+\item
+
+
+
+\item
+
+
+
+\end{enumerate}
+
+\item Define a function that has (i) none, (ii) exactly one, and (iii) more than one section.
+
+\begin{enumerate}[label=(\roman*)]
+
+\item 
+
+
+
+\item
+
+
+
+\item
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\item Let $n$ be an integer
+
+\begin{enumerate}
+
+\item How many sections are there for the absolute-value map $x \mapsto |x|: [-n \dots n] \rightarrow [0 \dots n]$?
+
+
+
+\item How many retractions are there for the exponential map $x \mapsto 2^x: [0 \dots n] \rightarrow [0 \dots 2^n]$?
+
+
+
+\end{enumerate}
+
+\item Give an example of two sets $A$ and $B$ and a function $f: A \rightarrow B$ such that $f$ has a retraction 
+but no section. Explain how you know that $f$ has these properties.
+
+
+
+\item Prove that the identity function is a bijection and that the composition of bijections is a bijection.
+
+
+
+\item For $F: A \rightarrow B$, prove that if there are $g, h: B \rightarrow A$ such that $g \circ f = \text{id}_A$ and 
+$f \circ h = \text{id}_B$ then $g = h$. Conclude as a corollary that, whenever it exists, the inverse of a function is unique.
+
+
+
+\end{enumerate}
+
+\subsection*{9.2 Core exercises}
+
+\begin{enumerate}
+
+\item We say that two functions $s: A \rightarrow B$ and $r: B \rightarrow A$ are a section-retraction pair whenever 
+$r \circ s = \text{id}_A$; and that a function $e: B \rightarrow B$ is an idempotent whenever $e \circ e = e$. This question 
+demonstrates that section-retraction pairs and idempotents are closely connected: any section-retraction pair 
+gives rise to an idempotent function, and any idempotent function can be split into a section-retraction pair.
+
+\begin{enumerate}
+
+\item Let $f: C \rightarrow D$ and $g: D \rightarrow C$ be functions such that $f \circ g \circ f = f$.
+
+\begin{enumerate}[label=(\roman*)]
+
+\item Can you conclude that $f \circ g$ is idempotent? What about $g \circ f$? Justify your answers.
+
+
+
+\item Define a map $g'$ using $f$ and $g$ that satisfies both
+\begin{equation}
+f \circ g' \circ f = f \text{ and } g' \circ f' \circ g' = g'
+\end{equation}
+
+
+
+\item Show that if $s: A \rightarrow B$ and $r: B \rightarrow A$ are a section-retraction pair then 
+the composite $s \circ r: B \rightarrow B$ is idempotent.
+
+
+
+\item Show that for every idempotent $e: B \rightarrow B$ there exists a set $A$ (called a retract of $B$) and 
+a section-retraction pair $s: A \rightarrow B$ and $r: B \rightarrow A$ such that $s \circ r = e$.
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\section*{10 On equivalence relations}
+
+\subsection*{10.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Prove that the isomorphic relation $\cong$ between sets is an equivalence relation.
+
+
+
+\item Prove that the identity relation id$_A$ on a set $A$ is an equivalence relation, and that $A/\text{id}_A \cong A$.
+
+
+
+\item Show that, for a positive integer $m$, the relation $\equiv_m on \mathbb{Z}$ given by 
+\begin{equation}
+x \equiv_m y \Longleftrightarrow x \equiv y (\text{mod } m)
+\end{equation}
+is an equivalence relation. What are the equivalence classes of this relation?
+
+
+
+\item Show that the relation $\equiv$ on $\mathbb{Z} \times \mathbb{Z}^+$ given by
+\begin{equation}
+(a, b) \equiv (x, y) \Longleftrightarrow a \cdot y = x \cdot b
+\end{equation}
+is an equivalence relation. What are the equivalence classes of this relation?
+
+
+
+\end{enumerate}
+
+\subsection*{10.2 Core exercises}
+
+\begin{enumerate}
+
+\item Let $E_1$ and $E_2$ be two equivalence relations on a set $A$. Either prove or disprove 
+the following statements
+
+\begin{enumerate}
+
+\item $E_1 \cup E_2$ is an equivalence relation on $A$.
+
+
+
+\item $E_1 \cap E_2$ is an equivalence relation on $A$.
+
+
+
+\end{enumerate}
+
+\item For an equivalence relation $E$ on a set $A$, show that $[a_1]_E = [a_2]_E$ iff $a_1 E a_2$, 
+where 
+\begin{equation}
+[a]_E = \{x \in A | x E a\}.
+\end{equation}
+
+
+
+\item For a function $f: A \rightarrow B$ define a relation $\equiv_f$ on $A$ by the rule: 
+for all $a, a' \in A$,
+\begin{equation}
+a \equiv_f a' \Longleftrightarrow f(a) = f(a')
+\end{equation}
+
+\item Show that for every function $f: A \rightarrow B$, the relation $\equiv_f$ is an equivalence 
+relation on $A$.
+
+
+
+\item Prove that every equivalence relation $E$ in a set $A$ is equal to $\equiv_q$, where $q: A \twoheadrightarrow A/E$ 
+is the quotient function $q(a) = [a]_E$.
+
+
+
+\item Prove that for every surjection $f: A \twoheadrightarrow B$,
+\begin{equation}
+B \cong (A/ \equiv_f)
+\end{equation}
+
+\end{enumerate}
+
+\end{document}

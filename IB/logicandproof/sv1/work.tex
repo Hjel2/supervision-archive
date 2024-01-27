@@ -1,0 +1,210 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2001}{5}{11}
+
+\begin{enumerate}
+
+\item Explain the meaning of the notation $A \vDash B$, where $A$ and $B$
+denote formulae of propositional logic.
+
+$A \vDash B$ is notation for ``$A$ entails $B$''. This means that under any
+interpretation for which $A$ is valid, $B$ is also valid. Informally, ``for
+every mapping from formulae / variables to truth values for which every
+formula in $A$ is true; $B$ is also true''.
+
+\item For each of the following equivalences, state whether it holds or not,
+justifying each answer rigorously.
+
+\begin{enumerate}
+
+\item \[
+\left( P \wedge \left( Q \to R \right) \right) \to S
+\simeq
+\left( \neg P \vee \neg Q \vee S \right) \wedge \left( \neg P \vee \neg R
+\vee S \right)
+\]
+The equivalence does not hold. Consider the interpretation \\$I = \{P
+\mapsto \mathbf{t}, Q \mapsto \mathbf{t}, R \mapsto \mathbf{f}, S \mapsto
+\mathbf{f}\}$.
+\begin{align*}
+\left( P \wedge \left( Q \to R \right) \right) \to S
+&= \left( \mathbf{t} \wedge \left( \mathbf{t} \to \mathbf{f} \right) \right)
+\to \mathbf{f} \\
+&= \left( \mathbf{t} \wedge \mathbf{f} \right) \to \mathbf{f} \\
+&= \mathbf{f} \to \mathbf{f} \\
+&= \mathbf{t} \\
+\intertext{So under the interpretation $I$, the LHS formula holds}
+\left( \neg P \vee \neg Q \vee S \right) \wedge \left( \neg P \vee \neg R
+\vee S \right)
+&= \left( \neg \mathbf{t} \vee \neg \mathbf{t} \vee \mathbf{f} \right) \wedge
+\left( \neg \mathbf{t} \vee \neg \mathbf{f} \vee \mathbf{f} \right) \\
+&= \left( \mathbf{f} \vee \mathbf{f} \vee \mathbf{f} \right) \wedge
+\left( \mathbf{f} \vee \mathbf{t} \vee \mathbf{f} \right) \\
+&= \mathbf{f} \wedge \mathbf{t} \\
+&= \mathbf{f} \\
+\intertext{Therefore there exists an interpretation $I$ which satisfies the
+LHS formula but does not satisfy the RHS formula. So the LHS formula does
+not entail the RHS formula. We can therefore conclude that the two formulae
+are not equivalent.}
+\left( P \wedge \left( Q \to R \right) \right) \to S
+&\not\vDash
+\left( \neg P \vee \neg Q \vee S \right) \wedge \left( \neg P \vee \neg R
+\vee S \right) \Longrightarrow \\
+\left( P \wedge \left( Q \to R \right) \right) \to S
+&\not\simeq
+\left( \neg P \vee \neg Q \vee S \right) \wedge \left( \neg P \vee \neg R
+\vee S \right) \\
+\end{align*}
+
+\iffalse
+\[
+\begin{split}
+& (P \wedge (Q \to R)) \to S \\
+\simeq & \neg(P \wedge (Q \to R)) \vee S \\
+\simeq & \neg (Q \to R) \vee \neg P \vee S\\
+\simeq & \neg P \vee \neg (\neg Q \vee R) \vee S \\
+\simeq & \neg P \vee Q \wedge \neg R \vee S \\
+\simeq & (\neg P \vee Q \vee S) \wedge (\neg P \vee \neg R \vee S) \\
+\not\simeq & (\neg P \vee \neg Q \vee S) \wedge (\neg P \vee \neg R \vee S) \\
+\end{split}
+\]
+\fi
+
+\item \[
+\left( P \to Q \right) \to \left( Q \to P \right)
+\simeq
+\left( Q \to P \right)
+\]
+This equivalence holds. It can be proved by algebraic manipulation:
+\begin{align*}
+(P \to Q) \to (Q \to P)
+&\simeq \neg(P \to Q) \vee (Q \to P) \\
+&\simeq \neg(\neg P \vee Q) \vee \neg Q \vee P \\
+&\simeq P \wedge \neg Q \vee \neg Q \vee P \\
+&\simeq \neg Q \vee P \wedge (\mathbf{t} \vee \neg Q) \\
+&\simeq \neg Q \vee P \\
+&\simeq Q \to P
+\end{align*}
+
+\item \[
+\forall xy \left( P(x) \vee \neg P(y) \right)
+\simeq
+\forall xy \left( P(x) \leftrightarrow P(y) \right)
+\]
+This equivalence holds. It can be proved algebraically:
+\begin{align*}
+\forall x y (P(x) \leftrightarrow \neg P(y))
+&\simeq \forall x y (P(x) \wedge P(y) \vee \neg P(x) \wedge
+\neg P(y)) \ &&\text{by definition of $\leftrightarrow$} \\
+&\simeq \forall x y ((P(x) \vee \neg P(y)) \wedge (\neg P(x)
+\vee P(y))) \ &&\text{using distributivity} \\
+&\simeq \forall x y (P(x) \vee \neg P(y)) \wedge \forall x y
+(\neg P(x) \vee P(y)) \ &&\text{using distributivity} \\
+&\simeq \forall x y (P(x) \vee \neg P(y)) \wedge \forall x y
+(P(x) \vee \neg P(y)) \ &&\text{by renaming variables} \\
+&\simeq \forall x y (P(x) \vee \neg P(y)) \ &&\text{by idempotence}
+\end{align*}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2002}{5}{11}
+
+\begin{enumerate}
+
+\item For each of the following formulae, state (with justification) whether
+it is satisfiable, valid or neither.
+
+\begin{enumerate}
+
+\item \[
+\left( \left( Q \to R \right) \to Q \right) \wedge \neg Q
+\]
+
+This formula is satisfiable, but not valid. The formula holds under the
+interpretation $\{Q \mapsto \mathbf{f}, R \mapsto \mathbf{f}\}$; so it is
+satisfiable. However, under the interpretation $\{Q \mapsto \mathbf{t}, R
+\mapsto \mathbf{f}\}$ the formula does not hold; so it is not valid.
+Therefore, the formula is satisfiable but not valid.
+
+\item \[
+\left( \left( P \leftrightarrow Q \right) \leftrightarrow P \right)
+\leftrightarrow Q
+\]
+
+This formula is also satisfiable, but not valid. It is true under the
+interpretation $\{P \mapsto \mathbf{t}, Q \mapsto \mathbf{t}\}$ and so is
+satisfiable; but false under the interpretation $\{P \mapsto \mathbf{f}, Q
+\mapsto \mathbf{t}\}$ so is not valid. Therefore the formula is satisfiable
+but not valid.
+
+\item \[
+\exists xy \left[ P(x, y) \to \forall xy \ P(x,y) \right]
+\]
+
+This formula is satisfiable but not valid. The formula holds under the
+interpretation $\mathcal{I} = (\{2\}, \{P(x, y) \mapsto x = y\})$ --
+so the formula is satisfiable. However, the formula does not hold under the
+interpretation $\mathcal{I} = (\mathbb{N}, \{P(x, y) \mapsto x = y\})$.
+Therefore, the formula is satisfiable but not valid.
+
+\item \[
+\left[ \forall x \left( P(x) \to Q(x) \right) \wedge \exists x P(x)
+\right] \to \forall x \ Q(x)
+\]
+
+This formula is satisfiable but not valid. It holds under the interpretation\\
+$\mathcal{I} = (\{2\}, \{P(x) \mapsto x = 2, Q(x) = x = 2\}$ so is
+satisfiable, but does not hold $\mathcal{I} = (\mathbb{N}, \{P(x) \mapsto x =
+2, Q(x) \mapsto x = 2\})$ so is not valid. Therefore, the formula is
+satisfiable but not valid.
+
+\end{enumerate}
+
+\item Briefly outline the semantics of first-order logic, taking as an
+example the formula $\forall xy \ f(x,y) = f(y, x)$
+
+A formula in first-order logic is an element of a first-order language
+$\mathcal{L}$. Formulas with an interpretation $\mathcal{I} = (D, I)$ are
+either true or false. A formula is satisfiable if there is at least one
+interpretation for which it evaluates to true. A formula is valid if it
+is true under every interpretation. An interpretation $\mathcal{I}$ consists
+of a pair of a domain (the set of values from which existentially or
+universally bound quantifiers may be drawn from) and a mapping from
+function and predicates to implementations.
+
+Variables in formulae are either bound (by $\forall$ or $\exists$) or free.
+A valuation $\mathcal{V}$ is a mapping from free variables to elements in $D$.
+
+The example is satisfiable since there exist interpretations for which it is
+true. However, it does not always hold and so it is not valid. The formula
+is true under the interpretation $\mathcal{I} = (\mathbb{N}, \{f(x, y) \mapsto
+x + y\})$. However, it does not hold under the interpretation $\mathcal{I} =
+ (\mathbb{N}, \{f(x, y) \mapsto x - y\})$.
+
+The given example has no free values, so any function works as a valuation.
+
+\item Exhibit a model that satisfies both of the following formulae ($a$ is
+a constant):
+\begin{gather*}
+    \forall x \ g(x) \neq a \\
+    \forall xy \left[ g(x) = g(y) \to x = y \right]
+\end{gather*}
+\begin{align*}
+\mathcal{I} = (\mathbb{N}, \{a \mapsto 0, g(x) \mapsto x + 1\})
+\end{align*}
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

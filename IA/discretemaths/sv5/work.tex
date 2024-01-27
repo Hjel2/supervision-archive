@@ -1,0 +1,346 @@
+\input{../../template/prefs/jp738.tex}
+\input{../../template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./infofile.tex}
+\input{../../template/includes.tex}
+\input{../../template/template.tex}
+
+\begin{document}
+
+\section*{5. On sets}
+
+\subsection*{5.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Prove that $\subseteq$ is a partial order, that is, it is:
+
+\begin{enumerate}
+
+\item reflexive: $\forall$ sets $A$, $A \subseteq A$
+
+We shall prove that every element in $A$ is also in $A$.
+
+\begin{equation}
+\begin{split}
+\forall a \in A: a &\in A \Longleftrightarrow\\
+A &\subseteq A \text{ as required}\\
+\end{split}
+\end{equation}
+
+\item transistive: $\forall$ sets $A$, $B$, $C$. $(A \subseteq B \wedge B \subseteq C) \Longrightarrow A \subseteq C$
+
+We shall prove that every element in $A$ must be in $B$. Since every element in $B$ is in $C$: every element in $A$ is also in $C$.
+
+Assume $A \subseteq B \wedge B \subseteq C$
+\begin{equation}
+\begin{split}
+\text{by assumption: } A &\subseteq B \Longleftrightarrow\\
+\forall a \in A: a &\in B\\
+\text{by assumption: } B &\subseteq C \Longleftrightarrow\\
+\forall b \in B: b &\in C\\
+\therefore \forall a \in A: a &\in B \Longrightarrow\\
+\forall a \in A: a &\in C \Longrightarrow\\
+A &\subseteq C\\
+\end{split}
+\end{equation}
+
+\item antisymmetric: $\forall$ sets $A$, $B$. $(A \subseteq B \wedge B \subseteq A) \Longleftrightarrow A = B$
+
+I shall prove that every $a \in A$ is also in $B$ and every $b \in B$ is also in $A$. This implies that $A$ and 
+$B$ contain the same elements and hence are the same set.
+
+\begin{equation}
+\begin{split}
+A &\subseteq B \Longleftrightarrow\\
+\forall a \in A: a &\in B\\
+B &\subseteq A \Longleftrightarrow\\
+\forall b \in B: b &\in A\\
+\forall a \in A: a \in B &\wedge \forall b \in B: b \in A \Longleftrightarrow\\
+A &= B\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Prove the following statements:
+
+\begin{enumerate}
+
+\item $\forall$ sets $A$. $\emptyset \subseteq A$
+
+By definition if $S$ is a set:
+\begin{equation}
+S \subseteq A \Longleftrightarrow \forall s \in S: s \in A\\
+\end{equation}
+For $\emptyset$ this is vacuously true.
+\begin{equation}
+\begin{split}
+(\emptyset \subseteq A &\Longleftrightarrow \forall s \in \emptyset: s \in A)\Longleftrightarrow\\
+(\emptyset \subseteq A &\Longleftrightarrow \text{true})\Longleftrightarrow\\
+\emptyset &\subseteq A\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item $\forall$ sets $A$. $(\forall x: x \notin A) \Longleftrightarrow A = \emptyset$
+
+TODO
+
+\end{enumerate}
+
+\item Find the union, and intersection of: 
+
+\begin{enumerate}
+
+\item $\{1, 2, 3, 4, 5\}$ and $\{-1, 1, 3, 5, 7\}$
+
+\begin{equation}
+\{1, 2, 3, 4, 5\} \cup \{-1, 1, 3, 5, 7\} = \{-1, 1, 2, 3, 4, 5, 7\}\\
+\end{equation}
+
+\begin{equation}
+\{1, 2, 3, 4, 5\} \cap \{-1, 1, 3, 5, 7\} = \{1, 3, 5\}\\
+\end{equation}
+
+\item $\{x \in \mathbb{R}| x > 7\}$ and $\{ x \in \mathbb{N}: x > 5\}$
+
+\begin{equation}
+\begin{split}
+ & \{x \in \mathbb{R}: x > 7\} \cup \{ x \in \mathbb{N}: x > 5\}\\
+=& \{x \in \mathbb{R}: x > 7 \vee x \in \{6, 7\}\}\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+ & \{x \in \mathbb{R}: x > 7\} \cap \{ x \in \mathbb{N}: x > 5\}\\
+=& \{x \in \mathbb{N}: x > 7\}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Find the Cartesian product and disjoint union of $\{1, 2, 3, 4, 5\}$ and $\{-1, 1, 3, 5, 7\}$.
+
+The Cartesian product of two sets $S$ and $T$ is $\{x: \forall s \in S, \forall t \in T: x = (s, t)\}$
+
+For the sets $\{1, 2, 3, 4, 5\}$ and $\{-1, 1, 3, 5, 7\}$ this is equal to:
+\begin{equation}
+\begin{split}
+&\{(1, -1), (1, 1), (1, 3), (1, 5), (1, 7), (2, -1), (2, 1), (2, 3), (2, 5), (2, 7), (3, -1), (3, 1), (3, 3), \\&(3, 5), (3, 7), (4, -1), (4, 1), (4, 3), (4, 5), (4, 7), (5, -1), (5, 1), (5, 3), (5, 5), (5, 7)\}\\
+\end{split}
+\end{equation}
+
+\item Let $I = \{2, 3, 4, 5\}$ and for each $i \in I$, let $A_i = \{i, i + 1, i - 1, 2\cdot i\}$.
+
+\begin{enumerate}
+
+\item List the elements of all sets $A_i$ for $i \in I$
+
+\begin{equation}
+\begin{split}
+A_2 &= \{1, 2, 3, 4\}\\
+A_3 &= \{2, 3, 4, 6\}\\
+A_4 &= \{3, 4, 5, 8\}\\
+A_5 &= \{4, 5, 6, 10\}\\
+\end{split}
+\end{equation}
+
+\item Let $\{A_i| i \in I\}$ stand for $\{A_2, A_3, A_4, A_5\}$. Find $\bigcup\{A_i| i \in I\}$ and $\bigcap\{A_i| i \in I\}$.
+
+\begin{equation}
+\begin{split}
+\bigcup\{A_i: i \in I\}&\{1, 2, 3, 4, 5, 6, 8, 10\}\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\bigcap\{A_i:i \in I\}&\{4\}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Let $U$ be a set. For all $A, B \in \mathcal{P}(A)$, prove that:
+
+\begin{enumerate}
+
+\item $A^\mathsf{c} = B \Longleftrightarrow (A \cup B = U \wedge A \cap B = \emptyset)$
+
+
+
+\item Double complement elimination: $(A^\mathsf{c})^\mathsf{c} = A$
+
+
+
+\item The De-Morgan laws: $(A \cup B)^\mathsf{c} = A^\mathsf{c} \cap B^\mathsf{c}$ and $(A \cap B)^\mathsf{c} = A^\mathsf{c}\cup B^\mathsf{c}$
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{5.2 Core exercises}
+
+\begin{enumerate}
+
+\item Prove that for all sets $U$ and subsets $A, B \subseteq U$:
+
+\begin{enumerate}
+
+\item $\forall X: A \subseteq X \wedge B \subseteq X \Longleftrightarrow (A \cup B) \subseteq X)$
+
+
+
+\item $\forall Y: Y \subseteq A \wedge Y \subseteq B \Longleftrightarrow Y \subseteq (A \cap B)$
+
+
+
+\end{enumerate}
+
+\item Either prove or disprove that, for all sets $A$ and $B$,
+
+\begin{enumerate}
+
+\item $A \subseteq B \Longrightarrow \mathcal{P}(A) \subseteq \mathcal{P}(B)$
+
+
+
+\item $\mathcal{P}(A \cup B) \subseteq \mathcal{P}(A) \cup \mathcal{P}(B)$
+
+
+
+\item $\mathcal{P}(A) \cup \mathcal{P}(B) \subseteq \mathcal{P}(A \cup B)$
+
+
+
+\item $\mathcal{P}(A \cap B) \subseteq \mathcal{P}(A) \cap \mathcal{P}(B)$
+
+
+
+\item $\mathcal{P}(A) \cap \mathcal{P}(B) \subseteq \mathcal{P}(A \cap B)$
+
+
+
+\end{enumerate}
+
+\item Let $U$ be a set. For all $A, B \in \mathcal{P}(U)$ prove that the following statements are equivalent.
+
+\begin{enumerate}
+\item $A \cup B = B$
+
+\item $A \subseteq B$
+
+\item $A \cap B = A$
+
+\item $B^\mathsf{c} \subseteq A^\mathsf{c}$
+
+
+
+
+\end{enumerate}
+
+\item For sets $A, B, C, D$, prove or disprove at least three of the following statements:
+
+\begin{enumerate}
+
+\item $(A \subseteq C \wedge B \subseteq D) \Longrightarrow A \times B \subseteq C \times D$
+
+
+
+\item $(A \cup C) \times (B \cup D) \subseteq (A \times B) \cup (C \times D)$
+
+
+
+\item $(A \times C) \cup (B \times D) \subseteq (A \cup B) \times (C \cup D)$
+
+
+
+\item $A \times (B \cup C) \subseteq (A \times B) \cup (A \times C)$
+
+
+
+\item $(A \times B) \cup (A \times D) \subseteq A \times (B \cup D)$
+
+
+
+\end{enumerate}
+
+\item For sets $A, B, C, D$, prove or disprove at least three of the following statements:
+
+\begin{enumerate}
+
+\item $(A \subseteq C \wedge B \subseteq D) \Longrightarrow A \uplus B \subseteq C \uplus D$
+
+
+
+\item $(A \cup B) \uplus C \subseteq (A \uplus C) \cup (B \uplus C)$
+
+
+
+\item $(A \uplus C) \cup (B \uplus C) \subseteq (A \cup B) \uplus C$
+
+
+
+\item $(A \cap B) \uplus C \subseteq (A \uplus C) \cap (B \uplus C)$
+
+
+
+\item $(A \uplus C) \cap (B \uplus C) \subseteq (A \cap B) \uplus C$
+
+
+
+\end{enumerate}
+
+\item Prove the following properties of the big unions and intersections of a family of sets $\mathcal{F}\subseteq \mathcal{P}(A)$:
+
+\begin{enumerate}
+
+\item $\forall U \subseteq A: (\forall X \in \mathcal{F}: X \subseteq U) \Longleftrightarrow \bigcup \mathcal{F}\subseteq U$
+
+
+
+\item $\forall L \subseteq A: (\forall X \in \mathcal{F}: L \subseteq X) \Longleftrightarrow L \subseteq \bigcap \mathcal{F}$
+
+
+
+\end{enumerate}
+
+\item Let $A$ be a set.
+
+\begin{enumerate}
+
+\item For a family $\mathcal{F} \subseteq \mathcal{P}(A)$, let $\mathcal{U} \triangleq \{ U \subseteq A| \forall S \in \mathcal{F}: S \subseteq U\}$. 
+Prove that $\bigcup\mathcal{F} = \bigcap\mathcal{U}$.
+
+
+
+\item Analogously, define the family $\mathcal{L}\subseteq \mathcal{P}(A)$ such that $\bigcap \mathcal{F} = \bigcup \mathcal{L}$. Also prove this statement.
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{5.3 Optional advanced exercises}
+
+\begin{enumerate}
+
+\item Prove that for all families of sets $\mathcal{F}_1$ and $\mathcal{F}_2$
+
+\begin{equation}
+(\bigcup\mathcal{F}_1)\cup(\bigcup\mathcal{F}_2) = \bigcup(\mathcal{F}_1\cup\mathcal{F}_2)\\
+\end{equation}
+
+State and prove tha analogous property for intersections of non-empty families of sets.
+
+\item For a set $U$, prove that $(\mathcal{P}(U), \subseteq, \cup, \cap, U, \emptyset, (\cdot)^\mathsf{c})$ is a Boolean algebra.
+
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,766 @@
+\input{../../template/prefs/jp738.tex}
+\input{../../template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./infofile.tex}
+\input{../../template2/includes.tex}
+\input{../../template2/template.tex}
+
+
+\usepackage{enumitem}
+
+\begin{document}
+
+\section*{2 On numbers}
+
+\subsection*{2.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Let $i$, $j$ be integers and let $m$, $n$ be positive integers. Show that:
+
+\begin{enumerate}
+
+\item $i \equiv i (\text{mod } m)$
+
+\begin{equation}\label{211a}
+\begin{split}
+m&|0\Longleftrightarrow\\
+m&|(i - i)\Longleftrightarrow\\
+i - i &\equiv 0(\text{mod } m)\Longleftrightarrow\\
+i &\equiv i(\text{mod } m)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item $i \equiv j (\text{mod } m) \Longrightarrow j \equiv i (\text{mod } m)$
+
+\begin{equation}\label{211b}
+\begin{split}
+i &\equiv j (\text{mod } m) \Longleftrightarrow\\
+\exists k \in \mathbb{Z}: i &\equiv j + k\cdot m \Longleftrightarrow\\
+\exists k \in \mathbb{Z}: j &\equiv i - k\cdot m \Longleftrightarrow\\
+j &\equiv i(\text{mod } m)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item $i \equiv j (\text{mod } m) \wedge j \equiv k (\text{mod } m) \Longrightarrow i \equiv k (\text{mod } m)$
+
+\begin{equation}\label{211ca}
+\begin{split}
+i &\equiv j (\text{mod } m) \Longleftrightarrow\\
+j &\equiv i (\text{mod } m)\text{ using (\ref{211b})}\\
+\end{split}
+\end{equation}
+\begin{equation}\label{211cb}
+\begin{split}
+j &\equiv k(\text{mod } m)\\
+\end{split}
+\end{equation}
+\begin{center}
+Combining (\ref{211ca})and (\ref{211cb}) gives:
+\end{center}
+\begin{equation}
+\begin{split}
+i &\equiv k(\text{mod } m) \Longleftrightarrow\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Prove that for all integers $i$, $j$, $k$, $l$, $m$, $n$ with $m$ positive and $n$ nonnegative,
+
+\begin{enumerate}
+
+\item $i \equiv j (\text{mod } m) \wedge k \equiv l (\text{mod } m) \Longrightarrow i + k \equiv j + l (\text{mod } m)$
+
+\begin{equation}\label{212ba}
+\begin{split}
+i &\equiv j (\text{mod } m) \Longleftrightarrow\\
+\text{ } \exists a \in \mathbb{Z}: i &= j + a\cdot m \\
+\end{split}
+\end{equation}
+\begin{equation}\label{212bb}
+\begin{split}
+k &\equiv l (\text{mod } m) \Longleftrightarrow\\
+\exists b \in \mathbb{Z}: k &= l + b\cdot m\\
+\end{split}
+\end{equation}
+\begin{center}
+Adding (\ref{212ba}) and (\ref{212bb}) gives:
+\end{center}
+\begin{equation}\label{212bc}
+\begin{split}
+\exists a, b \in \mathbb{Z}: i + k &= j + a\cdot m + l + b\cdot m \Longleftrightarrow\\
+\exists a, b \in \mathbb{Z}: i + k &= j + l + (a + b)\cdot m \Longleftrightarrow\\
+i + k &\equiv j + l (\text{mod } m)\\
+\end{split}
+\end{equation}
+
+\item $i \equiv j (\text{mod } m) \wedge k \equiv l (\text{mod } m) \Longrightarrow i \cdot k \equiv j\cdot l (\text{mod } m)$
+
+\begin{equation}\label{2a}
+\begin{split}
+i &\equiv j (\text{mod } m) \Longleftrightarrow\\
+(a) \exists p \in \mathbb{Z}: i &= j + p \cdot m\\
+k &\equiv l(\text{mod } m) \Longleftrightarrow\\
+(b) \exists q \in \mathbb{Z}: k &= l + q \cdot m\\
+\text{Combining (a)}&\text{ and (b) gives:}\\
+\exists p, q \in \mathbb{Z}: i \cdot k &= (j + p\cdot m)\cdot(l + q\cdot m) \Longleftrightarrow\\
+\exists p, q \in \mathbb{Z}: i \cdot k &= j \cdot l + j \cdot q \cdot m + l\cdot p \cdot m + p \cdot q \cdot m \cdot m \Longleftrightarrow\\
+\exists p, q \in \mathbb{Z}: i \cdot k &= j\cdot l + (j\cdot q + l\cdot p + p\cdot q \cdot m) \cdot m \Longleftrightarrow\\
+i\cdot k &= j\cdot l (\text{mod } m)\\
+\end{split}
+\end{equation}
+
+\item $i \equiv j (\text{mod } m) \Longrightarrow i^n \equiv j^n (\text{mod } m)$
+
+Proof by induction:
+
+At $n=0$:\\
+\begin{equation}
+\begin{split}
+\forall m \in \mathbb{Z}: 1 &\equiv 1(\text{mod } m)\Longleftrightarrow\\
+\forall m \in \mathbb{Z}: i^0 &\equiv j^0(\text{mod } m)\\
+\end{split}
+\end{equation}
+
+So the statement is true for $n = 0$.
+
+Assume that the statement also holds true for $n = k$.
+\begin{equation}\label{212ca}
+\begin{split}
+\text{By assumption: } i^k &\equiv j^k(\text{mod } m)\\
+\end{split}
+\end{equation}
+\begin{equation}\label{212cb}
+\begin{split}
+\text{By assumption: } i &\equiv j(\text{mod } m)\\
+\end{split}
+\end{equation}
+\begin{center}
+Using (\ref{2a}) we can combine (\ref{212ca}) and (\ref{212cb})\\
+\end{center}
+\begin{equation}\label{212c}
+\begin{split}
+i^k \cdot i &\equiv j^k \cdot j(\text{mod } m)\Longleftrightarrow\\
+i^{k+1} &\equiv j^{k+1}(\text{mod } m)\\
+\end{split}
+\end{equation}
+
+So if the statement holds for $n=k$, then it also holds for $n=k+1$. Since the 
+statement is true for $n=0$; by induction it must also be true for all $n\in\mathbb{N}$.
+
+\end{enumerate}
+
+\item Prove that for all natural numbers $k$, $l$ and positive integers $m$,
+
+\begin{enumerate}
+
+\item $\text{rem}(k \cdot m + l, m) = \text{rem}(l, m)$
+
+\begin{equation}
+\begin{split}
+l &= l(\text{mod }m)\Longleftrightarrow\\
+k\cdot m + l &= l(\text{mod } m)\Longleftrightarrow\\
+\text{rem}(k\cdot m + l, m) &= \text{rem}(l,m)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item $\text{rem}(k + l, m) = \text{rem}(\text{rem}(k,m) + l, m)$
+
+\begin{equation}
+\begin{split}
+k + l &= k + l (\text{mod } m)\Longleftrightarrow\\
+k + l &= \text{rem}(k,m) + l (\text{mod } m)\Longleftrightarrow\\
+\text{rem}(k + l, m) &= \text{rem}(\text{rem}(k,m) + l, m)\text{ as required}\
+\end{split}
+\end{equation}
+
+\item $\text{rem}(k \cdot l, m) = \text{rem}(k \cdot \text{rem}(l, m), m)$
+
+\begin{equation}
+\begin{split}
+k\cdot l &= k\cdot l(\text{mod }m)\Longleftrightarrow\\
+k \cdot l &= k\cdot \text{rem}(l, m) (\text{mod } m)\Longleftrightarrow\\
+\text{rem}(k \cdot l, m) &\neq \text{rem}(k \cdot \text{rem}(l, m), m)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item Let $m$ be a positive integer.
+
+\begin{enumerate}
+
+\item Prove the associativity of the addition and multiplication operations in $\mathbb{Z}_m$; that is:
+\begin{equation}
+\forall i, j, k \in \mathbb{Z}_m. (i+_mj)+_mk=i+_m(j+_mk)\text{ and }(i\cdot_mj)\cdot_mk=i\cdot_m(j\cdot_mk)\\
+\end{equation}
+
+Proof of the associativity of the addition operation in $\mathbb{Z}_m$:
+\begin{equation}
+\begin{split}
+\forall i, j, k \in \mathbb{Z}_m: s &= (i+_mj)+_mk\Longleftrightarrow\\
+\forall i, j, k \in \mathbb{Z}_m: s &\equiv (i + j) + k (\text{mod } m)\Longleftrightarrow\\
+\forall i, j, k \in \mathbb{Z}_m: s &\equiv i + j + k (\text{mod } m)\Longleftrightarrow\\
+\forall i, j, k \in \mathbb{Z}_m: s &\equiv i + (j + k) (\text{mod } m) \Longleftrightarrow\\
+\therefore &\forall i, j, k \in \mathbb{Z}_m. (i+_mj)+_mk=i+_m(j+_mk)\text{ as required}
+\end{split}
+\end{equation}
+
+Proof of the associativity of the multiplication operation in $\mathbb{Z}_m$:
+\begin{equation}
+\begin{split}
+\forall i, j, k \in \mathbb{Z}_m: p &= (i\cdot_mj)\cdot_mk\Longleftrightarrow\\
+\forall i, j, k \in \mathbb{Z}_m: p &\equiv (i\cdot j)\cdot k (\text{mod } m)\Longleftrightarrow\\
+\forall i, j, k \in \mathbb{Z}_m: p &\equiv i\cdot j \cdot k (\text{mod } m)\Longleftrightarrow\\
+\forall i, j, k \in \mathbb{Z}_m: p &\equiv i\cdot (j \cdot k) (\text{mod } m)\Longleftrightarrow\\
+\therefore \forall i, j, k \in \mathbb{Z}_m:(i\cdot_mj)\cdot_mk &= i\cdot_m(j\cdot_mk)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item Prove that the additive inverse of $k$ in $\mathbb{Z}_m$ is $[-k]_m$.
+
+\begin{equation}
+\begin{split}
+[-k]_m &= -k + m\Longleftrightarrow\\
+k + [-k]_m &\equiv k - k + m (\text{mod } m)\Longleftrightarrow\\
+k + [-k]_m &\equiv m (\text{mod } m)\Longleftrightarrow\\
+k + [-k]_m &\equiv 0 (\text{mod } m)\\
+\end{split}
+\end{equation}
+
+Since $k + [-k]_m \equiv 0 (\text{mod } m)$; $[-k]_m$ is the additive inverse of $k$ in $\mathbb{Z}_m$ as required.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{2.2 Core exercises}
+
+\begin{enumerate}
+
+\item Find an integer $i$, natural numbers $k$, $l$ and a positive integer $m$ for which $k \equiv l (\text{mod } m)$ 
+holds while $i^k \equiv i^l(\text{mod } m)$ does not.
+
+\begin{center}
+$i = 2$, $k = 1$, $l = 4$, $m = 3$
+\begin{equation}
+\begin{split}
+1 &\equiv 4 (\text{mod } 3)\Longrightarrow\\
+k &\equiv l (\text{mod } m)\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+2 &\not\equiv 1 (\text{mod } 3)\Longleftrightarrow\\
+2^1 &\not\equiv 2^4 (\text{mod } 3)\Longrightarrow\\
+i^k &\not\equiv i^l (\text{mod } m)\\
+\end{split}
+\end{equation}
+\end{center}
+
+\item Formalise and prove the following statement: A natural number is a multiple of 3 iff so is the number 
+obtained by summing its digits. Do the same for analogous criterion for multiples of 9 and a similar condition 
+for multiples of 11.
+
+\begin{center}
+Let $a_i$ be the $i^{th}$ digit of $n \in \mathbb{Z}$.
+\begin{equation}
+\begin{split}
+n &\equiv \sum^\infty_{i=0}a_i\cdot 10^i (\text{mod } 3) \Longleftrightarrow\\
+n &\equiv \sum^\infty_{i=0}a_i + a_i\cdot(10^i - 1) (\text{mod } 3) \Longleftrightarrow\\
+\vspace{0.5em}
+\forall i \geq 1: 10^i - 1 &= \sum^{i-1}_{j=0}9\cdot 10^j\Longleftrightarrow\\
+\forall i \geq 1: 10^i - 1 &\equiv 9\cdot \sum^{i-1}_{j=0}\cdot 10^j (\text{mod } 3)\Longleftrightarrow\\
+\forall i \geq 1: 10^i - 1 &\equiv 0 (\text{mod } 3)\\
+\text{for } i = 0: 10^i - 1 &= 0 \Longleftrightarrow\\
+10^i - 1 &\equiv 0 (\text{mod } 3)\\
+\vspace{0.5em}
+\therefore n &\equiv \sum^\infty_{i=0}a_i (\text{mod } 3)\\
+n &\equiv 0 (\text{mod } 3) \Longleftrightarrow 3|n\\
+\therefore \sum^\infty_{i=0}a_i& \equiv 0 (\text{mod } 3) \Longleftrightarrow 3|n
+\end{split}
+\end{equation}
+
+Let $a_i$ be the $i^{th}$ digit of $n \in \mathbb{Z}$.
+\begin{equation}
+\begin{split}
+n &\equiv \sum^\infty_{i=0}a_i\cdot 10^i (\text{mod } 9) \Longleftrightarrow\\
+n &\equiv \sum^\infty_{i=0}a_i + a_i\cdot(10^i - 1) (\text{mod } 9) \Longleftrightarrow\\
+\vspace{0.5em}
+\forall i \geq 1: 10^i - 1 &= \sum^{i-1}_{j=0}9\cdot 10^j\Longleftrightarrow\\
+\forall i \geq 1: 10^i - 1 &\equiv 9\cdot \sum^{i-1}_{j=0}\cdot 10^j (\text{mod } 9)\Longleftrightarrow\\
+\forall i \geq 1: 10^i - 1 &\equiv 0 (\text{mod } 9)\\
+\text{for } i = 0: 10^i - 1 &= 0 \Longleftrightarrow\\
+10^i - 1 &\equiv 0 (\text{mod } 9)\\
+\vspace{0.5em}
+\therefore n &\equiv \sum^\infty_{i=0}a_i (\text{mod } 9)\\
+n &\equiv 0 (\text{mod } 9) \Longleftrightarrow 9|n\\
+\therefore \sum^\infty_{i=0}a_i& \equiv 0 (\text{mod } 9) \Longleftrightarrow 9|n
+\end{split}
+\end{equation}
+
+Let $a_i$ be the $i^{th}$ digit of $n \in \mathbb{Z}$.
+
+TOTO: correct the below. It is wrong. Counterexample: $11\not|999$
+\begin{equation}
+\begin{split}
+n &\equiv \sum^\infty_{i=0}a_i\cdot 10^i (\text{mod } 11) \Longleftrightarrow\\
+n &\equiv \sum^\infty_{i=0}a_i + a_i\cdot(10^i - 1) (\text{mod } 11) \Longleftrightarrow\\
+\end{split}
+\end{equation}
+\begin{center}
+Since $10^i - 1\equiv 0 (\text{mod } 11)$ for $i \geq 1$:
+\end{center}
+\begin{equation}
+\begin{split}
+n &\equiv \sum^\infty_{i=0}a_i (\text{mod } 11)\\
+n &\equiv 0 (\text{mod } 11) \Longleftrightarrow 11|n\\
+\therefore \sum^\infty_{i=0}a_i& \equiv 0 (\text{mod } 11) \Longleftrightarrow 11|n
+\end{split}
+\end{equation}
+\end{center}
+
+\item Show that for every integer $n$, the remainder when $n^2$ is divided by 4 is either 0 or 1.
+
+This can be divided into two cases: $n$ is even or $n$ is odd:
+
+\begin{center}
+$n$ is even:
+\begin{equation}
+\begin{split}
+\exists k \in\mathbb{Z}: n &= 2\cdot k\\
+\therefore \exists k \in \mathbb{Z}: n &= 2\cdot k(\text{mod } 4)\\
+n^2 &= 4\cdot k^2(\text{mod } 4)\\
+n^2 &= 0(\text{mod } 4)\\
+\therefore\text{ $n^2$}&\text{ divided by 4 is 0.}\\
+\end{split}
+\end{equation}
+So if $n$ is even; the remainder when $n^2$ is divided by 4 is 0.
+
+$n$ i odd:
+\begin{equation}
+\begin{split}
+\exists k \in\mathbb{Z}: n &= 2\cdot k + 1\\
+\therefore \exists k \in \mathbb{Z}: n &= 2\cdot k + 1(\text{mod } 4)\\
+n^2 &= 4\cdot k^2 + 4\cdot k + 1(\text{mod } 4)\\
+n^2 &= 1(\text{mod } 4)\\
+\end{split}
+\end{equation}
+So if $n$ is odd; the remainder when $n^2$ is divided by 4 is 1.
+
+Since every integer $n$ is either even or odd; the remainder when $n$ is divided by 4 is either 0 or 1.
+\end{center}
+
+\item What are $\text{rem}(55^2, 79)$, $\text{rem}(23^2, 79)$, $\text{rem}(23\cdot 55, 79)$ and $\text{rem}(55^{78}, 79)$?
+
+\begin{equation}
+\begin{split}
+&\text{rem}(55^2, 79)\\
+=&\text{rem}(3025, 79)\\
+=&23
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+&\text{rem}(23^2, 79)\\
+=&\text{rem}(529, 79)\\
+=& 55
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+&\text{rem}(23 \cdot 55, 79)\\
+=&\text{rem}(1265, 79)\\
+=& 1
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+&\text{rem}(55^{78}, 79)\\
+=& 1\text{ using Fermat's Little Theorem}\\
+\end{split}
+\end{equation}
+
+\item Calculate that $2^{153} \equiv 53(\text{mod } 153)$. At first sight this seems to contradict Fermat's Little Theorem, 
+why isn't this the case though? \textit{Hint}: Simplify the problem by applying known congruences to subexpressions.
+
+This does not contradict Fermat's Little Theorem since 153 is not prime and Fermat's Little Theorem only applies to primes.
+
+\begin{equation}
+\begin{split}
+153 &= 128 + 16 + 8 + 1\Longleftrightarrow\\
+2^128 \cdot 2^16 \cdot 2^8 \cdot 2^1 &\equiv 2^{153}(\text{mod } 153)\\
+\vspace{1em}
+2^1 &\equiv 2(\text{mod } 153)\Longleftrightarrow\\
+2^2 &\equiv 4(\text{mod } 153)\Longleftrightarrow\\
+2^4 &\equiv 16(\text{mod } 153)\Longleftrightarrow\\
+2^8 &\equiv 103(\text{mod } 153)\Longleftrightarrow\\
+2^{16} &\equiv 52(\text{mod } 153)\Longleftrightarrow\\
+2^{32} &\equiv 103(\text{mod } 153)\Longleftrightarrow\\
+2^{64} &\equiv 52(\text{mod } 153)\Longleftrightarrow\\
+2^{128} &\equiv 103(\text{mod } 153)\Longleftrightarrow\\
+\vspace{1em}
+2^{153}&\equiv 103\cdot 52 \cdot 103 \cdot 2\Longleftrightarrow\\
+2^{153}&\equiv 52 \cdot 52 \cdot 2\Longleftrightarrow\\
+2^{153}&\equiv 103 \cdot 2\Longleftrightarrow\\
+2^{153}&\equiv 206 \Longleftrightarrow\\
+2^{153}&\equiv 53 \Longleftrightarrow\\
+\end{split}
+\end{equation}
+
+\item Calculate the addition and multiplication tables, and the additive and multiplicative inverse tables for 
+$\mathbb{Z}_3$, $\mathbb{Z}_6$ and $\mathbb{Z}_7$.
+
+Additive table for $\mathbb{Z}_3$
+\begin{tabular}{c|c c c}
+& 0 & 1 & 2\\
+\hline
+0 & 0 & 1 & 2\\
+1 & 1 & 2 & 0\\
+2 & 2 & 0 & 1\\
+\end{tabular}
+
+Additive inverse table for $\mathbb{Z}_3$
+\begin{tabular}{c|c c c}
+ & 0 & 1 & 2\\
+inverse & 0 & 2 & 1\\
+\end{tabular}
+
+Multiplication table for $\mathbb{Z}_3$
+\begin{tabular}{c|c c c}
+& 0 & 1 & 2\\
+\hline
+0 & 0 & 0 & 0\\
+1 & 0 & 1 & 2\\
+2 & 0 & 2 & 1\\
+\end{tabular}
+
+Multiplicative inverse table for $\mathbb{Z}_3$
+\begin{tabular}{c|c c c}
+number & 0 & 1 & 2\\
+inverse & & 1 & 2\\
+\end{tabular}
+
+Additive table for $\mathbb{Z}_6$
+\begin{tabular}{c|c c c c c c}
+& 0 & 1 & 2 & 3 & 4 & 5\\
+\hline
+0 & 0 & 1 & 2 & 3 & 4 & 5\\
+1 & 1 & 2 & 3 & 4 & 5 & 0\\
+2 & 2 & 3 & 4 & 5 & 0 & 1\\
+3 & 3 & 4 & 5 & 0 & 1 & 2\\
+4 & 4 & 5 & 0 & 1 & 2 & 3\\
+5 & 5 & 0 & 1 & 2 & 3 & 4\\
+\end{tabular}
+
+Additive inverse table for $\mathbb{Z}_6$
+\begin{tabular}{c|c c c c c c}
+number & 0 & 1 & 2 & 3 & 4 & 5\\
+inverse & 0 & 5 & 4 & 3 & 2 & 1\\
+\end{tabular}
+
+Multiplication table for $\mathbb{Z}_6$
+\begin{tabular}{c|c c c c c c}
+& 0 & 1 & 2 & 3 & 4 & 5\\
+\hline
+0 & 0 & 0 & 0 & 0 & 0 & 0\\
+1 & 0 & 1 & 2 & 3 & 4 & 5\\
+2 & 0 & 2 & 4 & 0 & 2 & 4\\
+3 & 0 & 3 & 0 & 3 & 0 & 3\\
+4 & 0 & 4 & 2 & 0 & 4 & 2\\
+5 & 0 & 5 & 4 & 3 & 2 & 1\\
+\end{tabular}
+
+Multiplicative inverse table for $\mathbb{Z}_6$
+\begin{tabular}{c|c c c c c c}
+number & 0 & 1 & 2 & 3 & 4 & 5\\
+inverse & & 1 & & & & 5\\
+\end{tabular}
+
+Additive table for $\mathbb{Z}_7$
+\begin{tabular}{c|c c c c c c c}
+& 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+\hline
+0 & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+1 & 1 & 2 & 3 & 4 & 5 & 6 & 0\\
+2 & 2 & 3 & 4 & 5 & 6 & 0 & 1\\
+3 & 3 & 4 & 5 & 6 & 0 & 1 & 2\\
+4 & 4 & 5 & 6 & 0 & 1 & 2 & 3\\
+5 & 5 & 6 & 0 & 1 & 2 & 3 & 4\\
+6 & 6 & 0 & 1 & 2 & 3 & 4 & 5\\
+\end{tabular}
+
+Additive inverse table for $\mathbb{Z}_7$
+\begin{tabular}{c|c c c c c c c}
+number & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+inverse & 0 & 6 & 5 & 4 & 3 & 2 & 1\\
+\end{tabular}
+
+Multiplication table for $\mathbb{Z}_7$
+\begin{tabular}{c|c c c c c c c}
+& 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+\hline
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+1 & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+2 & 0 & 2 & 4 & 6 & 1 & 3 & 5\\
+3 & 0 & 3 & 6 & 2 & 5 & 1 & 4\\
+4 & 0 & 4 & 1 & 5 & 2 & 6 & 3\\
+5 & 0 & 5 & 3 & 1 & 6 & 4 & 2\\
+6 & 0 & 6 & 5 & 4 & 3 & 2 & 1\\
+\end{tabular}
+
+Multiplicative inverse table for $\mathbb{Z}_7$
+\begin{tabular}{c|c c c c c c c}
+number & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+inverse & & 1 & 4 & 5 & 2 & 3 & 6\\
+\end{tabular}
+
+\item Let $i$ and $n$ be positive integers and let $p$ be a prime. Show that if $n \equiv 1 (\text{mod } p - 1)$ then 
+$i^n \equiv i(\text{mod } p)$ for all $i$ not multiple of $p$.
+
+If $i$ is not a multiple of $p$ then we can use Fermat's Little Theorem:
+\begin{equation}
+\begin{split}
+n &\equiv 1(\text{mod } p - 1)\Longleftrightarrow\\
+\exists k\in\mathbb{Z}: n &= 1 + (p - 1)\cdot k \Longleftrightarrow\\
+\exists k \in \mathbb{Z}: i^n &\equiv i^{1 + (p-1)\cdot k}(\text{mod } p)\Longleftrightarrow\\
+\exists k\in\mathbb{Z}: i^n &\equiv i \cdot (i^{p - 1})^k (\text{mod } p)\Longleftrightarrow\\
+\text{ using Fermat's Little Theorem: } \exists k\in\mathbb{Z}: i^n &\equiv i \cdot 1^k (\text{mod } p) \Longleftrightarrow\\
+i^n &\equiv i \cdot 1 (\text{mod } p) \Longleftrightarrow\\
+i^n &\equiv i (\text{mod } p)\text{ as required}\\
+\end{split}
+\end{equation}
+
+\item Prove that $n^3\equiv n (\text{mod } 6)$ for all integers $n$.
+
+\begin{equation}
+\begin{split}
+n^3 - n &= (n-1)\cdot n\cdot (n+1)\\
+\forall n \in \mathbb{Z}: 2|(n - 1)\cdot n\cdot (n+1) &\wedge 3|(n-1)\cdot n\cdot (n+1)\Longleftrightarrow\\
+\forall n \in \mathbb{Z}: \exists i, j \in \mathbb{Z}: (n-1)\cdot n\cdot(n+1) &= 2\cdot i \wedge (n-1)\cdot n\cdot(n+1) = 3\cdot j\\
+\forall n \in \mathbb{Z}: 3\cdot(n-1)\cdot n\cdot(n+1) - 2\cdot (n-1)\cdot n\cdot(n+1) &= 3\cdot(2\cdot i) -2\cdot (3\cdot j)\Longleftrightarrow\\
+\forall n \in \mathbb{Z}: (n-1)\cdot n\cdot(n+1) &= 6\cdot (i - j)\Longleftrightarrow\\
+\forall n \in \mathbb{Z}: (n - 1)n(n+1) &\equiv 0(\text{mod } 6) \Longleftrightarrow\\
+\forall n \in \mathbb{Z}: n^3 - n &\equiv 0(\text{mod } 6) \Longleftrightarrow\\
+\forall n \in \mathbb{Z}: n^3 &\equiv n(\text{mod } 6) \text{ as required}\\
+\end{split}
+\end{equation}
+
+\item Prove that $n^7\equiv n(\text{mod } 42)$ for all integers $n$.
+\vspace{-1em}
+\begin{center}
+\begin{equation}
+\begin{split}
+\forall n \in \mathbb{Z}: n^7 - n &= (n-1)\cdot n\cdot(n+1)\cdot(n^2-n+1)\cdot(n^2+n+1)\Longrightarrow\\
+\forall n \in \mathbb{Z}: \exists k\in\mathbb{Z}: n^7 - n &= k\cdot n\cdot(n+1)\Longrightarrow\\
+\forall n \in \mathbb{Z}: 2&|(n^7-n)\Longleftrightarrow\\
+\forall n \in \mathbb{Z}: n^7 - n &\equiv 0 (\text{mod } 2)\\
+\vspace{1em}
+\forall n \in \mathbb{Z}: n^7 - n &= (n-1)n(n+1)(n^2-n+1)(n^2+n+1)\Longrightarrow\\
+\forall n \in \mathbb{Z}: \exists k \in \mathbb{Z}: n^7 - n &= k\cdot (n-1) \cdot n \cdot (n + 1)\Longrightarrow\\
+\forall n \in \mathbb{Z}: 3&|(n^7-n)\\
+\forall n \in \mathbb{Z}: n^7 - n &\equiv 0 (\text{mod } 3)\\
+\vspace{1em}
+\forall n \in \mathbb{Z}: n^7 &\equiv n (\text{mod } 7) \text{ using Fermat's Little Theorem}\Longleftrightarrow\\
+\forall n \in \mathbb{Z}: n^7 - n &\equiv 0(\text{mod } 7)\\
+\end{split}
+\end{equation}
+\vspace{0.5em}
+\begin{equation}
+\begin{split}
+\forall n \in \mathbb{Z}: (n^7 - n) \equiv 0(\text{mod } 2) \wedge (n^7 - n) &\equiv 0(\text{mod } 3) \wedge (n^7-n)\equiv0(\text{mod } 7) \Longleftrightarrow\\
+\forall n \in \mathbb{Z}: \exists i, j, k \in \mathbb{Z}: (n^7 - n) &= 2\cdot i \wedge (n^7 - n) = 3\cdot j \wedge (n^7 - n) = 7\cdot k\Longrightarrow\\
+\forall n \in \mathbb{Z}: 21\cdot (n^7 - n) - 14\cdot (n^7 - n) - 6\cdot (n^7 - n) &= 21\cdot (2\cdot i) - 14\cdot(3\cdot j) - 6\cdot (7\cdot k) \Longleftrightarrow\\
+\forall n \in \mathbb{Z}: n^7 - n &= 42\cdot(i - j - k)\Longleftrightarrow\\
+\forall n \in \mathbb{Z}: n^7 - n &= 0 (\text{mod } 42)\Longleftrightarrow\\
+\forall n \in \mathbb{Z}: n^7 &= n (\text{mod } 42) \text{ as required}\\
+\end{split}
+\end{equation}
+\end{center}
+
+\end{enumerate}
+
+\subsection*{2.3 Optional exercises}
+
+\begin{enumerate}
+
+\item Prove that for all integers $n$, there exist natural numbers $j$ and $j$ such that 
+$n=i^2-j^2$ iff $n\equiv 0 (\text{mod } 4)$ or $n\equiv 1 (\text{mod } 4)$ or $n\equiv 3 (\text{mod } 4)$.
+
+
+($\Longrightarrow$)
+
+Assume $\exists i, j \in \mathbb{N}: n = i^2 - j^2$\\
+The difference between $i$ and $j$ can either be even or odd.\\
+So either $\exists k \in \mathbb{Z}: i = j + 2\cdot k \vee \exists k \in \mathbb{Z}: i = j + 2\cdot k + 1$.
+
+\begin{equation}
+\begin{split}
+\exists k \in \mathbb{Z}: i &= j + 2\cdot k\Longleftrightarrow\\
+\exists k \in \mathbb{Z}: n &= (j + 2\cdot k)^2 - j^2\Longleftrightarrow\\
+\exists k \in \mathbb{Z}: n &= j^2 + 4\cdot k \cdot j + 4\cdot k^2 - j^2 \Longleftrightarrow\\
+\exists k \in \mathbb{Z}: n &= 4\cdot (k\cdot j + k^2)\Longleftrightarrow\\
+n &\equiv 0(\text{mod } 4)\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\exists j, k \in \mathbb{Z}: i &= j + 2\cdot k + 1\Longleftrightarrow\\
+\exists j, k \in \mathbb{Z}: n &= (j + 2\cdot k + 1)^2 - j^2\Longleftrightarrow\\
+\exists j, k \in \mathbb{Z}: n &= j^2 + 2\cdot j \cdot (2\cdot k + 1) + (2\cdot k + 1)^2 - j^2\Longleftrightarrow\\
+\exists j, k \in \mathbb{Z}: n &= 4\cdot j\cdot k + 2\cdot j + 4\cdot k^2 + 4\cdot k + 1\Longleftrightarrow\\
+\exists j, k \in \mathbb{Z}: n &= 2\cdot j + 1 + 4\cdot (j\cdot k + k^2 + k)\Longleftrightarrow\\
+\exists j \in \mathbb{Z}: n &\equiv 2\cdot j + 1(\text{mod } 4)\Longleftrightarrow\\
+n &\equiv 1(\text{mod } 4)\vee n \equiv 3(\text{mod } 4)\\
+\end{split}
+\end{equation}
+\begin{center}
+$\therefore \exists i, j \in \mathbb{N}: n = i^i - j^2 \Longrightarrow n \equiv 0(\text{mod } 4) \vee n \equiv 1(\text{mod } 4) \vee n \equiv 3(\text{mod } 4)$
+\end{center}
+\vspace{0.2em}
+($\Longleftarrow$)
+\begin{equation}
+\begin{split}
+n &\equiv 0 (\text{mod } 4)\Longleftrightarrow\\
+\exists k \in \mathbb{Z}: n &= 4\cdot k\\
+\text{Let } i &= k + 1 \text{ and } j = k - 1\\
+& i^2 - j^2\\
+=& (k + 1)^2 - (k - 1)^2\\
+=& k^2 + 2\cdot k + 1 - k^2 + 2\cdot k - 1\\
+=& 4\cdot k\\
+=& n\\
+\therefore n &\equiv 0(\text{mod } 4) \Longrightarrow \exists i, j \in \mathbb{Z}: n= i^2 - j^2\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+n &\equiv 1 (\text{mod } 4) \Longleftrightarrow\\
+\exists k \in \mathbb{Z}: n &= 4\cdot k + 1\\
+\text{Let } i &= 2\cdot k + 1 \text{ and } j = 2\cdot k\\
+& i^2 - j^2\\
+=& (2\cdot k + 1)^2 - (2\cdot k)^2\\
+=& 4\cdot k^2 + 4\cdot k + 1 - 4\cdot k^2\\
+=& 4\cdot k + 1\\
+=& n\\
+\therefore n &\equiv 1(\text{mod } 4) \Longrightarrow \exists i, j \in \mathbb{Z}: n= i^2 - j^2\\
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+n &\equiv 3(\text{mod } 4) \Longleftrightarrow\\
+\exists k \in \mathbb{Z}: n &= 3 + 4\cdot k\\
+\text{Let } i &= 2\cdot k + 2 \text{ and } j = 2\cdot k + 1\\
+& i^2 - j^2\\
+=& (2\cdot k + 2)^2 - (2\cdot k + 1)^2\\
+=& 4\cdot k^2 + 8\cdot k + 4 - 4\cdot k^2 - 4\cdot k - 1\\
+=& 4\cdot k + 3\\
+=& n\\
+\therefore n &\equiv 3(\text{mod } 4) \Longrightarrow \exists i, j \in \mathbb{Z}: n=i^2 - j^2\\
+\end{split}
+\end{equation}
+\begin{center}
+$\therefore \exists i, j \in \mathbb{N}: n = i^i - j^2 \Longleftarrow n \equiv 0(\text{mod } 4) \vee n \equiv 1 (\text{mod } 4) \vee n \equiv 3 (\text{mod } 4)$
+
+$\therefore \exists i, j \in \mathbb{N}: n = i^i - j^2 \Longleftrightarrow n \equiv 0(\text{mod } 4) \vee n \equiv  1 (\text{mod } 4) \vee n \equiv 3 (\text{mod } 4)$
+\end{center}
+
+\item A \textit{decimal} (respectively \textit{binary}) \textit{repunit} is a natural number whose decimal 
+(respectively binary) representation consists solely of 1's.
+
+\begin{enumerate}
+
+\item What are the first three decimal repunits? And the first three binary ones?
+
+The first three decimal repunits are $1_{10}$, $11_{10}$ and $111_{10}$.\\
+The first three binary repunits are $1_2$ ($1_{10}$), $11_2$ ($3_{10}$) and $111_2$ ($7_{10}$).\\
+
+\item Show that no decimal repunit strictly greater than 1 is a square, and that the same holds 
+for binary repunits. Is this the case for every base?
+
+Show that there is no number which squares to end in $11_{10}$.
+\begin{center}
+Proof by contradiction. \\
+Assume there is a decimal repunit $r > 1$ that is a square.
+\begin{equation}
+\begin{split}
+\text{Assume: }\exists k \in \mathbb{Z}: k^2 &= r\\
+\exists k \in \mathbb{Z}: k^2 &= r\Longrightarrow\\
+\exists k \in \mathbb{Z}: k^2 &\equiv 11(\text{mod } 100)\Longrightarrow\\
+k^2 \equiv 1(\text{mod } 10) &\Longleftrightarrow\\
+\text{By ins}&\text{pection of the multiplication table of }\mathbb{Z}_m\\
+\exists i \in \mathbb{Z}: k = 10\cdot i + 1 \vee k = 10\cdot i + 9\\
+\end{split}
+\end{equation}
+Case 1: $k = 10\cdot i + 1$
+\begin{equation}
+\begin{split}
+(10\cdot i + 1)^2 &\equiv 11(\text{mod } 100)\Longleftrightarrow\\
+100\cdot i^2 + 20\cdot i + 1 &\equiv 11(\text{mod } 100)\Longleftrightarrow\\
+20\cdot i &\equiv 10 (\text{mod } 100)\Longleftrightarrow\\
+2\cdot i &\equiv 1(\text{mod } 10)\\
+\text{Which}&\text{ is false, because by inspection}\\
+\nexists i \in \mathbb{Z}: 2\cdot i &\equiv 1(\text{mod } 10)\\
+\end{split}
+\end{equation}
+However, this contradicts the original assumption that $\exists i \in \mathbb{Z}: (10\cdot i + 1)^2 = r$.
+
+Case 2: $k = 10\cdot i + 9$
+\begin{equation}
+\begin{split}
+(10\cdot i + 9)^2 &\equiv 11(\text{mod } 100)\Longleftrightarrow\\
+100\cdot i^2 + 20\cdot i + 81 &\equiv 11(\text{mod } 100)\Longleftrightarrow\\
+20\cdot i &\equiv 30(\text{mod } 100)\Longleftrightarrow\\
+2\cdot i &\equiv 3(\text{mod } 10)\\
+\text{Which}&\text{ is false because by inspection}\\
+\nexists i \in \mathbb{Z}: 2\cdot i &\equiv 3(\text{mod } 10)\\
+\end{split}
+\end{equation}
+However, this contradicts the original assumption that $\exists i \in \mathbb{Z}: (10\cdot i + 9)^2 = r$.
+
+So $\nexists k \in \mathbb{Z}: k^2 = r$ for any repunit $r > 1$. As required.
+
+Assume that there is an integer $k$ such that $k^2 = r$ for some binary repunit.
+\begin{equation}
+\begin{split}
+\exists k \in \mathbb{Z}: k^2 &= r\Longleftrightarrow\\
+\exists n \in \mathbb{Z}: (2\cdot n)^2 &= r \vee (2\cdot n + 1)^2 = r\\
+\end{split}
+\end{equation}
+Case 1: $\exists n \in \mathbb{Z}: (2\cdot n)^2 = r$.
+\begin{equation}
+\begin{split}
+\exists n \in \mathbb{Z}: (2\cdot n)^2 &= r\Longrightarrow\\
+\exists n \in \mathbb{Z}: 4\cdot n^2 &\equiv 3(\text{mod } 4)\Longleftrightarrow\\
+0 &\equiv 3 (\text{mod } 4)\\
+\end{split}
+\end{equation}
+However, this is not true. So $\nexists n \in \mathbb{Z}: (2\cdot n)^2 = r$
+
+Case 2: $\exists n \in \mathbb{Z}: (2\cdot n + 1)^2 = r$
+\begin{equation}
+\begin{split}
+\exists n \in \mathbb{Z}: (2\cdot n + 1)^2 &= r\Longrightarrow\\
+\exists n \in \mathbb{Z}: (2\cdot n + 1)^2 &\equiv 3(\text{mod } 4)\Longleftrightarrow\\
+\exists n \in \mathbb{Z}: 4\cdot n^2 + 4\cdot n + 1 &\equiv 3(\text{mod } 4)\Longrightarrow\\
+1 &\equiv 3(\text{mod } 4)\\
+\end{split}
+\end{equation}
+However, this is not true. So $\nexists n \in \mathbb{Z}: (2\cdot n + 1)^2 = r$.
+\end{center}
+Since all numbers are even or odd and $r$ cannot be the square of an even number or an odd number: 
+$r$ cannot be the square of any number -- hence $r$ cannot be a square number. 
+Since $r$ was arbitrary this proves that there are no binary repunits that are square numbers.
+
+This is not the case for every base: consider base $k^2 - 1$ for some number k.\\
+In base $k^2 - 1$: $k^2 = 11_{k^2 - 1}$.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

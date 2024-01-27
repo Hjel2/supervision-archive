@@ -1,0 +1,462 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{enumerate}
+
+\item The lifecycle of an exam question in a fictitious university includes at least the following 
+stages, which take place over several months:
+
+\begin{enumerate}[label=(\roman*)]
+\item Professor invents question.
+\item Chief examiner sanity-checks it.
+\item Professor amends it if necessary.
+\item External auditor sanity-checks it.
+\item Professor amends it again if necessary.
+\item Chief examiner approves final version.
+\item Clerk prints question in required number of copies.
+\end{enumerate}
+
+Following a scandal whereby some dishonest candidates got hold of questions ahead of time, 
+thus forcing the whole exam to be invalidated and repeated to the dismay of the honest 
+participants, the university has put pressure on its departments to ensure this will not 
+happen again.
+
+\begin{enumerate}
+
+\item The Head of Department $A$, where the leak occurred, is now paranoid about computer 
+networks and insists that no exam question shall ever reside on any networked computer 
+system until after the corresponding exam takes place.
+
+\begin{enumerate}[label=(\roman*)]
+
+\item Describe four ways that a determined undergraduate might nonetheless get hold of exam 
+questions before the exam even if that requirement were observed.
+
+\subsection*{Physical methods}
+
+Observation of someone who is working on the papers is the most obvious way to find
+out what the questions will be. This could be through shoulder surfing
+while they write the questions, recording them writing the questions on a camera
+or going through their waste paper bins afterwards in the hope they made notes about the
+question or drafts which could give an idea of what it will ask about.
+
+\subsection*{Interception}
+
+The papers will be passed between a large number of people. Since the questions will
+not be on networked computers, they must be physically passed between the people
+making them. Many of these people will be very busy and may not pass the papers directly to
+the next person, instead leaving them in pigeonholes, at receptions or mailing them.
+All of these methods are susceptible to interception -- monitoring the chief examiners
+mail, pigeonhole or asking to collect packages at reception might prove
+effective ways to gain access to exam questions.
+
+\subsection*{Malware}
+
+The security policy only prevents computers which store the exam questions on
+from being connected to the internet. It does not prevent the computers which are
+storing the exam questions from connecting to the internet before and after storing
+the exam questions. So if we infected the computer with malware before the exam question
+was written, we could store a second copy of the paper and send it away once the computer
+reconnects to the network. Or we could send it out via covert channels (even though the laptop
+is not connected to the internet, there are methods to send out information -- for example
+if the laptop is connected to the power socket then we could vary the consumption of
+electricity to send information or it could play specific sounds at specific volumes to
+convey bits information [the later method is more likely to be noticed but also has a
+far higher bandwidth]).
+
+\subsection*{Post-Completion}
+
+The questions will be printed several days or weeks prior to the exam. The most obvious way
+to get them would be to steal a physical copy of one. However, these papers are always
+closely guarded and so this is unrealistic. A more feasible approach would be to find
+the printers they're most likely to be printed on and turn on ``keep printed documents''.
+The printer would then keep a copy of the documents it has recently printed. Including
+several hundred copies of exam papers. Accessing it after the printing would give a
+full copy of the exam questions.
+
+\end{enumerate}
+
+\item Describe a security policy suitable for department $A$, taking into
+account the head-of-department's requirements and the staff workflow.
+Discuss it thoroughly, including requirements analysis, incentives and
+technical mechanisms.
+
+\begin{itemize}
+
+\item The examination board will distribute encrypted hard drives for the sole
+purpose of working on exam questions.
+
+\item Exam questions must only be stored on these hard drives.
+
+\item Hard Drives or their contents must not be given to third parties.
+
+\item The hard drives must be returned directly to the exams office for
+redistribution after work with them has finished.
+
+\item Any computer being used to write exam questions must not be connected
+to any network.
+
+\end{itemize}
+
+This allows staff to work on questions when they are in many places and allows them
+to easily redistribute the past questions easily. The use of encrypted hard drives
+(USB drives) means that staff can work on the questions, save it back to the USB drive
+and then reconnect to the internet and continue to use their computers as normal. This
+is good for staff workflow -- they're not writing off their computer for the period they work
+on the question or are forced to use another sub-par device.
+
+Staff are incentivised to save a copy onto their laptops, work on it and
+then at the end of writing the question to save it onto the encrypted drive.
+However, since there are so few precautions, I think the policy is within their compliance
+budget -- staff can still use their favourite text editors and IDEs on their own device and
+can find information on other devices. Staff have a personal interest for questions not
+to be released.
+
+Since questions must be passed directly to the exams office, the risk of interception
+is low -- the exams staff know not to give questions away and they will be stored in
+secure locations until they're given to the chief examiner or external auditor.
+
+This scheme only requires the university to purchase encrypted hard drives which are resilient
+to brute force attacks. These are relatively inexpensive.
+
+\item The Head of Department $B$ finds that $A$'s requirement would impose an excessive
+penalty on the productivity of her staff. At the same time, she certainly does not want 
+to be blamed for the next leak.
+
+\begin{enumerate}[label=(\roman*)]
+
+\item Describe a security policy suitable for department $B$, taking into account the 
+head-of-department's requirements and the staff workflow. Discuss it thoroughly,
+including requirements analysis, incentives and technical mechanisms.
+
+\begin{itemize}
+
+\item
+The chief examiner shall setup password protected drives with basic text editor facilities
+on the university's internal network for each question. These drives shall only be
+accessible to the professors and the chief examiners university account on their
+specific devices.
+
+\item
+Work shall only be done on the exam questions in these drives.
+
+\item
+Questions shall only be accessed in private locations -- this is limited to
+offices, private accommodation and staff-only facilities.
+
+\item
+The chief examiner will choose suitably secure passwords and be responsible
+for managing who has access rights for each drive.
+
+\item
+Staff working on questions shall have the university's designated antivirus
+software installed and shall run quick scans daily and full scans weekly.
+
+\end{itemize}
+
+Staff can still access and work on exam questions whenever they wish, however
+the questions are not stored on their devices and can only be accessed on the
+member of staff's device on the university network using their ID and the drive
+password.
+
+For a malicious attacker (student) to gain access, they'd have to have access
+to the member of staff's laptop and know their full login credentials and the
+password to the shared google drive. This would be a significant breach and it
+would be immediately obvious that it had happened.
+Additionally since the questions are stored separately until the end, questions
+can only be compromised individually -- so the worst-case is no longer the whole
+paper has been compromised -- rather a few individual questions.
+
+If a leak occurs, then a users university account will be fully compromised and
+it will be clear which member of staff was responsible for the leak. Since the
+leaks are now tied to member of staff's other accounts and responsibility can easily be
+attributed; there is now an even higher incentive for all members of staff \textit{not}
+to be responsible for a leak.
+
+The Chief examiner is also responsible: it is their responsibility that only people
+who have a legitimate right to know what the questions are will see them. Also since the chief examiner sets teh
+passwords, its their responsibility to choose good passwords (since passwords are distributed,
+people so we will find out if they don't)!
+
+Since the questions are stored in the network, they can easily be sent between users
+without any risk of interception: disable the professor from seeing the question and
+enable the chief examiner. Disable the chief examiner and enable the external auditor.
+
+This protocol requires a special internal system to be designed which can use the
+information associated with the university network to distinguish devices and users.
+This should be developed by a competent contractor.
+
+\item Describe three trade-offs between security and usability that you considered in 
+devising the policy in (b)(i) and justify the choices you made.
+
+\subsection*{Files are edited on the university network}
+
+This decision involves two subtle trade-offs. Firstly, you can now only work
+on past questions while connected to the university network. This is bad for
+usability -- professors can't work on questions while on the train or on
+holiday! However, this means that anytime they work on questions, they will
+be connected to a secure network. This greatly reduces the risk of spyware.
+This also puts more of the security aspect into the university's control --
+individual professors can't email questions or leave paper copies lying
+around! It also means brute force attacks on encrypted or password-protected
+files are no longer feasible (since the network will add delay and lock out).
+
+\subsection*{Examiner sets passwords}
+
+One of the main problems with passwords is that the passwords people choose
+are often weak and easily guessable. If the chief examiner sets the passwords
+then they are guaranteed to be secure -- and if they're not then they can be
+reported by the professors. The use of strong, new passwords is bad for usability --
+professors will have to write them down. However, this is not a major problem --
+if the passwords are written down in a professor houses (as is most likely) then
+getting exam papers would require breaking and entering! Very few students would
+resort to such measures.
+
+\subsection*{Only accessible on Personal Computers}
+
+This is a fairly obvious tradeoff. Although it means that staff can't work on
+questions on library computers, mobile phones or other devices; it also means
+questions can't be accessed by third parties without stealing the professors
+personal laptop and knowing it's password -- theft of a laptop is highly likely
+to get noticed!
+
+\end{enumerate}
+
+\end{enumerate}
+
+\item \label{itm:relativevalue} Discuss the contribution and the relative value of the following aspects of the modern
+development environment. Illustrate with examples if you can. In each case, would you discard 
+this feature if your employer let you, or insist on retaining it (even covertly) should your 
+employer not value it? Explain your reasons.
+
+\begin{enumerate}
+
+\item Dividing a project into short development episodes or sprints.
+
+Large projects are split up into smaller sub-projects which can be
+completed in manageable amounts of time.
+
+I would insist on continuing this -- breaking larger problems into manageable
+pieces helps control the complexity of large projects and keep programmers
+motivated (working on an unmanageably large project where you never seem to
+complete anything is highly demotivating). This also helps you track how much
+of a large project has been completed.
+
+Consider building a (small) operating system. We could divide this into
+``memory management'', ``device drivers'', ``UI'', ``process management''
+and more. This makes the project more manageable than ``build an Operating
+System''.
+
+\item Project progress visualisation tools such as PERT and GANTT charts.
+
+While it's vitally important to know how far through a project you are,
+GANTT charts can be very hard to visualise for any nontrivial projects
+and end up as unintelligible spaghetti! This is unusable and can even
+be used to confuse management -- who don't want to ask how to understand
+the report their programmers given them.
+
+PERT charts partially solve this problem, representing projects as directed
+acyclic graphs (which can be zoomed into and re-adjusted for visibility and
+clarity). PERT charts also allow critical path analysis which let us see how
+to redistribute work and view how delays will affect the completion date of
+the project.
+
+However, to make a project progress visualisation chart, everything about a
+project must be known before it's started -- including every phase and
+approximately how long each stage of the project will last. This is usually
+infeasible. However, we can make approximate charts -- which are still helpful.
+
+Project Progress Visualisation is essential -- if we don't know how far along
+a project is, then we can fool ourselves into thinking we're further than we
+are! I would therefore insist on using PERT charts in most projects.
+
+\item Automated regression testing tools.
+
+Automated regression testing tools will run a large set of tests (which have
+been built up over the systems lifetime) on the full system before any changes
+are committed. If any of these tests fail then the new changes have likely
+reintroduced a bug. These changes will not be committed to the main system.
+
+Automated regression testing makes changing large systems easier and less
+risky. Finding and debugging old bugs can be especially painful -- we know
+$f$ used to work and so assume it still works, leading to a painful
+debugging process. I would therefore strongly suggest automated regression
+testing and would insist on using it even without encouragement from an
+employer.
+
+Consider designing a database management system. We might add a new feature
+that interferes and break existing functionality -- for example adding a
+``add empty row'' command would break the invariant that primary keys are
+non-null meaning merges will not work. Imagine now that this is committed and
+rolls out into the main system. Bug reports come in and a week after the new
+feature is added, a different programmer is told to fix this bug. They will
+have to find out why merges are broken, find out when the invariant of
+non-null primary keys is broken, read a different programmer's code, find
+out what it's meant to do and where it fails. This is a long and painful process.
+Automated regression testing could pick this up and prevent this bug.
+
+\item Source code management tools.
+
+Source code management tools such as Git or GitHub help ensure that everyone's
+code is consistent and allows people to easily work on code in parallel. This
+can reduce the complexity of projects since we only talk to one server rather
+than to every other programmer individually. They also provide functionality
+to recover previous code and see recent changes. This allows faster recovery
+from errors. Code repositories also allow people to see all the work other
+parts of the team are doing and get a better indication of the progress of
+the project. I would insist on using a code repository for any project I
+expected to take more than a few hours.
+
+\item Scrumming.
+
+Scrums are short meetings where everyone debriefs the rest of the team on their
+current work status: what they've done recently, what they're planning on doing
+and what problems they've encountered. Only programmers are allowed to talk.
+
+Scrumming encourages teamwork, cooperation, gives the team a good overall
+idea of the rest of the project and encourages people to work harder -- it's
+embarrassing to consistently tell people you've done hardly anything! I would
+therefore encourage scrumming in most situations -- especially in a remote
+working environment where teamwork is very difficult and it's easy to be
+unaware of the progress of other parts of the project.
+
+\end{enumerate}
+
+\item 
+
+\begin{examquestion}{2000}{9}{6}
+
+The owner of a banking system which previously used manually distributed shared
+keys to compute MACs on transactions decides to use public key cryptography to
+distribute MAC keys in future. The proposed protocol is
+
+\[
+A \rightarrow B: \{\{T_A, K_{AB}\}_{K_A^{-1}}\}_{K_B}
+\]
+
+\begin{enumerate}[label=(\alph*)]
+
+\item Explain the symbolism used in this description.
+
+\begin{itemize}
+
+\item $A \rightarrow B$ means that $A$ sends a message to $B$
+
+\item $T_A$ is a timestamp generated by $A$ when they sent their message
+
+\item $K_{AB}$ is the MAC key shared between $A$ and $B$
+
+\item ${}_K$ means encrypted under the key $K$
+
+\item $K_A^{-1}$ is $A$'s private key
+
+\item $K_B$ is $B$'s public key
+
+\end{itemize}
+
+Overall the protocol is ``$A$ sends a message to $B$ containing a timestamp
+and the MAC key signed by $A$ by encrypting it under $A$'s private key, and
+then encrypted using $B$'s public key.
+
+\item What is wrong with this protocol?
+
+Public key encryption algorithms commute.
+
+So:
+\[
+\{\{M\}_{K_A^{-1}}\}_{K_B} = \{\{M\}_{K_B}\}_{K_A^{-1}} \\
+\]
+
+A third party $C$ knows $A$'s public key and $K_C^{-1}$ so if they
+intercepted the message they could encrypt under both:
+\[
+\begin{split}
+\{\{\{\{M\}_{K_B}\}_{K_A^{-1}}\}_{K_A}\}_{K^{-1}_C}
+=& \{\{M\}_{K_B}\}_{K^{-1}_C} \\
+=& \{\{M\}_{K^{-1}_C}\}_{K_B} \\
+\end{split}
+\]
+So a third party $C$ could intercept the message, un-sign $A$'s signature
+and sign it themselves. $C$ could send this message to $B$ and $B$ would
+now think that it had come from $C$.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\item ``Software has become more reliable over the past 20 years.'' To
+what extent do you agree with this? Write a short bullet point essay plan
+with factors for and against.
+
+\begin{itemize}
+
+\item Over the last 20 years computational capabilities have greatly increased
+and the field has matured and attracted interest. This has led to significantly
+larger projects being undertaken. Since modern projects have a higher intrinsic
+complexity than projects 20 years ago, they've experienced a decrease in
+reliability.
+
+\item Computers are more powerful and compilers are better than 20 years ago.
+As a result, speed has become a less critical part of programming and
+programmers no longer need to think about the efficiency of their code to the
+same extent. Since efficiency is no longer the primary focus when programming,
+we can focus more on correctness. This has led to an increase in reliability.
+
+\item Over the last 20 years, we've gained a lot of experience in large
+projects. This has led to an increased emphasis on testing: automated
+regression testing, unit testing and system testing. So a lower proportion
+of  bugs escape development. Experience in large projects has also
+led to better development methodologies consider agile vs waterfall (although
+Brooke's ``Extreme Programming'' was initially released in 1999 the methodology
+was not common and was in it's infancy). Many of the techniques discussed
+in~\ref{itm:relativevalue} are a result of the increased experience (since
+they've already been discussed, I won't repeat them).
+This experience has caused software reliability to increase.
+
+\item Corporate attitudes to bug reports have changed; previously when bugs
+were reported, companies would threaten to call in lawyers to keep the
+discovery quiet. This attitude has completely changed now and companies
+actively encourage people to find bugs in their software (and will pay
+them if they do). This causes many bugs to be quickly found and patched
+leading to an overall increase in reliability.
+
+\item The languages which are used for development in 2022 have far more
+features than those which were used 20 years ago. 20 years ago the main
+development language was C -- which is weakly typed and requires manual
+memory management and meticulous planning. Now the main development languages
+such as Python, Java or Kotlin are all strongly typed and provide many more
+features which make development easier.
+
+\item Over the last 20 years, programming has moved away from ``writing it
+from scratch'' to ``using the library that does it''. For complicated programs,
+this increases the reliability since mistakes are not made with the
+intrinsically complicated parts of the code. All we need to do now is
+call the API .
+
+However, since programmers have not written much of the complicated code there
+is often a poor understanding of how it works making it prone to misuse and
+leading to reliability issues. Giving an example, in Python integers can't
+overflow. However the main linear algebra library NumPy is written in C -- and
+so can experience integer overflows.
+
+Overall, the growth of libraries has increased software reliability.
+
+\item Computer Science is a more mature discipline. This means there is more
+interest, literature and education than there was 20 years ago. The effect
+of this is that there are more good programmers. However, conversely the
+increased interest and accessibility means it's easy for amateurs to
+become involved. Overall I'd argue that the increase in quality of
+programmers due to increased literature and education outweighs the
+decrease due to accessibility. I'd argue the maturity of Computer
+Science has resulted in an overall increase in the reliability of software.
+
+\end{itemize}
+
+\end{enumerate}
+
+\end{document}

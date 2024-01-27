@@ -1,0 +1,578 @@
+\input{./templatenst/prefs/jkf21.tex}
+\input{./templatenst/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./templatenst/includes.tex}
+\input{./templatenst/template.tex}
+
+\fancyhead[RO,LE]{{\bfseries NST Maths, SV~9}\\12-02-2022\ 12:00, Video Link}
+
+\usepackage{physics}
+
+\begin{document}
+
+\section*{Ordinary Differential Equations}
+
+\begin{enumerate}
+\setcounter{enumi}{8}
+
+\item
+\begin{enumerate}
+
+\item
+\begin{equation}
+\begin{split}
+\dv[2]{y}{x} - 5\dv{y}{x} + 6y &= 0\\
+\lambda^2 - 5\lambda + 6 &= 0\\
+(\lambda - 2)(\lambda - 3) &= 0\\
+\lambda = 2 \vee \lambda &= 3\\
+y_c &= Ae^{2x} + Be^{3x}\\
+y_p &= 0 \\
+y &= y_c + y_p \\
+y &= Ae^{2x} + Be^{3x}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y(0) &= 0\\
+0 &= Ae^{2\times 0} + Be^{2 \times 0}\\
+0 &= A + B\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y'(0) &= 1\\
+\dv{y}{x} &= 2Ae^{2x} + 3Be^{3x} \\
+\dv{y}{x}\left(0\right) &= 2Ae^{2 \times 0} + 3Be^{3 \times 0} \\
+1 &= 2A + 3B \\
+1 &= 2(A + B) + B \\
+1 &= B \\
+0 &= A + 1 \\
+A &= -1 \\
+y &= -e^{2x} + e^{3x} \\
+\end{split}
+\end{equation}
+
+\item
+\begin{equation}
+\begin{split}
+\left(\dv[n]{x} + n^2\right)y &= 0\\
+\lambda^2 + n^2 &= 0\\
+\lambda &= \pm ni\\
+y_c &= P\sin nx + Q\cos nx\\
+y_p &= 0 \\
+y &= y_c + y_ p \\
+y &= P\sin nx + Q\cos nx\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y(0) &= 0\\
+0 &= P\sin 0 + Q\cos 0\\
+0 &= Q\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y'(0) &= 1\\
+\dv{y}{x}\left(0\right) &= nP\cos 0\\
+1 &= nP\\
+P &= \frac{1}{n}\\
+y &= \frac{1}{n}\sin nx\\
+\end{split}
+\end{equation}
+
+\item
+\begin{equation}
+\begin{split}
+\left(\dv[2]{x} + 2\dv{x} + 4\right)y &= 0\\
+\lambda^2 + 2\lambda + 4 &= 0\\
+\lambda &= \frac{-2 \pm \sqrt{4 - 16}}{2}\\
+\lambda &= -1 \pm \sqrt{3}i\\
+y_c &= e^{-x}(P\sin (\sqrt{3}x) + Q \cos (\sqrt{3}x))\\
+y_p &= 0 \\
+y &= y_p + y_c \\
+y &= e^{-x}(P\sin (\sqrt{3}x) + Q \cos (\sqrt{3}x))
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y(0) &= 0\\
+0 &= e^0(P\sin 0 + Q \cos 0)\\
+0 &= Q \\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\dv{y}{x} &= -Pe^{-x}\sin (\sqrt{3}x) + \sqrt{3}Pe^{-x}\cos(\sqrt{3}x)\\
+\dv{y}{x}\left(0\right) &= -Pe^{0}\sin 0 + e^{0}\sqrt{3}P\cos(0)\\
+1 &= 0 + \sqrt{3}P\\
+P &= \frac{1}{\sqrt{3}}\\
+y &= \frac{1}{\sqrt{3}}e^{-x}\sin(\sqrt{3}x)\\
+\end{split}
+\end{equation}
+
+\item
+\begin{equation}
+\begin{split}
+\left(\dv[2]{x} + 9\right)y &= 18\\
+\lambda^2 + 9 &= 0\\
+\lambda &= \pm 3i\\
+y_c &= P\sin 3x + Q \cos 3x + y_p\\
+y_p &= c\\
+9c &= 18\\
+c &= 2\\
+y &= y_c + y_p \\
+y &= P\sin 3x + Q \cos 3x + 2\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y(0) &= 0\\
+0 &= P\sin 0 + Q \cos 0 + 2\\
+0 &= 0 + Q + 2\\
+Q &= -2\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y'(0) &= 1 \\
+\dv{y}{x} &= 3P\cos 3x - 6 \sin 3x\\
+\dv{y}{x}\left(0\right) &= 3P\cos 0 - 6 \sin 0\\
+1 &= 3P\\
+P &= \frac{1}{3}\\
+y &= \frac{1}{3}\sin 3x - 2 \cos 3x + 2\\
+\end{split}
+\end{equation}
+
+\item
+\begin{equation}
+\begin{split}
+\left(\dv[2]{x} - 3\dv{x} + 2\right)y &= e^{5x}\\
+\lambda^2 - 3\lambda + 2 &= 0\\
+(\lambda - 1)(\lambda - 2) &= 0\\
+\lambda = 1 \vee \lambda &= 2\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y_c &= Ae^x + Be^{2x}\\
+y_p &= ke^{5x}\\
+\dv{y_p}{x} &= 5ke^{5x}\\
+\dv[2]{y_p}{x} &= 25ke^{5x}\\
+\dv[2]{y_p}{x} - 3\dv{y_p}{x} + 2y_p &= e^{5x}\\
+(25k - 15k + 2k)e^{5x} &= e^{5x}\\
+12k &= 1\\
+k &= \frac{1}{12}\\
+y &= y_c + y_p \\
+y &= Ae^x + Be^{2x} + \frac{1}{12}e^{5x}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y(0) &= 0\\
+0 &= Ae^0 + Be^{0} + \frac{1}{12}e^{0}\\
+0 &= A + B + \frac{1}{12}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y'(0) &= 1\\
+\dv{y}{x} &= Ae^x + 2Be^{2x} + \frac{5}{12}e^{5x}\\
+\dv{y}{x}\left(0\right) &= Ae^0 + 2Be^0 + \frac{5}{12}e^0\\
+1 &= A + 2B + \frac{5}{12}\\
+1 &= (A + B + \frac{1}{12}) + B + \frac{4}{12}\\
+B &= \frac{2}{3}\\
+A &= -\frac{1}{12} - B\\
+A &= -\frac{3}{4}\\
+y &= -\frac{3}{4}e^x + \frac{2}{3}e^{2x} + \frac{1}{12}e^{5x}\\
+\end{split}
+\end{equation}
+
+\item
+\begin{equation}
+\begin{split}
+\dv[2]{y}{x} - 2\dv{y}{x} + y &= 0\\
+\lambda^2 - 2\lambda + 1 &= 0\\
+\lambda &= 1\\
+y_c &= (A + Bx)e^{x}\\
+y_p &= 0\\
+y &= y_c + y_p\\
+y &= (A + Bx)e^{x}\\
+\end{split}
+\end{equation}
+
+\item
+The complementary function is the same as in the previous question so we can reuse the result and only 
+need to work out the particular integral and the initial conditions.
+\begin{equation}
+\begin{split}
+\dv[2]{y}{x} - 2\dv{y}{x} + y &= e^{2x} + e^{x}\\
+y_p &= Pe^{2x} + Qx^2e^x\\
+\dv{y_p}{x} &= 2Pe^{2x} + 2Qxe^x + Qx^2e^x\\
+\dv[2]{y_p}{x} &= 4Pe^{2x} + 2Qe^x + 4Qxe^x + Qx^2e^x\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\dv[2]{y_p}{x} - 2\dv{y_p}{x} + y &= e^{2x} + e^{x}\\
+4Pe^{2x} - 4Pe^{2x} + Pe^{2x} + 2Qe^x &= e^{2x} + e^x\\
+Pe^{2x} + 2Qe^x &= e^{2x} + e^x\\
+P = 1 &\wedge Q = \frac{1}{2}\\
+y_p &= e^{2x} + \frac{1}{2}x^2e^x\\
+y &= y_c + y_p \\
+y &= (A + Bx + \frac{1}{2}x^2)e^{x} + e^{2x}\\
+\end{split}
+\end{equation}
+
+\end{enumerate}
+
+\item
+\begin{equation}
+\begin{split}
+-iR &= \frac{q}{C} + V\\
+i &= -\frac{q}{RC} - \frac{V}{R}\\
+-L\dv{j}{t} &= \frac{q}{C} + V\\
+\dv{j}{t} &= -\frac{q}{LC} - \frac{V}{L}\\
+\dv{q}{t} &= i + j\\
+\dv{q}{t} &= -\frac{q}{RC} - \frac{V}{R} + j\\
+\dv[2]{q}{t} &= -\frac{1}{RC}\dv{q}{t} - \frac{1}{R}\dv{V}{t} + \dv{j}{t}\\
+\dv[2]{q}{t} &= -\frac{1}{RC}\dv{q}{t} - \frac{1}{R}\dv{V}{t} - \frac{q}{LC} - \frac{V}{L}\\
+\dv[2]{q}{t} + \frac{1}{RC}\dv{q}{t} + \frac{1}{LC}q &= -\frac{1}{R}\dv{V}{t} - \frac{1}{L}V \text{ as required}\\
+\end{split}
+\end{equation}
+
+\begin{enumerate}
+
+\item 
+
+Since we have initial conditions $Q = 0$ and $Q$ is not changing, we know that both $Q = 0$ and 
+$\dv{Q}{t} = 0$. This means that the RHS of the equation is now 0.
+
+\begin{equation}\label{firstpart}
+\begin{split}
+\dv[2]{q}{t} + \frac{1}{RC}\dv{q}{t} + \frac{1}{LC}q &= 0\\
+L = 8R^2C&\\
+\dv[2]{q}{t} + \frac{1}{RC}\dv{q}{t} + \frac{1}{8R^2C^2}q &= 0\\
+\lambda^2 + \frac{1}{RC}\lambda + \frac{1}{8R^2C^2} &= 0\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\lambda &= \frac{-\frac{1}{RC} \pm \sqrt{\frac{1}{R^2C^2} - \frac{4}{8R^2C^2}}}{2}\\
+\lambda &= \frac{-\frac{1}{RC} \pm \sqrt{\frac{1}{2R^2C^2}}}{2}\\
+\lambda &= \frac{-\frac{1}{RC} \pm \frac{1}{\sqrt{2}RC}}{2}\\
+\lambda &= \frac{-2 \pm \sqrt{2}}{4RC}\\
+q &= Ae^{\left(\frac{-2 + \sqrt{2}}{4RC}\right)t} + Be^{\left(\frac{-2 - \sqrt{2}}{4RC}\right)t}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+q(0) &= Q\\
+A + B &= Q\\
+\dv{q}{t}\left(0\right) &= -\frac{Q}{RC}\\
+\left(\frac{-2 + \sqrt{2}}{4RC}\right)A + \left(\frac{-2 - \sqrt{2}}{4RC}\right)B &= -\frac{Q}{RC}\\
+\frac{-2(A + B)}{4RC} + \frac{\sqrt{2}(A - B)}{4RC} &= -\frac{Q}{RC}\\
+-\frac{Q}{2RC} + \frac{2\sqrt{2}A}{4RC} - \frac{\sqrt{2}Q}{4RC} &= -\frac{Q}{RC}\\
+\frac{\sqrt{2}A}{2RC} &= \frac{(\sqrt{2} - 2)Q}{4RC}\\
+A &= \frac{(1 - \sqrt{2})Q}{2}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+A + B &= Q\\
+B &= Q - \frac{(1 - \sqrt{2})Q}{2}\\
+B &= \frac{(1 + \sqrt{2})Q}{2}\\
+\end{split}
+\end{equation}
+\begin{equation}
+q = \frac{(1 - \sqrt{2})Q}{2}e^{\left(\frac{-2 + \sqrt{2}}{4RC}\right)t} + \frac{(1 + \sqrt{2})Q}{2}e^{\left(\frac{-2 - \sqrt{2}}{4RC}\right)t}\\
+\end{equation}
+
+The roots to this equation are distinct and real: this is strong dampening. 
+The charge will decrease to 0 exponentially without ever oscillating.
+
+\item
+\begin{equation}
+\begin{split}
+\dv[2]{q}{t} + \frac{1}{RC}\dv{q}{t} + \frac{1}{LC}q &= 0\\
+L = 4R^2C^2&\\
+\dv[2]{q}{t} + \frac{1}{RC}\dv{q}{t} + \frac{1}{4R^2C^2}q &= 0\\
+\lambda^2 + \frac{1}{RC}\lambda + \frac{1}{4R^2C^2} &= 0\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\lambda &= \frac{-\frac{1}{RC} \pm \sqrt{\frac{1}{R^2C^2} - \frac{4}{4R^2C^2}}}{2}\\
+\lambda &= -\frac{1}{2RC}\\
+q &= (A + Bt)e^{-\frac{t}{2RC}}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+q(0) &= Q\\
+A &= Q\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\dv{q}{t}\left(0\right) &= -\frac{Q}{RC}\\
+Be^{-\frac{0}{2RC}} - \frac{Q}{2RC}e^{-\frac{t}{2RC}} &= -\frac{Q}{RC}\\
+B - \frac{Q}{2RC} &= -\frac{Q}{RC}\\
+B &= -\frac{Q}{2RC}\\
+\end{split}
+\end{equation}
+\begin{equation}
+q = (Q - \frac{Qt}{2RC})e^{-\frac{t}{2RC}}\\
+\end{equation}
+
+In this equation, the roots to the simultaneous are repeated: this is critial dampening. 
+In this form the charge will decrease to 0 without ever increasing 
+or oscillating -- however this decrease will be faster than for strong dampening.
+
+\item
+\begin{equation}
+\begin{split}
+\dv[2]{q}{t} + \frac{1}{RC}\dv{q}{t} + \frac{1}{LC}q &= 0\\
+L = 2R^2C^2&\\
+\dv[2]{q}{t} + \frac{1}{RC}\dv{q}{t} + \frac{1}{2R^2C^2}q &= 0\\
+\lambda^2 + \frac{1}{RC}\lambda + \frac{1}{2R^2C^2} &= 0\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\lambda &= \frac{-\frac{1}{RC} \pm \sqrt{\frac{1}{R^2C^2} - \frac{4}{2R^2C^2}}}{2}\\
+\lambda &= -\frac{1}{2RC} \pm \frac{1}{2RC}i\\
+q &= \left(A \sin{\left(\frac{t}{2RC}\right)} + B\cos{\left(\frac{t}{2RC}\right)}\right)e^{-\frac{t}{2RC}}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+q(0) &= Q\\
+B &= Q\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\dv{q}{t}\left(0\right) &= -\frac{Q}{RC}\\
+-\frac{q}{2RC} + \frac{1}{2RC}\left(A\cos\left(\frac{t}{2RC}\right) - Q\sin\left(\frac{t}{2RC}\right)\right)e^{-\frac{t}{2RC}} &= -\frac{Q}{RC}\\
+-\frac{Q}{2RC} + \frac{A}{2RC} &= -\frac{Q}{RC}\\
+A &= -Q\\
+\end{split}
+\end{equation}
+\begin{equation}
+q = \left(-Q \sin{\left(\frac{t}{2RC}\right)} + Q\cos{\left(\frac{t}{2RC}\right)}\right)e^{-\frac{t}{2RC}}\\
+\end{equation}
+
+The roots to the equation in this case are complex: this is weak dampening -- in this version the charge will oscillate with constant 
+angular frequency between two exponentially decreasing values.
+
+\end{enumerate}
+
+\item
+\begin{enumerate}
+\item
+\begin{equation}
+\begin{split}
+y'' - (2 + c)y' + (1 + c)y &= e^{(1 + 2c)x}\\
+\lambda^2 - (2 + c)\lambda + (1 + c) &= 0\\
+(\lambda - 1)(\lambda - (1 + c)) &= 0\\
+\lambda = 1 \vee \lambda &= 1 + c\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y_c &= Pe^x + Qe^{(1 + c)x}\\
+y_p &= ke^{(1 + 2c)x}\\
+\dv{y_p}{x} &= k(1 + 2c)e^{(1 + 2c)x}\\
+\dv[2]{y_p}{x} &= k(1 + 2c)^2e^{(1 + 2c)x}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y_p'' + (2 + c)y_p' + (1 + c)y_p &= e^{(1 + 2c)x}\\
+k((1 + 2c)^2 - (2 + c)(1 + 2c) + (1 + c))e^{(1 + 2c)x} &= e^{(1 + 2c)x}\\
+k(4c^2 + 4c + 1 - 2c^2 - 5c - 2 + 1 + c) &= 1\\
+2c^2k &= 1\\
+k &= \frac{1}{2c^2}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+k &= \frac{1}{2(c + 1)(3c + 2)}\\
+y_p &= \frac{1}{2(c + 1)(3c + 2)}e^{(1 + 2c)x}\\
+y &= y_c + y_p\\
+y &= Pe^x + Qe^{(1 + c)x} + \frac{1}{2c^2}e^{(1 + 2c)x}\\
+\end{split}
+\end{equation}
+Let:
+\begin{equation}
+\begin{split}
+P &= A - \frac{B}{c} + \frac{1}{2c^2}\\
+Q &= B\frac{1}{c} - \frac{1}{c^2}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+y &= Ae^x - B\frac{1}{c}e^x + \frac{1}{2c^2} e^x + B\frac{1}{c}e^{(1 + c)x} - \frac{1}{c^2}e^{(1 + c)x} + \frac{1}{2c^2}e^{(1 + 2c)x}\\
+y &= Ae^x + B\frac{1}{c}(e^{(1 + c)x} - e^x) + \frac{1}{2c^2}(e^{(1 + 2c)x} - 2e^{(1 + c)x} + e^x)\\
+y &= Ae^x + B\frac{e^x}{c}(e^{cx} - 1) + \frac{e^x}{2c^2}(e^{2cx} - 2e^{cx} + 1) \text{ as required}\\
+\end{split}
+\end{equation}
+
+\item
+To find the limit as $c \rightarrow 0$, I will apply l'h\^opitals rule separately for the different parts of 
+the expression.
+\begin{equation}
+\lim_{c \rightarrow 0} f(x, c) = Ae^x + Be^x\lim_{c\rightarrow 0}\left(\frac{(e^{cx} - 1)}{c}\right) + e^x\lim_{c \rightarrow 0}\left(\frac{(e^{2cx} - 2e^{cx} + 1)}{2c^2}\right)\\
+\end{equation}
+\begin{equation}
+\begin{split}
+\frac{(e^{cx} - 1)}{c} &= \frac{f(c)}{g(c)}\\
+\lim_{c \rightarrow 0} f(c) &= e^0 - 1 = 0\\
+\lim_{c \rightarrow 0} g(c) &= 0\\
+\end{split}
+\end{equation}
+So we can apply l'h\^opitals rule to find the limit as $c \rightarrow 0$.
+\begin{equation}
+\begin{split}
+\lim_{c \rightarrow 0} B\frac{e^x}{c}(e^{cx} - 1) &= \frac{\dv{c}(e^{cx} - 1)}{\dv{c}(c)} \\
+												  &= \frac{xe^{cx}}{1} \\
+												  &= xe^{cx}\\
+												  &= xe^0\\
+												  &= x\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\frac{(e^{2cx} - 2e^{cx} + 1)}{2c^2} &= \frac{f(c)}{g(c)}\\
+\lim_{c \rightarrow 0} f(c) &= e^0 - 2e^0 + 1 = 0\\
+\lim_{c \rightarrow 0} g(c) &= 2 \cdot 0^2 = 0\\
+\end{split}
+\end{equation}
+So we can apply l'h\^opitals rule to find the limit as $c \rightarrow 0$.
+\begin{equation}
+\begin{split}
+\lim_{c \rightarrow 0} B\frac{e^x}{c}(e^{cx} - 1) &= \frac{\dv{c} (e^{2cx} - 2e^{cx} + 1)}{\dv{c} (2c^2)} \\
+												  &= \frac{2xe^{2cx} - 2xe^{cx}}{4c}\\
+\end{split}
+\end{equation}
+Now we must find the limit of this new function as $c \rightarrow 0$.
+\begin{equation}
+\begin{split}
+\frac{2xe^{2cx} - 2xe^{cx}}{4c} &= \frac{f(x)}{g(x)}\\
+\lim_{c \rightarrow 0} f(x) &= 2xe^0 - 2xe^0 = 2x - 2x = 0\\
+\lim_{c \rightarrow 0} g(x) &= 4 \times 0 = 0\\
+\end{split}
+\end{equation}
+So we can apply l'h\^opitals rule once more.
+\begin{equation}
+\begin{split}
+\lim_{c \rightarrow 0} \frac{2xe^{2cx} - 2xe^{cx}}{4c} &= \frac{\dv{c}(2xe^{2cx} - 2xe^{cx})}{\dv{c}(4c)}\\
+													   &= \frac{4x^2e^{2cx} - 2x^2e^{cx}}{4}\\
+													   &= x^2e^{0} - \frac{1}{2}x^2e^0\\
+													   &= \frac{1}{2}x^2\\
+\end{split}
+\end{equation}
+
+Substituting these results back into the original expression gives:
+\begin{equation}
+\begin{split}
+\lim_{c \rightarrow 0} f(x, c) &= Ae^x + Bxe^x + \frac{1}{2}x^2e^x\\
+							   &= (A + Bx + \frac{1}{2}x^2)e^x\\
+\end{split}
+\end{equation}
+So the solution to the differential equation when $c = 0$ is:
+\begin{equation}
+y = (A + Bx + \frac{1}{2}x^2)e^x\\
+\end{equation}
+
+\end{enumerate}
+
+\item 
+\begin{equation}
+\begin{split}
+-\frac{\eta}{2}\dv{C}{\eta} &= \dv[2]{C}{\eta}\\
+\frac{1}{\dv{C}{\eta}}\dv[2]{C}{\eta} &= -\frac{\eta}{2}\\
+\dv{\eta}\left(\ln\left(\dv{C}{\eta}\right)\right) &= -\frac{\eta}{2} \text{ as required}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\ln\left(\dv{C}{\eta}\right) &= -\int\frac{\eta}{2} d\eta\\
+\ln\left(\dv{C}{\eta}\right) &= - \frac{\eta^2}{4} + c\\
+\dv{C}{\eta} &= e^{-\frac{\eta^2}{4} + c}\\
+\dv{C}{\eta} &= Ae^{-\frac{\eta^2}{4}}\\
+\dv{C}{\eta}\left(0\right) &= Ae^0\\
+\dv{C}{\eta}\left(0\right) &= A\\
+C &= B + A\int^\eta_0e^{-\frac{t^2}{4}}dt\\
+C(0) &= B + A\int^0_0e^{-\frac{t^2}{4}}dt\\
+C(0) &= B\\
+\end{split}
+\end{equation}
+So if $\dv{C}{\eta}\left(0\right) = A$ and $C(0) = B$ then $C = B + A\int^\eta_0e^{-\frac{t^2}{4}}dt$ as required.
+
+\item
+\begin{enumerate}
+
+\item
+\begin{equation}
+\begin{split}
+\dv{x}{t} &= ax\\
+\frac{1}{x}\dv{x}{t} &= a\\
+\ln x &= at + c\\
+x &= ke^{at}\\
+x(0) &= 2\\
+2 &= ke^0\\
+2 &= k\\
+x &= 2e^{at}\\
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+\dv{y}{t} &= ay + bx\\
+\dv{y}{t} &= ay + 2be^{at}\\
+\dv{y}{t} - ay &= 2be^{at}\\
+\mu(y) &= e^{\int -a dt}\\
+\mu(y) &= e^{-at}\\
+e^{-at}\dv{y}{t} - aye^{-at} &= 2b\\
+ye^{-at} &= 2bt + C\\
+y &= 2bte^{at} + Ce^{at}\\
+y(0) &= 1\\
+1 &= C\\
+y &= 2bte^{at} + e^{at}\\
+\end{split}
+\end{equation}
+
+\item
+\begin{equation}
+\begin{split}
+\dv{x}{t} &= x - xy\\
+\dv{t}{x} &= \frac{1}{x - xy}\\
+\dv{y}{t} &= -y + xy\\
+\dv{y}{t}\dv{t}{x} &= \frac{-y + xy}{x - xy}\\
+\dv{y}{x} &= \frac{y(x - 1)}{x(1 - y)}\\
+\end{split}
+\end{equation}
+And so the coupled differential equations can be transformed into a differential equation of the form 
+$\dv{y}{x} = f(x, y)$ as required.
+\begin{equation}
+\begin{split}
+\dv{y}{x} &= \frac{y(x - 1)}{x(1 - y)}\\
+\frac{1 - y}{y}\dv{y}{x} &= \frac{x - 1}{x}\\
+\left(\frac{1}{y} - 1\right)\dv{y}{x} &= \left(1 - \frac{1}{x}\right)\\
+\ln y - y &= x - \ln x + c\\
+e^{\ln y - y} &= e^{x - \ln x + c}\\
+ye^{-y} &= e^c\frac{e^x}{x}\\
+e^{-c} &= \frac{e^y}{y}\cdot \frac{e^x}{x}\\
+A &= \frac{e^y}{y}\cdot \frac{e^x}{x}\\
+\end{split}
+\end{equation}
+And so $\frac{e^y}{y}\cdot \frac{e^x}{x}$ is independent of $t$ as required.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

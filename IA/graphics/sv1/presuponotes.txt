@@ -1,0 +1,11 @@
+Comment 1. Why is this?
+Blue light can only be picked up by short cone cells.
+Other wavelengths of light which can be picked up somewhat by both long and medium length cone cells.
+Short cone cells are set further back in the eye so to get to them, light must pass through both the gangleons and the layer of the other cone cells. This means that less ligth actually gets to them and hence we are less sensitive to those shorter wavelengths.
+
+Comment 2. Where does this come from?
+The background light comes from diffuse reflection off many other surfaces. It just reflects off surface 1, then surface 2, etc and gives a (very much non-uniform) amount of light around an area even if a specific surface is not directly illuminated.
+
+Comment 3. These are all for catching high frequency information. Are there other usages?
+Yes. DoF rendering.
+Soft shadows.

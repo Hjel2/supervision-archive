@@ -1,0 +1,511 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\begin{document}
+
+\begin{examquestion}{2019}{7}{8}
+
+In this question you will be asked to reflect on a project you have been
+involved in or observed, in which a design evolved, or could have evolved,
+through applying a theory of user behaviour. You may refer to a Part IB
+group project, practical work from IA/IB Interaction Design or a project
+outside the Computer Science Tripos. You are advised to read the whole
+question before choosing a project to describe.
+
+\begin{enumerate}
+
+\item Describe the project in one or two sentences.
+
+The IA Interaction Design project: designing a weather app for usage by
+Rowers in Cambridge. The app would function as a replacement weather app,
+but providing rowers with specific information tailored to rowing -- with a
+focus on the CUBC flag (which indicates what skill is required to go out at
+this specific time).
+
+\item Describe the intended users of this system, and the benefits that they
+would obtain through using this system.
+
+The users of this system would be Cambridge rowers -- they would be able to
+quickly check and get tailored information to whether they were allowed to
+go rowing. The current website is archaic, and rowers who wake up at 4/5am
+aren't mentally prepared to check the weather on such an outdated website.
+
+\item Describe a theory of user-behaviour that is relevant to the project,
+explaining why it is relevant.
+
+Goal-oriented search. The way in which users search for information on an
+interface is via a goal-oriented search. The stages of a goal-oriented
+search are:
+
+\begin{itemize}
+
+\item Goal
+
+The user determines what their goal is.
+
+\item Availability
+
+The user searches for something which they believe may help them find
+their goal.
+
+\item Match
+
+The user finds and selects the thing which they believe may help them
+achieve their goal.
+
+\item Feedback
+
+The user observes the change caused by their action and determines whether
+their goal is achieved and if not, whether the option they chose was
+correct or helped achieve their goal.
+
+\end{itemize}
+
+\item Would application of this theory be formative or summative? Explain why.
+
+Application of this theory would be formative. The application of
+goal-oriented search in user-centered design is via Cognitive Walkthrough.
+The researchers establish a task which a user may want to perform and
+attempt to perform it, noting down any issues they encounter.
+
+Since Cognitive Walkthrough finds specific issues with an interface,
+researchers can use this information to determine how to improve an
+interface. Therefore the evaluation would be formative.
+
+\item How are the opportunities for design evolution different, when either
+summative or formative evaluation methods are applied? Your answer should
+refer to the roles for divergence and convergence in a design process.
+
+Summative evaluation is an evaluation which tells you whether a product is
+good or not. These do not explicitly help discover how to \textit{improve}
+a product. For example A/B tests give evidence as to the size and direction
+of an effect -- however do not tell us how to increase the effect size.
+
+Formative evaluation tells us how to improve a system. For example, in
+Design Ethnography we observe people using the system and query them about
+things they do. This gives large amounts of quantitative information which
+can be used to improve a product.
+
+Formative evaluation is most useful for the divergent phase in the
+iterative design process -- we're given new ideas about how to improve
+systems so can add these new systems. While summative evaluation is better
+for the convergent phase -- it tells us whether a system is good and which
+systems are better -- we can use this to eliminate the worst interfaces.
+
+\item Explain what kind of evidence would be required when applying this
+theory in your project, and how you would obtain it, noting whether this
+evidence would involve quantitative or qualitative data.
+
+Goal-oriented search provides a concrete theory for how humans attempt to
+achieve their goals on an interface with which they are unfamiliar. This
+generates qualitative data. This would generate qualitative evidence that
+the designers found with their own system.
+
+\item Describe how your project team applied, or could have applied, a
+method that would improve the reliability of \textit{quantitative} data.
+
+We could have used Design Ethnography to observe usage of the product and
+determine whether real user problems aligned with the problems we observed
+during Cognitive Walkthrough. If they did not, we would need to investigate
+why.
+
+\item Describe how your project team applied, or could have applied, a
+method that would improve the reliability of \textit{qualitative} data.
+
+Get more of it. Using a larger data sample decreases the variance. After
+the product was complete, we could have used an A/B test to perform
+formative evaluation and determine whether rowers found our app to be
+better than the alternatives on the market. A/B tests generate quantitative
+data.
+
+The way of increasing reliability of data is to minimise variance. This can
+be done by taking a larger sample.
+
+\end{enumerate}
+
+\textbf{What did they mean by ``Theory''\ldots} under my understanding, the
+question confused lots of different topics -- theories of user behaviour
+with evaluation methods with empirical evaluation methods.
+
+\end{examquestion}
+
+\begin{examquestion}{2019}{7}{9}
+
+\begin{enumerate}
+
+\item If HCI methods were applied to the design of a programming language
+and tools, what research questions might be explored, according to the
+concerns of first wave, second wave and third wave HCI respectively?
+
+\begin{itemize}
+
+\item First Wave
+
+First-wave HCI was primarily concerned with efficiency of usage by
+professionals. In the context of a programming langauge, ``efficiency''
+relates to productivity of users and quality of source code generated.
+
+Research questions that might be explored under the concerns of first-wave
+HCI may include:
+
+\begin{itemize}
+
+\item How can we design the language to minimise the error rate of
+expert programmers
+
+What is the optimal tradeoff between type annotations and type inference?
+
+Should there be restrictions on the format of variable / function names so
+they're not confused.
+
+\item How can we design the language to maximise the rate at which
+expert programmers can generated code
+
+\item What language features or restrictions maximise the quality of code
+that programmers write
+
+\item What langauge features can we include/exclude to maximise the quality
+of compiled code.
+
+\end{itemize}
+
+\item Second-wave HCI
+
+Second-wave HCI was characterised by designing usable and learnable systems.
+These systems often included personalisation options -- each user would
+have their own system.
+
+\begin{itemize}
+
+\item What language features do users find hard-to-learn. Can we make them
+easier to learn?
+
+\item How can we allow users to tailor their programming to their own
+personal taste without making code unreadable to other programmers.
+
+For example, how much liberty should we give programmers in code style --
+how many ways of doing things should there be? Consider list comprehension
+-- it tailors programming style but can be unreadable for some people.
+
+\end{itemize}
+
+\item Third-wave
+
+Third-wave HCI was characterised by interfaces designed to maximise user
+experience. Due to the arrival of ubiquitous computing, usage of interfaces
+became discretionary so interfaces had to become prettier to retain users.
+Users now use many interfaces; all serious programmers know many
+languages.
+
+Converting these principles to programming languages leads to research
+questions such as the following:
+
+\begin{itemize}
+
+\item What language features do users \textit{like} using? Why?
+
+\item How can we write a language that users \textit{understand} and
+\textit{enjoy}?
+
+\end{itemize}
+
+\end{itemize}
+
+\iffalse
+
+first wave would ask about efficiency, many-to-one -- lots of people using
+the same workstation.
+
+``how can we make this faster to use''
+
+``how can we make the generated code as fast as possible''
+
+building in as many features as possible to make it fast to use -- fast to
+compile and make efficient code.
+
+Write a brutally efficient language which compiles to efficient code IE C++
+
+
+
+second wave is about realising it fits into peoples lives. they'd ask about
+how to make it work for people -- how do these language features fit into
+peoples lives.
+
+``how can we increase usability, learnability and personalisation''
+
+design a language with simple syntax, many programming paradigms,
+weak[-ish] typing. IE python
+
+
+
+third wave would be about making it accessible and making it fun to use --
+for example adding features with little practical value but a lot of
+entertainment value like C++ templates for metaprogramming
+
+``how can we write a programming langauge people like using''
+
+Write a language people find super cool and genuinely enjoy programming in
+ie Haskell
+
+\fi
+
+\item What empirical methods might be appropriate for studying programming
+activity from the perspective of each of these three waves.
+
+\begin{itemize}
+
+\item A/B tests
+
+Implementing language features and testing whether they increase or
+decrease efficiency or compiled code quality.
+
+\item Design Ethnography
+
+Observing workers to see how they use language features, what they use
+right and what they use wrong.
+
+\item Grounded Theory -- looking at data online to see how people feel
+about different features, what do they find annoying and what do they like?
+
+\end{itemize}
+
+\iffalse
+
+lab analysis (sit down with a stopwatch and see if its faster)
+
+ethnography
+
+questionnaires -- whatever Alan was talking about when he said ``don't do NLP''
+
+\fi
+
+\item Consider a programming language that has been proposed for the
+specification of firework displays. Suggest an analytical method that would
+be appropriate for evaluating and refining the usability of this language
+and associated tools.
+
+Cognitive Dimensions of Notations
+
+\item In terms of the analytical evaluation method proposed in part $(c)$,
+define the target user, the nature of their task and several specific
+usability requirements that would result from that task.
+
+The target user is an amateur fireworks enthusiast who is organising a
+mid-size display for their local community. They want to make it perfect,
+however the display shall take a long time so will not have time to
+fine-tune everything.
+
+\begin{itemize}
+
+\item Premature commitment
+
+The language should have negligible premature commitment. Designing
+art is an iterative process and involves trial-and-error. Commitment to
+launching or styling a display in a particular way would limit the
+creativity and greatly increase the time commitment.
+
+\item Progressive evaluation
+
+The display should have very high progressive evaluation. The
+display is aesthetic and the user should be able to check that the display
+\textit{will} look good before the display itself. So they should be able
+to simulate the display. Furthermore, they should be able to start this
+simulation from any point in the display (ie they shouldn't have to resume
+a 30 minute display from the start every time they modify the final\'e)
+
+\item Viscosity
+
+The display should minimise viscosity. As stated before, art is an
+iterative process and so requires frequently editing previous work. This
+should be supported and taken into account in the programming language design.
+
+\item Error-proneness
+
+The language should be designed to minimise common errors. For example,
+the language should support subtyping such that the user can create
+specific types of firework and operate on those rather than specifying the
+parameters or each firework (which they're likely to get wrong eventually).
+
+\item Abstraction
+
+The language should have some abstraction -- while the target user is not a
+professional programmer (and as such is unlikely to understand complex
+typing relations); it should allow some abstraction such that users can
+declare their own types of fireworks such that they don't have to
+repeatedly create fireworks with the same specification.
+
+IE if the user has 50 fireworks of the same type, they shouldn't have to
+have 50 lines of \\
+\texttt{Firework f = new Firework(250, 30, "red", 6);}).
+
+\end{itemize}
+
+\item Choose one requirement identified in part $(d)$ and describe in detail
+an empirical approach that you would take to evaluating whether this
+requirement has been met.
+
+I choose error-proneness.
+
+I would use design ethnography to determine whether this requirement has
+been met.
+
+This would involve going and watching people use the programming language,
+and observing the types of error they make. If people consistently make the
+same types of error then the programming language clearly encourages them
+in some way to make this type of error. This would also involve talking to
+people to find out the \textit{types} of error they \textit{think} they're
+making. If this error differs to the types of errors they're actually
+making, we may investigate \textit{why} this is the case. Is this because
+they spend so much time thinking about this error that they no longer make
+it? Perhaps the errors they actually make are small but the errors they
+think they make are significant when they does happen and we should
+instead focus efforts in ensuring the language doesn't encourage them.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\begin{examquestion}{2020}{7}{9}
+
+You are designing a new syntax for a programming language like Java, with
+the intention of making it more approachable to students by using English
+words instead of punctuation symbols.
+
+\begin{enumerate}
+
+\item How does a HCI designer use a theory of human behaviour in their
+design practice?
+
+Theories of human behaviour can be used to model how humans will interact
+with an interface and thereby predict the efficiency of it and discover
+usability problems without the need for expensive human trials.
+
+\item What is an empirical method? Give an example and short description of
+that method.
+
+An empirical method is an evaluation method which is based around the
+observation and measurement of users. They should be used in the late
+stages of development -- observation of users is summative -- we discover
+whether a product works or not but aren't often told how to improve it.
+
+Randomised Control Trials (RCTs) are a form of empirical evaluation. They
+are used to compare two products (interfaces). I describe A/B tests (a
+subtype of RCTs).
+
+\begin{itemize}
+
+\item Researchers first think of a task which they feel well-represents the
+question they wish to answer.
+
+\item Next, find an unbiased group of representative users.
+
+\item Randomly partition them into two groups.
+
+\item Each group performs the task on each of the interfaces.
+
+\item Finally, collect data about how long it took users, how many
+mistakes they made etc.
+
+\item Significance tests can then be performed to determine whether one of
+the interfaces was better than the other.
+
+\end{itemize}
+
+Many large companies use RCTs -- they run hundreds or thousands of
+experiments simultaneously and determine whether or not the change has a
+positive or negative impact. However, RCTs cannot determine how to make an
+observed effect bigger (they are only useful for summative evaluation; not
+formative evaluation).
+
+\item Describe in terms of the Cognitive Dimensions two trade-offs involved
+between the existing Java syntax and the new proposed syntax.
+
+\begin{itemize}
+
+\item Replacing symbols with words will increase the closeness of mapping
+and role expressiveness -- by replacing symbols with english words which
+explicitly state the functionality, it becomes very clear to the user what
+a particular thing does.
+
+However, this change will increase diffuseness. English words are
+inherently longer than single symbols. This will increase the time required
+by experts to write basic programs. Similarly, the consistency is increased
+-- users who are used to other programming languages would find it hard to
+transition since the syntax is so different.
+
+\item the programmers must decide how far to segment symbols -- for example
+\texttt{<} has different uses (in generics and bitwise operations). Simply
+replacing symbols with their names will have no advantage. Rather, the
+designers must decide to replace a symbol with a set of words in given
+situations. The decision of how much to segment given symbols leads to some
+questions.
+
+Increasing the segmentation of symbols increases cognitive load --
+the programmer must remember more notation. However, it will also decrease
+the hidden dependencies. If we were to replace brackets with different
+words for each application of a bracket, the programmer could immedately
+see what a particular bracket related to -- ie $)$ vs
+\texttt{close\_function\_call}.
+
+\end{itemize}
+
+\item How does the programming environment relate to this analysis?
+
+Cognitive dimensions of notations are used for analysis of a particular
+interface in a \textbf{specific use case} by a \textbf{specific user}. So
+if the programming environment is different, the whole analysis would change.
+
+For example, if the use case were for professional programmers, they may
+find the increased diffuseness an insurmountable downside.
+
+\item A manager makes a proposal to try different permutations of syntaxes
+and measure students' performance using each permutation. How would you
+measure and compare the students' performance?
+
+I would suggest running an A/B test. I would first select a number of
+representative tasks -- these tasks should reflect what students would
+actually have to use. Since the target audience for this language is
+students, these could be extracted from real syllabus (ie ticks).
+
+Next, we would give students several lectures in the language (this is for
+use by students so we wish for it to be similar to the real use-case)
+before setting them a number of tasks. We would then evaluate the time
+taken and errors made by the students on each of the syntaxes.
+
+This could be tested for statistical significance and we could use the
+syntax on which the students performed the best.
+
+\item What are the likely strengths and weaknesses of the approach in Part
+$(e)$?
+
+This is not reflective of the case which students would actually use the
+language. Students use languages for prolonged periods of time.
+
+We're unlikely to get statistically significant results. Subtle changes in
+syntax are likely to lead to <1\% changes in efficiency. We would need tens
+or hundreds of thousands of students to run this trial to achieve any
+statistically significant result. There is a very high variance in the
+ability of students at programming -- orders of magnitude. This would
+dominate the time taken -- some students are better programmers than others.
+
+If the tests were done online, the students may use the internet and the
+results would not test their ability -- rather the difficulty of converting
+code online into this language.
+
+If the tests were done in-person, the experimenters would affect the test.
+Students could ask for hints or help when stuck -- which would skew the
+results.
+
+The students may not be fully engaged with the test, creating an
+unrealistic environment. Personally, I would not put effort into learning a
+language I did not expect would be used anywhere. Many students may share
+the same sentiment and therefore the test would be invalid.
+
+\end{enumerate}
+
+\end{examquestion}
+
+\end{document}

@@ -1,0 +1,396 @@
+\input{./infofile.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{../../template/template.tex}
+
+\usepackage{physics}
+\usepackage{amsfonts}
+
+\begin{document}
+
+\begin{enumerate}
+
+\item Suppose that $Y_1,Y_2,\cdots,Y_n$ are independent samples from a fixed Poisson distribution with
+an unknown mean $\lambda > 0$.
+Suppose that our prior distribution for $\lambda$ is $\Gamma(\alpha, \beta)$
+where $\alpha > 0$ and $\beta > 0$.
+Compute the probability density function of the posterior distribution.
+
+In the following equations;
+let $S_n = \sum^n_{i=0} Y_i$
+
+\[
+\begin{split}
+\mathbb{P}(\lambda|Y_1,\dots,Y_n) &= \frac{\mathbb{P}(Y_1,\dots,Y_n|\lambda)\mathbb{P}(\lambda)}{\mathbb{P}(Y_1,
+\dots,Y_n)} \\
+&= \frac{\frac{\lambda^{S_n}e^{-n\lambda}}{\prod^n_{i=1}Y_i!}\times \frac{\beta^\alpha \lambda^{\alpha -
+1} e^{-\beta \lambda}}{\Gamma(\alpha)}}{\int^\infty_0
+\frac{x^{S_n}e^{-nx}}{\prod^n_{i=1}Y_i!}\times \frac{\beta^\alpha x^{\alpha -
+1} e^{-\beta x}}{\Gamma(\alpha)}\dd{x}} \\
+&= \frac{\frac{\beta^\alpha}{\Gamma(\alpha)\prod^n_{i=1}Y_i!}\lambda^{S_n}e^{-n\lambda}
+\lambda^{\alpha - 1} e^{-\beta \lambda}}{\frac{\beta^\alpha}{\Gamma(\alpha)\prod^n_{i=1}Y_i!}\int^\infty_0
+x^{S_n}e^{-nx}x^{\alpha -
+1} e^{-\beta x}\dd{x}} \\
+&= \frac{\lambda^{\alpha + S_n - 1} e^{-(\beta + n) \lambda}}{\int^\infty_0
+x^{\alpha + S_n - 1} e^{-(\beta + n) x}\dd{x}} \\
+&= \frac{\lambda^{\alpha + S_n - 1} e^{-(\beta + n) \lambda}}{\frac{1}{\beta + n}\int^\infty_0
+\left(\frac{y}{\beta + n}\right)^{\alpha + S_n - 1} e^{-y}\dd{y}} \ \dag \\
+&= \frac{\lambda^{\alpha + S_n - 1} e^{-(\beta + n) \lambda}}{\frac{1}{(\beta + n)^{\alpha + S_n}}\int^\infty_0 y^{\alpha + S_n - 1} e^{-y}\dd{y}} \\
+&= \frac{(\beta + n)^{\alpha + S_n}\lambda^{\alpha + S_n - 1} e^{-(\beta + n) \lambda}}{\int^\infty_0 x^{\alpha +
+S_n - 1} e^{-x}\dd{x}} \\
+&= \frac{(\beta + n)^{\alpha + S_n}\lambda^{\alpha + S_n - 1} e^{-(\beta + n) \lambda}}{\Gamma(\alpha + S_n)} \\
+&= \Gamma(\alpha + S_n, \beta + n)
+\end{split}
+\]
+
+\dag:
+By substituting $y = (\beta + n)x$. $\frac{1}{\beta + n}\dd{y} = \dd{x}$
+
+So the posterior probability density function is $\Gamma(\alpha + S_n, \beta + n)$.
+
+\item
+Supose Wilfred has $k > 1$ light bulbs and the probability of any individual
+bulb not working is $p$.
+Two strategies for testing the $k$ bulbs are:
+
+\begin{enumerate}[label=(\Alph*)]
+
+\item Test each bulb separately.
+This takes $k$ tests.
+
+\item Wire up all $k$ bulbs as a series circuit.
+If all the bulbs come on, the testing is complete in just one test,
+otherwise revert to strategy $A$ taking a total of $k + 1$ tests.
+
+\end{enumerate}
+
+Let $X$ be a random variable whose value $r$ is the number of tests required
+using strategy $B$.
+The probability $\mathbb{P}(X = r)$ may be expressed as:
+
+\[
+\mathbb{P}(X = r) =
+\begin{cases}
+(1 - p)^k & \text{ if } r = 1 \\
+1 - (1 - p)^k & \text{ if } r = k + 1 \\
+0 & \text{ otherwise } \\
+\end{cases}
+\]
+
+\begin{enumerate}
+
+\item Explain this function and justify why the constraint $k > 1$ is required
+mathematically.
+
+$X = 1$ if and only if all $k$ bulbs work.
+So $\mathbb{P}(X = 1) = (1 - p)^k$ as required.
+
+If any bulbs don't work, then under method $B$ we do the first test and then do a further $k$ tests
+leading to $k + 1$ total tests.
+The probability that any bulbs don't work is $1 - \mathbb{P}(\text{all bulbs work}) = 1 - (1 - p)^k$.
+
+No other outcomes are possible. 
+So all other outcomes have probability zero. 
+This leads to the function as described.
+
+Since we are considering real objects, the constraint $k \in \mathbb{N}$ is obvious. 
+To restrict $k > 1$ we have to consider two cases: $k = 0$ and $k = 1$.
+
+\begin{itemize}
+
+\item [$k = 0$]
+Since $k + 1 = 1$, the function claims that $\mathbb{P}(X = 1) = 0 \wedge 1$
+which is a contradiction.
+
+\item [$k = 1$]
+Contraversially, I don't think the constraint $k > 1$ is required
+\textit{mathematically}.
+It is required for method $B$ to make any sense.
+If $k = 1$ then we test 1 bulb and if it's broken test it again --
+which wastes a test.
+
+\end{itemize}
+
+\item
+Determine the expectation $\mathbb{E}(X)$.
+
+\[
+\begin{split}
+\mathbb{E}(X)
+&= (1 - p)^k + (k + 1)(1 - (1 - p)^k) \\
+&= k + 1 + (1 - p)^k - (k + 1)(1 - p) \\
+&= k + 1 - k(1 - p)^k \\
+\end{split}
+\]
+
+\item
+Strategy $B$ beats strategy $A$ if $\mathbb{E}(X) < k$ and this condition
+is satisfied if $p < f(k)$ where $f(k)$ is some function of $k$.
+Derive the function $f(k)$.
+
+\[
+\begin{split}
+k + 1 - k(1 - p)^k &< k \\
+1 - k(1 - p)^k &< 0 \\
+1 &< k(1 - p)^k \\
+\frac{1}{k} &< (1 - p)^k \\
+\sqrt[k]{\frac{1}{k}} &< 1 - p \\
+p &< 1 - \sqrt[k]{\frac{1}{k}} \\
+\end{split}
+\]
+
+\item
+Suppose you have $n$ light bulbs, where $n \gg k$ and $k|n. \exists m. n = m \cdot k$
+and you partition the $n$ bulbs into $m$ groups of $k$.
+Assuming that the groups are independent and again assuming that $k < 1$, show
+that the expected number of tests is:
+\[
+n\left(1 + \frac{1}{k} - (1 - p)^k\right)
+\]
+
+\[
+\begin{split}
+\mathbb{E}(X) &= m(k + 1 - k(1 - p)^k) \\
+              &= mk\left(1 + \frac{1}{k} - (1 - p)^k\right) \\
+              &= n\left(1 + \frac{1}{k} - (1 - p)^k\right) \\
+\end{split}
+\]
+
+In the question sheet, neither of the brackets were square.
+I will assume the question was asking
+about $(1 + \frac{1}{k} - (1 - p)^k)$ rather than $(1 - p)$.
+
+If $p$ is small then $(1 + \frac{1}{k} - (1 - p)^k)$ is close to $\frac{1}{k}$.
+
+If $p$ is large then $(1 + \frac{1}{k} - (1 - p)^k)$ is close to $1 + \frac{1}{k}$.
+
+We can exploit this by using larger $k$ when $p$ is small.
+
+The optimal value of $k$ to choose for a given $p$ is the solution to the equation
+$2 \ln k + k\ln(1 - p) + \ln\left(\ln \frac{1}{1 - p}\right) = 0$ which can be solved
+numerically.
+
+\end{enumerate}
+
+\item 
+
+You and a friend are presented with a box containing nine
+indistinguishable chocolates, three of which are contaminated with a deadly poison.
+Each of you must eat a single chocolate.
+
+\begin{enumerate}
+
+\item
+If you choose before your friend, what is the probability that you will survive?
+
+\[
+\frac{2}{3}
+\]
+
+\item 
+If you choose first and survive, what is the probability that your friend survives?
+
+\[
+\frac{5}{8}
+\]
+
+\item 
+If you choose first and die, what is the probability that your friend survives?
+
+\[
+\frac{3}{4}
+\]
+
+\item Is it in your best interests to persuade your ``friend'' to choose first?
+
+No.
+
+\begin{align*}
+\mathbb{P}(\text{survive}|\text{first}) &= \frac{2}{3} & \mathbb{P}(\text{survive}|\text{second}) &=
+\frac{1}{3}\times \frac{3}{4} + \frac{2}{3} \times \frac{5}{8} \\
+& & &= \frac{3}{12} + \frac{5}{12} \\
+& & &= \frac{8}{12} \\
+& & &= \frac{2}{3}
+\end{align*}
+
+\item
+If you choose first, what is the probability that you survive given that your
+friend survives?
+
+\[
+\begin{split}
+\mathbb{P}(\text{survive}|\text{friend survives}) &= \frac{\frac{2}{3} \times \frac{5}{8}}{\frac{2}{3} \times
+\frac{5}{8} +
+\frac{1}{3} \times \frac{6}{8}} \\
+                                  &= \frac{2 \times 5}{2 \times 5 + 1 \times 6} \\
+                                  &= \frac{10}{16} \\
+                                  &= \frac{5}{8} \\
+\end{split}
+\]
+
+\end{enumerate}
+
+\item
+There are $n$ socks in a drawer, three of which are red and the rest black.
+Wilfred chooses his socks by selecting two at random from the drawer, and puts
+them on.
+He is three times more likely to wear socks of different colours than to wear
+matching red socks.
+
+\begin{enumerate}
+
+\item Find $n$.
+
+For legibility, I will use $^n C_r$ to mean
+$\begin{pmatrix} n \\ r
+\\
+\end{pmatrix}$.
+
+\[
+\begin{split}
+\frac{\mathbb{P}(2\text{ colours})}{\mathbb{P}(2\text{ red})} &= \frac{\left(\frac{^3 C_1 \ ^{n - 3} C_1}{^n
+C_2}\right)}{\left(\frac{^3
+C_2 \ ^{n - 3} C_0}{^n C_2}\right)} \\
+3 &= \frac{3 \times (n - 3)}{3} \\
+3 &= n - 3 \\
+n &= 6 \\
+\end{split}
+\]
+
+\item For this value of $n$, what is the probability that Wilfred wears matching
+black socks?
+
+\[
+\begin{split}
+\mathbb{P}(2\text{ black}) &= \frac{\begin{pmatrix} 3 \\ 0 \\ \end{pmatrix} \begin{pmatrix} 3 \\ 2 \\ \end{pmatrix}}{\begin{pmatrix} 6 \\ 2 \\ \end{pmatrix}} \\
+                  &= \frac{3}{15} \\
+                  &= \frac{1}{5} \\
+\end{split}
+\]
+
+\end{enumerate}
+
+\item
+Let $X_1, X_2, \dots$ be a sequence of observations.
+Define the sample mean $\overline{X}_n$, of the first $n$ observations by
+$\overline{X}_n = \sum^n_{i=1} \frac{X_i}{n}$.
+Show that for $n > 1$
+\[
+\overline{X}_n = \overline{X}_{n-1} + \frac{X_n - \overline{X}_{n-1}}{n} \\
+\]
+
+\[
+\begin{split}
+\overline{X}_n &= \frac{\sum^n_{i=1} X_i}{n} \\
+               &= \frac{(n - 1)\overline{X}_{n-1} + X_n}{n} \\
+               &= \frac{n\overline{X}_{n-1} + X_n - \overline{X}_{n-1}}{n} \\
+               &= \overline{X}_{n-1} + \frac{X_n - \overline{X}_{n-1}}{n} \\
+\end{split}
+\]
+
+\item A canon fixed at the origin in the $x-y$ plane fires discrete particles.
+The $i^\text{th}]$ particle moves within the plane along a straight line which makes a random
+angle $\Theta = \theta_i$ with the $x-axis$ and collides with a screen at $(x_0, y_i)$ where
+the parameter $x_0 > 0$ defines the position of the screen on the $x$-axis.
+The values of $\theta_i$ are uniformly distributed in the range $-\frac{\pi}{2} \leq \theta_i \leq \frac{\pi}{2}$.
+
+\begin{enumerate}
+
+\item
+Find $y_i$ in terms of $\theta_i$ and $x_0$.
+
+\[
+    y_i = x_0\tan \theta_i
+\]
+
+\item
+Find the probability density function, $g(\theta)$ and cumulative density function
+$G(\theta) = \mathbb{P}(\Theta \leq \theta)$.
+
+\begin{gather*}
+    g(\theta) = \frac{1}{\pi} \\\\
+    G(\theta) = \frac{\theta + \frac{\pi}{2}}{\pi}\\
+\end{gather*}
+
+\item
+Letting $Y$ be a continuous random variable denoting the $y$-coordinate of the
+collision points.
+Find the cumulative distribution function $F(y) = \mathbb{P}(Y \leq y)$.
+
+\[
+F(y) = \frac{\arctan{\left(\frac{y}{x_0}\right)} + \frac{\pi}{2}}{\pi} \\
+\]
+
+\item
+Hence show that the probability distribution function $f(y)$ is given by:
+\[
+f(y) = \frac{x_0}{\pi(x_0^2 + y^2)}
+\]
+
+\[
+\begin{split}
+f(y) &= \dv{F}{y} \\
+     &= \dv{x}\left(\frac{1}{\pi}\arctan\left(\frac{y}{x_0}\right) + \frac{1}{2}\right) \\
+     &= \frac{x_0}{\pi(x_0^2 + y^2)} \\
+\end{split}
+\]
+
+\item
+Show that the standard deviation of the $y$-coordinate of the collision position
+has no mathematically defined value.
+
+\[
+\begin{split}
+Var(Y) &= \mathbb{E}(Y^2) - \mathbb{E}(Y)^2 \\
+       &= \int^{\infty}_{-\infty} \frac{x_0 y^2}{\pi(x_0^2 + y^2)} \dd{x} - \left(\int^{\infty}_{-\infty}
+\frac{x_0 y}{\pi(x_0^2 + y^2)}\dd{y}\right) \\
+      &= \left[x_0 y - x_0^2 \arctan\left(\frac{y}{x_0}\right) \right]^{\infty}_{-\infty} -
+\left[\frac{1}{2}x_0\ln\left(y^2 + x_0^2\right)\right]^{\infty}_{-\infty} \\
+&= (\infty - x_0^2\pi + \infty) - (\infty - \infty) \\
+&= \infty - \infty \\
+& \text{Which is undefined}
+\end{split}
+\]
+
+\item
+$\theta$ is now uniformly distributed between $-\frac{\pi}{6}$ and $+\frac{\pi}{3}$.
+Find $\mathbb{E}(Y)$.
+
+\[
+G(y) = \frac{2}{\pi}\arctan\left(\frac{y}{x_0}\right) + \frac{1}{3}
+\]
+
+\[
+\begin{split}
+g(y) &= \dv{y}\left(\frac{2}{\pi}\arctan\left(\frac{y}{x_0}\right) + \frac{1}{3}\right) \\
+     &= \frac{2x_0}{\pi(x_0^2 + y^2)} \\
+\end{split}
+\]
+
+\[
+\begin{split}
+\mathbb{E}(y) &= \int^{\sqrt{3}x_0}_{-\frac{x_0}{\sqrt{3}}} \frac{2x_0 y}{\pi(x_0^2 + y^2)} \dd{y} \\
+              &= \left[\frac{x_0}{\pi} \ln\left(x_0^2 + y^2\right)\right]^{\sqrt{3}x_0}_{-\frac{x_0}{\sqrt{3}}} \\
+              &= \frac{x_0}{\pi} \left(\ln\left(4x_0^2\right) - x_0 \ln\left(\frac{4}{3}x_0^2\right)\right) \\
+              &= \frac{x_0}{\pi} \ln(3) \\
+\end{split}
+\]
+
+\item
+The distance to the screen now halves instantaneously every time a particle is fired.
+Find $\mathbb{E}\left(\sum^\infty_{i=1} Y_i\right)$
+
+\[
+\begin{split}
+\mathbb{E}\left(\sum^\infty_{i=1} Y_i\right) &= \sum^{\infty}_{i=1} \mathbb{E}(Y_i) \\
+											 &= \frac{x_0\ln 3}{\pi} \sum^{\infty}_{i=1} \frac{1}{2}^i \\
+                                             &= \frac{x_0\ln 3}{\pi} \\
+\end{split}
+\]
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

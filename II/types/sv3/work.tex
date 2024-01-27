@@ -1,0 +1,813 @@
+\input{./infofile}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\usepackage[final]{../../template/supervision}
+
+\usepackage{ebproof}
+\usepackage{rotating}
+\newcommand{\contr}{\ensuremath{\mathsf{contr}}\xspace}
+\newcommand{\upc}{\ensuremath{\mathsf{upc}}\xspace}
+\newcommand{\subst}{\ensuremath{\mathsf{subst}}\xspace}
+\newcommand{\letcont}{\ensuremath{\mathsf{letcont}}\xspace}
+
+\begin{document}
+
+\section{Warmup Questions}
+
+\begin{enumerate}
+
+    \item In the calculus of truth and falsehood, define $\Gamma$, $\delta$, proofs, refutations, contradictions and continuations.
+
+    \begin{definition}[$\Gamma$]
+
+        $\Gamma$ is the truth context -- it is a context of the form $\alpha, \beta, \gamma, \ldots$ which contains only things we assume to be true.
+
+    \end{definition}
+
+    \begin{definition}[$\Delta$]
+
+        $\Delta$ is the false context -- it is a context of the form $\alpha, \beta, \gamma, \ldots$ which contains only things we assume to be false.
+
+    \end{definition}
+
+    \begin{definition}[Proof]
+
+        A proof is a derivation which concludes something of the form $\Gamma, \Delta \vdash A\ \true$. This means ``if the assumptions $\Gamma$ are true, and the assumptions $\Delta$ are false, then we have that $A$ is true''.
+
+    \end{definition}
+
+    \begin{definition}[Refutation]
+
+        A proof is a derivation which concludes something of the form $\Gamma, \Delta \vdash A\ \false$. This means ``if the assumptions $\Gamma$ are true, and the assumptions $\Delta$ are false, then we have that $A$ is false''.
+
+    \end{definition}
+
+    \begin{definition}[Contradiction]
+
+        A contradiction occurs when we can prove that something is both true and false. They are of the form $\Gamma, \Delta \vdash A\ \contr$ and we can use these to conclude that an arbitrary assumption in $\Gamma$ is false; or symmetrically that an arbitrary assumption in $\Delta$ is true.
+
+    \end{definition}
+
+    \begin{definition}[Continuation]
+
+        A continuation is a term $k$ which we have proved has the type $A\ \false$ for some type $A$.
+
+    \end{definition}
+
+    \item What makes dependent types so powerful? Give an example of their usefulness in everyday programming.
+
+    Dependent types are so powerful because arbitrary programs are now types. This means that the type system is far more expressive. The type system can now be used for proofs. This is useful when writing safety critical code. Additionally, the type system is now able to detect terms which have incompatible values at runtime.
+
+    Consider zipping two generators of different lengths together \ie \texttt{zip(range(10), range(20))}. In a language without dependent types, this will work and the program will error at runtime after the first generator runs out of items. However, with dependent types, this is now a type error (since the length of the generators is different and zip would require them to be the same).
+
+    \item What are the downsides of dependent types?
+
+    \begin{itemize}
+
+        \item More complicated rules -- much harder to understand
+
+        \item Longer compilation time
+
+        \item Hard to prove properties of the language
+
+    \end{itemize}
+
+    \item Write down and carefully explain (in English) the subst rule in the dependent types part of the course.
+    \[
+        \dfrac{
+            \Gamma \vdash A\ \type
+            \qquad
+            \Gamma, x: A \vdash B\ \type
+            \qquad
+            \Gamma \vdash p: (e_1 = e_2: A)
+            \qquad
+            \Gamma \vdash e: [e_1/x]B
+        }{
+            \Gamma \vdash \subst[x: A\ldotp B](p, e): [e_2/x]B
+        }
+    \]
+    This rule allows us to replace a term, $e_1$ occurring in the type $[e_1/x]B$ of a term $e$ with another term $e_2$ if we have proved they are equal. The premise ensure that $e_1$ and $e_2$ are typed to a derivable term, that we do indeed have a proof that $(e_1 = e_2: A)$ is a valid type.
+
+\end{enumerate}
+
+\section{Regular Questions}
+
+\begin{enumerate}
+
+    \item Complete Exercises 1 and 2 from Lecture 9:
+
+    \begin{enumerate}
+
+        \item Show that $\neg A \vee B, A; \cdot \vdash B\ \true$ is derivable.
+
+        \begin{figure}[H]
+
+            \centering
+
+            \begin{prooftree}
+                \Infer0{\neg A \vee B, A; B \vdash \neg A \vee B\ \true}
+                \Infer0{\neg A \vee B, A; B \vdash B\ \false}
+                \Infer0{\neg A \vee B; \neg A, B \vdash \neg A\ \false}
+                \Infer1{\neg A \vee B, A; B \vdash \neg A\ \false}
+                \Infer2{\neg A \vee B, A; B \vdash \neg A \vee B\ \false}
+                \Infer2{\neg A \vee B, A; B \vdash \contr}
+                \Infer1{\neg A \vee B, A; \cdot \vdash B\ \true}
+            \end{prooftree}
+            \caption{Proof that $\neg A \vee B, A; \cdot \vdash B\ \true$ is derivable}
+
+        \end{figure}
+
+        \item Show that $\neg(\neg A \land \neg B); \cdot \vdash A \vee B\ \true$ is derivable
+
+        \begin{figure}[H]
+
+            \centering
+
+            \begin{prooftree}
+                \Infer0{\neg(\neg A \land \neg B); \cdot \vdash \neg(\neg A \land \neg B)\ \true}
+                \Infer1{\neg(\neg A \land \neg B); \cdot \vdash \neg A \land \neg B\ \false}
+                \Infer1{\neg(\neg A \land \neg B); \cdot \vdash \neg A\ \false}
+                \Infer1{\neg(\neg A \land \neg B); \cdot \vdash A\ \true}
+                \Infer1{\neg(\neg A \land \neg B); \cdot \vdash A \vee B\ \true}
+            \end{prooftree}
+            \caption{Proof that $\neg(\neg A \land \neg B); \cdot \vdash A \vee B\ \true$ is derivable}
+
+        \end{figure}
+
+    \end{enumerate}
+
+    \item Give the proof (and refutation) terms corresponding to the derivations in the previous question.
+    \begin{gather*}
+        x: \neg A \vee B, y: A; \cdot \vdash \mu\, u: B\ldotp \langle x \mid_B [\nnot(y), \nnot(u)] \rangle: B\ \true \\\\
+        x: \neg(\neg A \land \neg B); \cdot \vdash \nnot(\fst(\nnot(x))): A \vee B\ \true
+    \end{gather*}
+
+    \item Let $\upc(p) \triangleq \mu\, u: A\ldotp \langle p \mid_A u \rangle$ be a proof (and refutation) term from the calculus presented in Lectures 9 and 10.
+
+    \begin{enumerate}
+
+        \item Show that $p: A; \cdot \vdash \upc(p): A\ \true$.
+
+        \begin{figure}[H]
+
+            \centering
+
+            \begin{prooftree}
+                \Infer0{p: A, u: A \vdash p: A\ \true}
+                \Infer0{p: A, u: A \vdash u: A\ \false}
+                \Infer2{p: A, u: A \vdash \langle p \mid_A u\rangle: \contr}
+                \Infer1{p: A; \cdot \vdash \mu u: A \ldotp \langle p \mid_A u\rangle : A\ \true}
+                \Infer1{p: A; \cdot \vdash \upc(p): A\ \true}
+            \end{prooftree}
+
+            \caption{Derivation tree for $\upc(p)$}
+
+        \end{figure}
+
+        \item Show that for all $k: \neg A$, we have $\langle \upc(p) \mid_A k \rangle \mapsto \langle p \mid_A k \rangle$.
+
+        We have that $\upc(p) \triangleq \mu u: A \ldotp \langle p \mid_A u \rangle$, we have that $forall k: \neg A\ldotp \langle \upc(p) \mid_A k\rangle = \langle \mu u\ldotp c \mid_A k\rangle$. This is the premise of one of the reduction rules. Thus, we can reduce this into the form $[k/u]\langle p \mid_A k\rangle = \langle p \mid_A k\rangle$. So, we have that $\forall k: \neg A\ldotp \langle \upc(p) \mid_A k \rangle \mapsto \langle p \mid_A k \rangle$.
+
+        \item Terms $p: A\ \true$ correspond to proofs of $A$. Describe, in English, the proof that corresponds to $\upc(p)$ with respect to the proof corresponding to $p$.
+
+        $\upc(p)$ corresponds to a proof by contradiction for $A$ which first proves $A$, then a space where a refutation for $A$ would be; followed by a contradiction since $A$ cannot both hold and be refuted -- thus we can conclude that $A$ must hold!
+
+    \end{enumerate}
+
+    \item Complete Exercises 1 and 2 from Lecture 10:
+
+    \begin{enumerate}
+
+        \item Give the embedding (\ie the $e^\circ$ and $k^\circ$ translations) of classical into intuitionistic logic for the G\"odel translation. You just need to give the embeddings for sums, since this is the only case different from the lectures.
+        \begin{align*}
+            (L\, e_1)^\circ &= \lambda k: (\sim X^\circ \times \sim Y^\circ)\ldotp (\fst\, k)\, e_1 \\
+            (R\, e_2)^\circ &= \lambda k: (\sim X^\circ \times \sim Y^\circ)\ldotp (\snd\, k)\, e_2 \\
+        \end{align*}
+
+        \item Using the intuitionistic ($\lambda-$) calculus extended with continuations, give a typed term proving Peirce's law:
+        \[
+            ((X \to Y) \to X) \to X
+        \]
+
+        The term below has the desired type:
+        \[
+            \lambda f: (X \to Y) \to X\ldotp \letcont\ k:\ \sim\! X\ldotp f(k)
+        \]
+
+        I prove this in~\cref{fig:peirceslaw}.
+
+        \begin{sidewaysfigure}[h]
+
+            \centering
+
+            \begin{prooftree}
+                \Infer0{f: (X \to Y) \to X, k: X \to Y \vdash f: (X \to Y) \to X}
+                \Infer0{f: (X \to Y) \to X, k: X \to Y \vdash k: (X \to Y)}
+                \Infer2{f: (X \to Y) \to X, k: X \to Y \vdash f(k): X}
+                \Infer1{f: (X \to Y) \to X \vdash \letcont\ k:\ \sim\! X\ldotp f(k): X}
+                \Infer1{\cdot \vdash \lambda f: (X \to Y) \to X\ldotp \letcont\ k:\ \sim\! X\ldotp f(k): ((X \to Y) \to X) \to X}
+            \end{prooftree}
+
+            \caption{A proof of Peirce's Law in the $\lambda$-calculus extended with continuations.}
+
+            \label{fig:peirceslaw}
+
+        \end{sidewaysfigure}
+
+    \end{enumerate}
+
+    \item
+
+    \begin{examquestion}{2021}{8}{15}
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \item In the calculus of proofs and refutations, suppose that $\Gamma; \Delta \vdash A\ \true$ and $\Gamma, A; \Delta \vdash C\ \true$. Show that $\Gamma; \Delta \vdash C\ \true$ is derivable. [\emph{Hint}: Recall that weakening is admissible in this calculus]
+
+            I prove this in~\cref{fig:provec}.
+
+            \begin{sidewaysfigure}[h]
+
+                \centering
+
+                \begin{prooftree}
+                    \Infer0{\Gamma; \Delta, C \vdash A\ \true}
+                    \Infer0{\Gamma, A; \Delta, C \vdash C\ \true}
+                    \Infer0{\Gamma, A; \Delta, C \vdash C\ \false}
+                    \Infer2{\Gamma, A; \Delta, C \vdash \contr}
+                    \Infer1{\Gamma; \Delta, C \vdash A\ \false}
+                    \Infer2{\Gamma; \Delta, C \vdash \contr}
+                    \Infer1{\Gamma; \Delta \vdash C\ \true}
+                \end{prooftree}
+
+                \caption{A proof that $\Gamma; \Delta \vdash A\ \true \land \Gamma, A; \Delta \vdash C\ \true \implies \Gamma; \Delta \vdash C\ \true$}
+
+                \label{fig:provec}
+
+            \end{sidewaysfigure}
+
+            \setcounter{enumii}{2}
+
+            \item Consider the following piece of Agda code, where \texttt{Nat} is the type of natural numbers:
+
+\begin{verbatim}
+X : (P : Nat -> Set) ->
+    P 0 ->
+    ((n : Nat) -> P n -> P (1 + n)) ->
+    (k : Nat) -> P k
+X P base step zero = base
+X P base step (suc n) = step n (X P base step n)
+\end{verbatim}
+
+            \begin{enumerate}[label=(\roman*)]
+
+                \item Explain what the \texttt{X} function means in logical terms.
+
+                    \texttt{X} takes two assumptions $P\ 0$ and $P\ n \implies P\ (1 + n)$ and applies modus ponens $k$ times to provide a prove by induction that $P\ k$ must be true.
+
+                \item Explain what the \texttt{X} function does in terms of functional programming.
+
+                    In terms of functional programming, \texttt{X} is an abstract interface for the natural numbers: it takes a function from natural numbers to types, a zero type and a successor function and a natural number $k$ and returns the value representing the natural number $k$.
+
+            \end{enumerate}
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+    \item
+
+    \begin{examquestion}{2019}{8}{13}
+
+        Recall the three judgements for classical propositional logic:
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \item $\Gamma; \Delta \vdash e: A\ \true$ -- $e$ is a proof of type $A$.
+
+            \item $\Gamma; \Delta \vdash k: A\ \false$ -- $k$ is a refutation of type $A$.
+
+            \item $\Gamma; \Delta \vdash \langle e \mid_A k\rangle\ \contr$ -- $\langle e \mid_A k\rangle$ is a contradiction at type $A$.
+
+        \end{enumerate}
+
+        Here, $\Gamma$ contains all the true assumptions, and $\Delta$ are the false assumptions. In this question, we will extend classical propositional logic with support for the implication or function type operator $A \to B$.
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \item Give a proof term and inference rule for a proof of type $A \to B$.
+
+            The proof terms I introduce to represent this are $e \to$ and $\to k$. The function type $A \to B$ is represented by the type $\neg A \vee B$ and therefore it should be ``syntactic sugar'' for the disjunction of those two types.
+
+            \begin{figure}[H]
+
+                \centering
+
+                \begin{prooftree}
+                    \Infer0{\Gamma; \Delta \vdash k: A\ \false}
+                    \Infer1{\Gamma; \Delta \vdash k \to : A \to B\ \true}
+                \end{prooftree}
+
+                \caption{A Typing Rule for a proof of $A \to B\ \true$}
+
+            \end{figure}
+
+            \item Give a proof term and inference rule for a refutation of type $A \to B$.
+
+            The proof term I introduce to represent a refutation of type $A \to B$ is $e \nnot\to k$.
+
+            \begin{figure}[H]
+
+                \centering
+
+                \begin{prooftree}
+                    \Infer0{\Gamma; \Delta \vdash e: A\ \true}
+                    \Infer0{\Gamma; \Delta \vdash k: A\ \false}
+                    \Infer2{\Gamma; \Delta \vdash e \nnot\to k: A \to B\ \false}
+                \end{prooftree}
+
+                \caption{A Typing Rule for a refutation of $A \to B\ \false$}
+
+            \end{figure}
+
+            \item Give a reduction rule for contradiction configurations of the form $\langle e \mid_{A \to B} k \rangle$.
+
+            \[
+                \langle k_1 \to \mid_{A \to B} e \to k_2 \rangle \mapsto \langle e \mid_{A} k_1 \rangle
+            \]
+
+            \item
+
+            \begin{enumerate}[label=(\roman*)]
+
+                \item State the preservation theorem for classical logic.
+
+                \[
+                    \Gamma; \Delta \vdash c\ \contr \quad \land \quad c \mapsto c' \quad \implies \quad \Gamma; \Delta \vdash c'\ \contr
+                \]
+
+                \item Give the proof of preservation for the case of the new rule defined above. You may assume that weakening, exchange and substitution all hold.
+
+                \begin{align}
+                \intertext{Case $\langle k_1 \to \mid_{A \to B} e \to k_2 \rangle \mapsto \langle k_1 \mid_{A} e \rangle$}
+                & \langle k_1 \to \mid_{A \to B} e \to k_2 \rangle \mapsto \langle k_1 \mid_{A} e \rangle \why{Assumption} \\
+                & \Gamma; \Delta \vdash \langle k_1 \to \mid_{A \to B} e \to k_2 \rangle\ \contr \why{Assumption} \\
+                & \Gamma; \Delta \vdash k_1: A\ \false \why{Inversion} \label{eqn:implication:ref1}\\
+                & \Gamma; \Delta \vdash k_2: B\ \false \why{Inversion} \\
+                & \Gamma; \Delta \vdash e: A\ \true \why{Inversion} \label{eqn:implication:ref2}\\
+                & \Gamma; \Delta \vdash \langle e \mid_A k_2 \rangle \contr \why{Typing Rule on (\ref{eqn:implication:ref1}) and (\ref{eqn:implication:ref2})}
+                \end{align}
+
+            \end{enumerate}
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+    \item Using the \texttt{amb} primitive from Lecture 11 implement a function:
+
+    \[
+        \texttt{eq-at : }\alpha\texttt{ list -> }\alpha\texttt{ list -> int * int}
+    \]
+    such that \texttt{eq-at xs ys} returns \texttt{(i, j)} if \texttt{nth(xs, i) = nth(ys, j)} and fails otherwise. You may assume the existence of any helper functions without definition.
+
+\begin{verbatim}
+let eq-at xs ys =
+    let i = amb(list(range(len(xs)))) in
+    let j = amb(list(range(len(ys)))) in
+    assert nth (xs, i) == nth (ys, j)
+    (i, j)
+\end{verbatim}
+
+    \item Using the dependent type theory introduced in Lecture 12 show that if $\Gamma \vdash A\ \type$ then the following typing judgement holds:
+    \[
+        \Gamma \vdash \mathsf{sym}_A: \Pi x: A\ldotp \Pi y: A\ldotp ((x = y: A) \to y = x: A)
+    \]
+    where
+    \[
+        \mathsf{sym}_A \triangleq \lambda x: A \ldotp \lambda y: A \ldotp \lambda p: (x = y: A)\ldotp \subst[z: A\ldotp (z = x: A)](p, \mathsf{refl}\, x)
+    \]
+    and $X \to Y$ is shorthand for $\Pi x: X\ldotp Y$ if $x$ does not appear in $Y$.
+
+    With $\Gamma' = \Gamma, x: A, y: A, p: (x = y: A)$
+
+    \begin{sidewaysfigure}
+
+        \centering
+
+        \begin{prooftree}
+            \Infer0{\Gamma \vdash A\ \type}
+            \Infer0{\Gamma, x: A \vdash A\ \type}
+            \hypo{\Delta}
+            \hypo{\nabla}
+            \Infer2{\Gamma, x: A, y: A \vdash \lambda p: (x = y: A)\ldotp \subst[z: A\ldotp (z = x: A)](p, \mathsf{refl}\, x): (y = x: A)}
+            \Infer2{\Gamma, x: A \vdash \lambda y: A \ldotp \lambda p: (x = y: A)\ldotp \subst[z: A\ldotp (z = x: A)](p, \mathsf{refl}\, x): \Pi y: A\ldotp (x = y: A) \to (y = x: A)}
+            \Infer2{\Gamma \vdash \mathsf{sym}_A: \Pi x: A\ldotp \Pi y: A\ldotp (x = y: A) \to (y = x: A)}
+        \end{prooftree}
+
+        \vspace{2em}
+
+        $\Delta = $
+        \begin{prooftree}
+            \Infer0{\Gamma, x: A, y: A \vdash A\ \type}
+            \Infer0{\Gamma, x: A, y: A \vdash x: A}
+            \Infer0{\Gamma, x: A, y: A \vdash y: A}
+            \Infer3{\Gamma, x: A, y: A \vdash (x = y: A)\ \type}
+        \end{prooftree}
+
+        \vspace{2em}
+
+        $\nabla = $
+        \begin{prooftree}
+            \Infer0{\Gamma' \vdash A\ \type}
+            \Infer0{\Gamma' \vdash A\ \type}
+            \Infer0{\Gamma' \vdash z: A}
+            \Infer0{\Gamma' \vdash x: A}
+            \Infer3{\Gamma', z: A \vdash (z = x: A)\ \type}
+            \Infer0{\Gamma' \vdash p: (x = y: A)}
+            \Infer0{\Gamma \vdash \mathsf{refl}\, x: [x/z](z = x: A)}
+            \Infer4{\Gamma' \vdash \subst[z: A\ldotp (z = x: A)](p, \mathsf{refl}\, x): (x = y: A) \to [y/v](v = x: A)}
+        \end{prooftree}
+
+    \end{sidewaysfigure}
+
+    \item Define terms with the following types:
+
+    \begin{enumerate}
+
+        \item $\Gamma \vdash \mathsf{trans}_A : \Pi x: A\ldotp \Pi y: A\ldotp \Pi z: A \ldotp ((x = y : A) \to (y = z : A) \to (x = z: A))$
+
+        \[
+            \mathsf{trans}_A \triangleq \lambda x: A\ldotp \lambda y: A\ldotp \lambda z: A\ldotp \lambda p: (x = y: A)\ldotp \lambda q: (y = z: A)\ldotp \subst[y: A\ldotp (x = z: A)](q, p)
+        \]
+
+        \item $\Gamma \vdash \mathsf{cong}_{A, B}: \Pi x: A\ldotp \Pi y: A \ldotp \Pi f: (A \to B)\ldotp ((x = y: A) \to (f\, x = f\, y: B))$
+
+        \[
+            \mathsf{cong}_{A, B} \triangleq \lambda x: A\ldotp \lambda y: A\ldotp \lambda f: (A \to B)\ldotp \lambda p: (x = y: A)\ldotp \subst[z: A\ldotp (f\, x = f\, z)](p, \mathsf{refl}\, f\, x)
+        \]
+
+    \end{enumerate}
+
+    Assuming that $\Gamma \vdash A\ \type$ and $\Gamma \vdash B\ \type$
+
+\end{enumerate}
+
+\section{Extension Questions}
+
+\begin{enumerate}
+
+    \item Download and install Agda and try out some of the examples from the lectures:
+
+    Haven't but will eventually\ldots\ This has been on my TODO list for half a year.
+
+    \todo{Have a look at Agda if you can\ldots maybe impossible due to time constraints}
+
+    \item Consider types $\Gamma \vdash A\ \type$ and $\Gamma, x: A \vdash B\ \type$. if we have terms $a_1$ and $a_2$ and a proof that they are equal, $\Gamma \vdash p: (a_1 = a_2: A)$, then the types $[a_1/x]B$ and $[a_2/x]B$ should also be ``equal'' in some sense. And so, given $\Gamma \vdash b_1: [a_1/x]B$ and $\Gamma \vdash b_2: [a_2/x]B$ we might want to consider the type of equalities between $b_1$ and $b_2$.
+
+    \begin{enumerate}
+
+        \item Show that the following rule is not (in general) derivable:
+        \[
+            \frac{
+                \Gamma \vdash A\ \type
+                \quad
+                \Gamma, x: A \vdash B\ \type
+                \quad
+                \Gamma \vdash p: (a_1 = a_2: A)
+                \quad
+                \Gamma \vdash b_1: [a_1/x]B
+                \quad
+                \Gamma \vdash b_2: [a_2/x]B
+            }{
+                \Gamma \vdash (b_1 = b_2 : [a_1/x]B)\ \type
+            }
+        \]
+
+        I prove this by counterexample:
+        \begin{align*}
+            A &= 1 \\
+            B &= x \\
+            \Gamma &= p: (\langle\rangle = \lambda y: 1\ldotp \langle\rangle: 1) \\
+            a_1 &= \langle \rangle \\
+            a_2 &= \lambda y: 1\ldotp \langle \rangle \\
+            b_1 &= 1 \\
+            b_2 &= \lambda y: 1\ldotp y \\
+            p &= (\langle\rangle = \lambda y: 1\ldotp \langle\rangle: 1) \\
+        \end{align*}
+        \begin{align*}
+            & p: (\langle\rangle = \lambda y: 1\ldotp \langle\rangle: 1) \vdash (\langle\rangle = \lambda y: 1\ldotp y: 1)\ \type \why{assumption} \\
+            & p: (\langle\rangle = \lambda y: 1\ldotp \langle\rangle: 1) \vdash \langle\rangle: 1 \why{inversion} \\
+            & p: (\langle\rangle = \lambda y: 1\ldotp \langle\rangle: 1) \vdash \lambda y: 1\ldotp y: 1 \why{inversion}
+        \end{align*}
+
+        By inspection, we can see that there is no way to derive $\lambda y: 1\ldotp y: 1$ and therefore the proof cannot proceed. So the rule does not hold in general.
+
+        \item Define the type of \textit{heterogeneous equalities} like so:
+        \[
+            (b_1 \approx b_2:B\ \mathsf{over}\ p) \triangleq (\subst[x: A\ldotp B]( p, b_1 ) = b_2: [a_2/x]B)
+        \]
+        Show that the following rule is derivable:
+        \[
+            \frac{
+                \Gamma \vdash A\ \type
+                \quad
+                \Gamma, x: A \vdash B\ \type
+                \quad
+                \Gamma \vdash p: (a_1 = a_2: A)
+                \quad
+                \Gamma \vdash b_1: [a_1/x]B
+                \quad
+                \Gamma \vdash b_2: [a_2/x]B
+            }{
+                \Gamma \vdash (b_1 \approx b_2: B\ \mathsf{over}\ p)\ \type
+            }
+        \]
+
+        \begin{sidewaysfigure}
+            \centering
+
+            \begin{prooftree}
+
+                \Infer0{\Gamma \vdash b_2: [a_2/x]B}
+                \Infer1[Regularity]{\Gamma \vdash [a_2/x]B\ \type}
+
+                \Infer0{\Gamma \vdash b_2: [a_2/x]B}
+                \Infer1[Regularity]{\Gamma \vdash [a_2/x]B\ \type}
+                \Infer0{\Gamma, x: A \vdash B\ \type}
+                \Infer0{\Gamma \vdash p: (a_1 = a_2: A)}
+                \Infer0{\Gamma \vdash b_1: [a_1/x]B}
+                \Infer4{\Gamma \vdash \subst[x: A\ldotp B](p, b_1): [a_2/x]B}
+                \Infer0{\Gamma \vdash b_2: [a_2/x]B}
+                \Infer3{\Gamma \vdash (\subst[x: A\ldotp B](p, b_1) = b_2: [a_2/x]B)\ \type}
+
+            \end{prooftree}
+
+        \end{sidewaysfigure}
+
+        \item Define a term $\mathsf{hrefl}\ b$ such that the following rule is derivable:
+        \[
+            \frac{
+                \Gamma \vdash A\ \type
+                \quad
+                \Gamma, x: A \vdash B\ \type
+                \quad
+                \Gamma \vdash a: A
+                \quad
+                \Gamma \vdash b: [a/x]B
+            }{
+                \Gamma \vdash \mathsf{hrefl}\ b : (b \approx b : B\ \mathsf{over}\ (\mathsf{refl}\ a))
+            }
+        \]
+
+        Notice that we can use judgemental term equality to derive that any term with the type $(b = b: A)$ has the type required. Thus, $\mathsf{hrefl}\ b$ is an arbitrary term with type $(b = b: A)$. I choose:
+        \[
+            \mathsf{hrefl}\ b = \mathsf{refl}\ b
+        \]
+
+        We can then use the rules with conclusions $\Gamma \vdash (e_1 = e_2: A) \equiv (e_1' = e_2': A')\ \type$ and $\Gamma \vdash \subst[x: A\ldotp B](e_1, e_2) \equiv \subst[x: A'\ldotp B'](e_1', e_2'': [e'/x]B)$ to derive that $(b = b: A)\ \type \equiv \mathsf{hrefl}\ b : (b \approx b : B\ \mathsf{over}\ (\mathsf{refl}\ a))$.
+
+        We can then use the judgemental equality rule to derive that $\mathsf{hrefl}\ b$ also has this type.
+
+    \end{enumerate}
+
+    \item Didn't find a nice answer.
+
+%     \begin{enumerate}
+%
+%         \item What logical operator do  $\Pi$-types (or \textit{dependent products}) correspond to? Justify your answer.
+%
+%         $\Pi$-types correspond to the $\forall$ logical operator.
+%
+%         \todo{Do this!}
+%
+%         \item Given your answer to (a), what logical operator are we still missing?
+%
+%         We are missing the $\exists$ logical operator.
+%
+%         \item Extend the syntax of the dependently typed language introduced in the lectures with this dual of $\Pi$ types (also called $\Sigma$-types or \textit{dependent sums}) and give suitable typing rules for them. (Search engines are your friend)
+%
+%         I introduce the $\Sigma$-type with rules inspired by the rules for $\mathsf{pack}_{\alpha\ldotp \beta}(A, e)$ in System F.
+%
+%         \[
+%             \dfrac{
+%                 \Gamma, x: A \vdash B\ \type
+%                 \qquad
+%                 \Gamma \vdash A\ \type
+%                 \qquad
+%                 \Gamma, x: A \vdash e: B
+%             }{
+%                 \Gamma \vdash \Sigma x: A \ldotp
+%             }
+%         \]
+%
+%         \todo{Do this!}
+%
+%         \item In first-order logic, the axiom of choice can be stated as:
+%         \[
+%             (\forall x \in A\ldotp \exists y \in B\ldotp P(x, y)) \implies (\exists f: A \to B\ldotp \forall x \in A\ldotp P(x, f(x)))
+%         \]
+%         Given $\Gamma \vdash A\ \type$ and $\Gamma \vdash B\ \type$, give a type $\Gamma \vdash \mathsf{AC}\ \type$ corresponding to the axiom of choice.
+%
+%         \todo{Do this!}
+%
+%         \item Define a term $\Gamma \vdash \mathsf{ac}: \mathsf{AC}$.
+%
+%         \todo{Do this!}
+%
+%     \end{enumerate}
+
+\end{enumerate}
+
+\section{Practice Material}
+
+\begin{enumerate}
+
+    \item Is there a way of constructing a sequence of terms $t_1, t_2, \ldots$ in the simply typed $\lambda$-calculus with only the base type 1, such that, for each $n$, the term $t_n$ has size at most $\mathcal O(n)$, but requires $\mathsf O(2^n)$ steps of evaluation to reach a normal form?
+
+    Yes, there is. I propose the set of terms $t_i$ defined by:
+    \begin{align*}
+        f &= \lambda fy\ldotp ((\fst\, fy)(\snd\, fy), (\fst\, fy)(\snd\, fy)) \\
+        x_1 &= (\lambda y\ldotp y, \langle \rangle) \\
+        x_{i + 1} &= (f, x_i) \\
+        t_i &= f\, x_i
+    \end{align*}
+
+    We see that $t_{n + 1} \rightsquigarrow^+ (t_n, t_n)$. So the evaluation time is $\mathcal O(2^n)$. Since $t_n = f\, \underbrace{(f\, (f, \ldots x_1))}_{n\times}$, the size of $t_n$ is $\mathcal O(n)$.
+
+    \item Show that if a term $e$ is typeable in the empty context, then $e$ must be \textit{closed}, \emph{i.e}.\@ have no free variables.
+
+    Didn't get around to this.
+
+    \item
+    \begin{enumerate}
+
+        \item Write a function \texttt{isnil} that takes a Church-encoded list and returns a Church boolean.
+        \begin{align*}
+            \texttt{isnil} &\triangleq \lambda l\ldotp l\ \mathsf{bool}\ \true\ (\lambda x: X\ldotp \false) \\
+            \mathsf{bool} &\triangleq \forall \alpha\ldotp \alpha \to \alpha \to \alpha \\
+            \true &\triangleq \Lambda \alpha \ldotp \lambda x: \alpha \ldotp \lambda y: \alpha \ldotp x \\
+            \false &\triangleq \Lambda \alpha \ldotp \lambda x: \alpha \ldotp \lambda y: \alpha \ldotp y
+        \end{align*}
+        \texttt{isnil} iterates through the list. The list is initially passed $\true$ -- and a function which returns $\false$. So if the list is empty then it returns $\true$ else it returns $\false$ -- as required.
+
+        \item Write a function $\mathsf{head}: X \to \mathsf{CList}_X \to X$ which returns the first argument if the list is empty and the head of the list otherwise.
+        \[
+            \texttt{head} \triangleq \lambda x\ldotp \lambda l\ldotp l\ X\ x\ (\true\ X)
+        \]
+        \texttt{head} iterates through the list (starting at the end) and keeps only the most recent element its seen. This means that it will keep the head of the list -- or $x$ if the list is empty.
+
+        \item Write a function $\mathsf{tail}: X \to \mathsf{CList}_X \to \mathsf{CList}_X$ which returns the empty list when applied to an empty list, and the tail of the list otherwise.
+        \begin{align*}
+            \mathsf{List} &\triangleq \forall \alpha\ldotp \alpha \to (X \to \alpha \to \alpha) \to \alpha \\
+            [] &\triangleq \true \\
+            a::l &\triangleq \Lambda A\ldotp \lambda x\ldotp \lambda f\ldotp \\
+            X + Y &\triangleq \forall \alpha (X \to \alpha) \to (Y \to \alpha) \to \alpha \\
+            L\ e &\triangleq \Lambda \alpha\ldotp \lambda f\ldotp \lambda g\ldotp f\ e \\
+            R\ e &\triangleq \Lambda \alpha\ldotp \lambda f\ldotp \lambda g\ldotp g\ e \\
+            X \times Y &\triangleq \forall \alpha \ldotp (X \to Y \to \alpha) \to \alpha \\
+            (e, e') &\triangleq \Lambda \alpha \ldotp \lambda f\ldotp f\ e\ e' \\
+            \fst\ p &\triangleq p\ X\ (\lambda x\ldotp \lambda y\ldotp x) \\
+            \snd\ p &\triangleq p\ X\ (\lambda x\ldotp \lambda y\ldotp y) \\
+            \texttt{tail} &\triangleq
+            \lambda l\ldotp
+            (l
+            \
+            (\mathsf{List}+(\mathsf{List} \times X))
+            \
+            (L\ [])
+            \\
+            &\qquad\ (
+                \lambda x\ldotp \lambda l\ldotp
+                l\
+                (\mathsf{List}+(\mathsf{List} \times X))\
+                (\lambda y\ldotp R\ ([], y))\
+                (\lambda y\ldotp ((\snd\ y) :: (\fst\ y)))
+            )
+            )\\
+            &\qquad\ \mathsf{List}\ (\lambda l\ldotp l)\ (\lambda l\ldotp \fst\ l)
+        \end{align*}
+
+    \end{enumerate}
+
+    \item Suppose that $\Theta, \beta \vdash F\ \type$, and $\mathsf{fmap}$ is a term such that:
+    \[
+        \Theta; \cdot \vdash \mathsf{fmap}: \forall \beta_1\ldotp \forall \beta_2\ldotp (\beta_1 \to \beta_2) \to ([\beta_1/\beta]F \to [\beta_2/\beta]F)
+    \]
+    The type $\mu F$ is defined to be $\forall \beta\ldotp (F \to \beta) \to \beta$.
+
+    \begin{enumerate}
+
+        \item Show that $\Theta \vdash \mu F\ \type$ and $\Theta \vdash [\mu F/\beta]F\ \type$.
+
+        \begin{figure}[H]
+
+            \centering
+
+            \begin{prooftree}
+
+                \Infer0{\Theta, \beta \vdash F\ \type}
+                \Infer0{\Theta, \beta \vdash \beta\ \type}
+                \Infer2{\Theta, \beta \vdash F \to \beta\ \type}
+                \Infer0{\Theta, \beta \vdash \beta\ \type}
+                \Infer2{\Theta, \beta \vdash (F \to \beta) \to \beta\ \type}
+                \Infer1{\Theta \vdash \forall \beta\ldotp (F \to \beta) \to \beta\ \type}
+
+            \end{prooftree}
+
+            \caption{Proof tree to show $\Theta \vdash \mu F\ \type$}
+
+            \vspace{1em}
+
+            \begin{prooftree}
+
+                \Infer0{\Theta \vdash \mu F\ \type}
+                \Infer0{\Theta, \beta \vdash F\ \type}
+                \Infer2{\Theta \vdash [\mu F/\beta]F\ \type}
+
+            \end{prooftree}
+
+            \caption{Proof tree to show $\Theta \vdash [\mu F/\beta]F\ \type$}
+
+        \end{figure}
+
+        \item Define terms $\mathsf{fold}$ and $\mathsf{intro}$ such that:
+        \begin{align*}
+            \Theta; \cdot &\vdash \mathsf{fold}: \forall \beta\ldotp (F \to \beta) \to \mu F \to \beta \\
+            \Theta ; \cdot &\vdash \mathsf{intro}: [\mu F/\beta]F \to \mu F
+        \end{align*}
+
+        \begin{align*}
+            \mathsf{fold} &\triangleq \Lambda \beta\ldotp \lambda f\ldotp \lambda g\ldotp g\ \beta\ f \\
+            \mathsf{intro} &\triangleq \lambda x: [\mu F / \beta]F\ldotp \Lambda \beta\ldotp \lambda f: F \to \beta \ldotp f(\mathsf{fmap}\, (\lambda g: \mu F\ldotp g\, \beta\, f)\, x)
+        \end{align*}
+
+    \end{enumerate}
+
+    \item
+    \begin{examquestion}{2022}{9}{13}
+
+        \begin{enumerate}[label=(\alph*)]
+
+            \item Using the simply-typed lambda calculus with the $\letcont$ primitive, give well-typed terms corresponding to proofs of the following classical tautologies:
+
+            \begin{enumerate}[label=(\roman*)]
+
+                \item $\mathit{dne} : \neg \neg A \to A$
+                \[
+                    \mathit{dne} \triangleq \lambda x: \neg \neg A \ldotp \mathit{letcont}\ u: \neg X\ldotp \mathit{throw}(x, u)
+                \]
+
+                \item $\mathit{contr} : (A \to B) \to (\neg B \to \neg A)$
+                \[
+                    \mathit{contr} \triangleq \lambda f\ldotp \lambda b: \neg B\ldotp \lambda a: A\ldotp \mathit{throw}(b, f\ a)
+                \]
+
+                \item $\mathit{demorgan}_1 : \neg (A \vee B) \to \neg A \land \neg B$
+                \[
+                    \mathit{demorgan}_1 \triangleq \lambda x: \neg (A \vee B) \ldotp (\lambda a: A\ldotp x(L\, a), \lambda b: B\ldotp x(R\, b))
+                \]
+
+                \item $\mathit{demorgan}_2 : (\neg A \land \neg B) \to \neg (A \vee B)$
+                \[
+                    \mathit{demorgan}_2 \triangleq \lambda x: \neg A \land \neg B\ldotp \lambda y: A \vee B\ldotp \mathit{case}(y, L\, a \to (\mathit{fst}\ x)\ a, R\, b \to (\mathit{snd}\ x)\ b)
+                \]
+
+            \end{enumerate}
+
+            \item
+
+            \begin{enumerate}[label=(\roman*)]
+
+                \item Briefly explain what the following Agda type says.
+                \[
+                    \forall \{\texttt{A}: \texttt{Set}\}\{\texttt{n}: \texttt{Nat}\} \to \texttt{Vec}\, \texttt{A}\, \texttt{n} \to (\texttt{i} : \texttt{Nat}) \to (\texttt{i} < \texttt{n}) \to \texttt{A}
+                \]
+
+                This is the type of a function. The function infers a type \texttt{A} and a natural number \texttt{n}. It then takes a vector of length \texttt{n} where each element has type \texttt{A} and a natural number \texttt{i} such that \texttt{i} is less than \texttt{n}. It then returns an object of type \texttt{A}.
+
+                \item Given the two following Agda declarations:
+                \begin{align*}
+                    \texttt{zip} :
+                    & \forall \{\texttt{A}: \texttt{Set}\}{\texttt{B}: \texttt{Set}}{\texttt{n}: \texttt{Nat}} \to \\
+                    & (\texttt{Vec}\, \texttt{A}\, \texttt{n} \times \texttt{Vec}\, \texttt{B}\, \texttt{n}) \to \texttt{Vec}\, (\texttt{A} \times \texttt{B})\, \texttt{n} \\
+                    \\
+                    \texttt{unzip} :
+                    & \forall \{\texttt{A}: \texttt{Set}\}\{\texttt{B}: \texttt{Set}\}\{\texttt{n}: \texttt{Nat}\} \to \\
+                    & \texttt{Vec}\, (\texttt{A} \times \texttt{B})\, \texttt{n} \to \texttt{Vec}\, \texttt{A}\, \texttt{n} \times \texttt{Vec}\, \texttt{B}\, \texttt{n}
+                \end{align*}
+                Write a type expressing that $\texttt{unzip}$ followed by $\texttt{zip}$ is the identity.
+                \[
+                    \forall \{\texttt{A}: \texttt{Set}\}\{\texttt{B}: \texttt{Set}\}\{\texttt{n}: \texttt{Nat}\}\{v: \texttt{Vec}\, (\texttt{A} \times \texttt{B})\, \texttt{n}\} \to (v \equiv \texttt{zip}(\texttt{unzip}(v)))
+                \]
+
+            \end{enumerate}
+
+        \end{enumerate}
+
+    \end{examquestion}
+
+\end{enumerate}
+
+\end{document}

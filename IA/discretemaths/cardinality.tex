@@ -1,0 +1,194 @@
+\input{../../template/prefs/jp738.tex}
+\input{../../template/prefs/me.tex}
+
+\documentclass[10pt,\jkfside,a4paper]{article}
+
+\input{./infofile.tex}
+\input{../../template/includes.tex}
+\input{../../template/template.tex}
+
+\usepackage{oz}
+
+\begin{document}
+
+\section*{11 On surjections and injections}
+
+\subsection*{11.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Give two examples of functions that are surjective and two examples of functions that are not.
+
+
+
+\item give two examples of functions that are injective and two examples of functions that are not.
+
+
+
+\end{enumerate}
+
+\subsection*{Core exercises}
+
+\begin{enumerate}
+
+\item Explain and justify the phrase \textit{injections can be undone}
+
+
+
+\item Show that $f: A \rightarrow B$ is a surjection if and only if for all sets $C$ and functions $g, : B \rightarrow C$,
+$g \circ f = h \circ f$ implies $g = h$.
+
+
+
+\end{enumerate}
+
+\section*{12. On images}
+
+\subsection*{Basic exercises}
+
+\begin{enumerate}
+
+\item Let $R_2 = \{(m, n) | m = n^2\}: \mathbb{N} \pfun \mathbb{Z}$ be the integer square-root relation. What is the 
+direct image of $\mathbb{N}$ under $R_2$? And what is the inverse image of $\mathbb{N}$.
+
+
+
+\item For a relation $R: A \pfun B$, show that:
+
+\begin{enumerate}
+
+\item $\overrightarrow{\text{R}}(X) = \bigcup_{x \in X} \overrightarrow{\text{R}}(\{x\})$ for all $X \subseteq A$.
+
+
+
+\item $\overrightarrow{\text{R}}(Y) = \{a \in A | \overrightarrow{\text{R}}(\{a\}) \subseteq Y \}$ for all $Y \subseteq B$.
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+
+\subsection*{12.2 Core exercises}
+
+\begin{enumerate}
+
+\item For $X \subseteq A$, prove that the firect image $\overrightarrow{f}(X) \subseteq B$ under an 
+injective function $f : A \rightarrowtail B$ is in bijection with $X$, that is, $X \cong \overrightarrow{f}(X)$.
+
+
+
+\item Prove that for a surjective function $f: A \twoheadrightarrow B$, the direct image function $\overrightarrow{f}: 
+\mathcal{P}(A) \rightarrow \mathcal{P}(B)$ is surjective.
+
+
+
+\item Show that any function $f: A \rightarrow B$ can be decomposed into an injection and a surjection: 
+that is, there exists a set $X$, a surjection $s: A \twoheadrightarrow X$ and an injection $i: X \rightarrowtail B$ 
+such that $f = i \circ s$.
+
+
+
+\item For a relation $R: A \pfun B$, prove that
+
+\begin{enumerate}
+
+\item $\overrightarrow{R}(\bigcup \mathcal{F}) = \bigcup \{ \overrightarrow{R}(X) | X \in \mathcal{F}\}$ for all $\mathcal{F} \subseteq \mathcal{P}(X)$
+
+
+
+\item $\overleftarrow{R}(\bigcap \mathcal{G}) = \bigcap\{ \overleftarrow{R}(Y) | Y \in \mathcal{G}\}$ for all $\mathcal{G} \subseteq \mathcal{P}(B)$
+
+
+
+\end{enumerate}
+
+\item Show that, by the inverse image, every map $A \rightarrow B$ induces a Boolean algebra map $\mathcal{P}(B) \rightarrow \mathcal{P}(A)$. 
+That is, for every function $f: A \rightarrow B$, its inverse image preserves set operations:
+
+\begin{itemize}
+
+\item $\overleftarrow{f}(\emptyset) = \emptyset$
+
+\item $\overleftarrow{f}(B) = A$
+
+\item $\overleftarrow{f}(X \cup Y) = \overleftarrow{f}(X) \cup \overleftarrow{f}(Y)$
+
+\item $\overleftarrow{f}(X \cap Y) = \overleftarrow{f}(X) \cap \overleftarrow{f}(Y)$
+
+\item $\overleftarrow{f}(X^\mathsf{c}) = (\overleftarrow{f}(X))^\mathsf{c}$
+
+\end{itemize}
+
+\end{enumerate}
+
+\section*{13 On countability}
+
+\subsection*{13.1 Basic exercises}
+
+\begin{enumerate}
+
+\item Prove that every finite set is countable
+
+
+
+\item Demonstrate that $\mathbb{N}, \mathbb{Z}, \mathbb{Q}$ are countable sets.
+
+
+
+\end{enumerate}
+
+\subsection*{13.2 Core exercises}
+
+\begin{enumerate}
+
+\item Let $A$ be an infinite subset of $\mathbb{N}$. Show that $A \cong \mathbb{N}$. \\
+Hint: Adapt the argument shown in the proof of Proposition 144, showing that the map $\mathbb{N} \rightarrow A$ is both injective and surjective.
+
+
+
+\item for an infinite set $A$, prove that the following are equivalent:
+
+\begin{enumerate}
+
+\item There is a bijection $\mathbb{N} \stackrel{\cong}{\rightarrow} A$.
+
+\item There is a surjection $\mathbb{N} \twoheadrightarrow A$.
+
+\item There is an injection $A \rightarrowtail \mathbb{N}$.
+
+
+
+\end{enumerate}
+
+\item Prove that:
+
+\begin{enumerate}
+
+\item Every subset of a countable set is countable
+
+
+
+\item the product and disjoint union of countable sets is countable.
+
+
+
+\end{enumerate}
+
+\item For a set $A$, prove that there is no injection $\mathcal{P}(A) \rightarrowtail A$.
+
+
+
+\end{enumerate}
+
+\subsection*{13.3 Optional advanced exercise}
+
+\begin{enumerate}
+
+\item Prove that if $A$ and $B$ are countable sets then so are $A*$, $\mathcal{P}_\text{fin}(A)$ and $\text{PFun}_{\text{fin}}(A, B)$.
+
+
+
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,7 @@
+Every non-overlapping term on a karnaugh map has a hazard.
+
+SOP only have static 1 hazards
+POS only have static 0 hazards
+
+SOP only have hazards when changing from 1 to 0
+POS only have hazards when changing from 0 to 1
